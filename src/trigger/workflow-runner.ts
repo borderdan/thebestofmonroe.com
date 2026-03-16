@@ -70,7 +70,7 @@ export const executeWorkflowActions = task({
                 Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
               },
               body: JSON.stringify({
-                from: process.env.RESEND_FROM_EMAIL || 'The Best of Monroe <noreply@The Best of Monroe.com>',
+                from: process.env.RESEND_FROM_EMAIL || 'The Best of Monroe <noreply@thebestofmonroe.com>',
                 to: [to],
                 subject: action.config.subject as string || 'Notification',
                 text: action.config.body as string || '',

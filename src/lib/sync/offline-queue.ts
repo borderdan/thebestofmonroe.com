@@ -1,6 +1,6 @@
 import { get, set, del } from 'idb-keyval'
 
-const QUEUE_KEY = 'The Best of Monroe-offline-tx-queue'
+const QUEUE_KEY = 'thebestofmonroe-offline-tx-queue'
 
 export interface OfflineTransaction {
   id: string

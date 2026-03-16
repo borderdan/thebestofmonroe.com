@@ -1,5 +1,5 @@
 // sw.js - Service Worker for The Best of Monroe PWA
-const CACHE_NAME = 'The Best of Monroe-cache-v1';
+const CACHE_NAME = 'thebestofmonroe-cache-v1';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',

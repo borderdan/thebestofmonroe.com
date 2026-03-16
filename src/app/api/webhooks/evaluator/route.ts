@@ -225,7 +225,7 @@ async function executeAction(
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: process.env.RESEND_FROM_EMAIL || 'The Best of Monroe <noreply@The Best of Monroe.com>',
+          from: process.env.RESEND_FROM_EMAIL || 'The Best of Monroe <noreply@thebestofmonroe.com>',
           to: [to],
           subject,
           text: body,

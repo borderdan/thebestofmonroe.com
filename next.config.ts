@@ -19,8 +19,8 @@ const nextConfig: NextConfig = {
 export default withSentryConfig(
   withSerwist(withNextIntl(nextConfig)),
   {
-    org: "The Best of Monroe",
-    project: "The Best of Monroe-web",
+    org: "thebestofmonroe",
+    project: "thebestofmonroe-web",
     silent: true // Suppress Sentry console output during build
   }
 );

@@ -781,7 +781,7 @@ export function FormbricksEmbed({ userId, businessId }: FormbricksEmbedProps) {
       userId={userId}
       attributes={{
         businessId,          // Auto-links submissions to tenant
-        source: 'The Best of Monroe',
+        source: 'thebestofmonroe',
       }}
     />
   )

@@ -10,7 +10,7 @@ interface QRGeneratorProps {
 }
 
 export function QRGenerator({ city, slug, locale, tableId }: QRGeneratorProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://The Best of Monroe.com'
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://thebestofmonroe.com'
   const path = `/${locale}/${city}/${slug}`
   const url = tableId ? `${baseUrl}${path}?table=${tableId}` : `${baseUrl}${path}`
 
