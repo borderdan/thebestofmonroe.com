@@ -1,0 +1,117 @@
+# ==========================================================
+# NewBOM Production CI/CD Pipeline
+# ==========================================================
+# Runs on every pull request targeting `main`.
+# All 3 jobs must pass before Vercel deployment proceeds.
+# ==========================================================
+
+name: Production CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # --------------------------------------------------------
+  # Job 1: Lint & Type Check
+  # --------------------------------------------------------
+  lint-typecheck:
+    name: 🔍 Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+
+  # --------------------------------------------------------
+  # Job 2: Unit Tests (Vitest)
+  # --------------------------------------------------------
+  unit-tests:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Run Vitest
+        run: npx vitest run --reporter=verbose
+
+  # --------------------------------------------------------
+  # Job 3: E2E Tests (Playwright + Supabase)
+  # --------------------------------------------------------
+  e2e-tests:
+    name: 🎭 E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      E2E_USER_EMAIL: ${{ secrets.E2E_USER_EMAIL }}
+      E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
+      E2E_USER_B_EMAIL: ${{ secrets.E2E_USER_B_EMAIL }}
+      E2E_USER_B_PASSWORD: ${{ secrets.E2E_USER_B_PASSWORD }}
+      NEXT_PUBLIC_APP_URL: http://127.0.0.1:3000
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Diagnostic - Validate Secrets Existence
+        run: |
+          echo "Checking if required secrets are defined..."
+          if [ -z "$NEXT_PUBLIC_SUPABASE_URL" ]; then echo "❌ NEXT_PUBLIC_SUPABASE_URL is missing"; else echo "✅ NEXT_PUBLIC_SUPABASE_URL is defined"; fi
+          if [ -z "$NEXT_PUBLIC_SUPABASE_ANON_KEY" ]; then echo "❌ NEXT_PUBLIC_SUPABASE_ANON_KEY is missing"; else echo "✅ NEXT_PUBLIC_SUPABASE_ANON_KEY is defined"; fi
+          if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then echo "❌ SUPABASE_SERVICE_ROLE_KEY is missing"; else echo "✅ SUPABASE_SERVICE_ROLE_KEY is defined"; fi
+          if [ -z "$E2E_USER_EMAIL" ]; then echo "❌ E2E_USER_EMAIL is missing"; else echo "✅ E2E_USER_EMAIL is defined"; fi
+          if [ -z "$E2E_USER_PASSWORD" ]; then echo "❌ E2E_USER_PASSWORD is missing"; else echo "✅ E2E_USER_PASSWORD is defined"; fi
+
+      - name: Build Next.js
+        run: npm run build
+
+      - name: Run Playwright E2E tests
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+# Trigger refresh 03/10/2026 21:54:34
