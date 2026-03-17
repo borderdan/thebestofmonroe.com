@@ -11,6 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import { Download, FileText, AlertCircle, RefreshCw } from 'lucide-react'
+import { CancelInvoiceButton } from './cancel-invoice-button'
 
 export default async function InvoicesPage() {
   const supabase = await createClient()
@@ -140,6 +141,9 @@ export default async function InvoicesPage() {
                         >
                           <Download className="h-4 w-4 mr-1" /> XML
                         </a>
+                      )}
+                      {invoice.cfdi_status === 'issued' && (
+                        <CancelInvoiceButton invoiceId={invoice.id} />
                       )}
                     </div>
                   </TableCell>

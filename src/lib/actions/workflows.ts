@@ -2,7 +2,7 @@
 
 import * as Sentry from '@sentry/nextjs'
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile, type ActionResult } from '@/lib/supabase/helpers'
+import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 
 // ============================================================
 // Types
@@ -43,6 +43,7 @@ export interface WorkflowExecution {
 
 export async function getWorkflows(): Promise<ActionResult<Workflow[]>> {
   try {
+    await requireModuleAccess('automations')
     const { supabase, profile } = await getSessionWithProfile()
     const { data, error } = await supabase
       .from('workflows')
@@ -60,11 +61,13 @@ export async function getWorkflows(): Promise<ActionResult<Workflow[]>> {
 
 export async function getWorkflow(id: string): Promise<ActionResult<Workflow>> {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('automations')
+    const { supabase, profile } = await getSessionWithProfile()
     const { data, error } = await supabase
       .from('workflows')
       .select('*')
       .eq('id', id)
+      .eq('business_id', profile.business_id)
       .single()
 
     if (error) return { success: false, error: error.message }
@@ -87,6 +90,7 @@ interface SaveWorkflowPayload {
 
 export async function saveWorkflow(payload: SaveWorkflowPayload): Promise<ActionResult<Workflow>> {
   try {
+    await requireModuleAccess('automations')
     const { supabase, profile } = await getSessionWithProfile()
 
     if (payload.id) {
@@ -139,11 +143,13 @@ export async function saveWorkflow(payload: SaveWorkflowPayload): Promise<Action
 
 export async function deleteWorkflow(id: string): Promise<ActionResult> {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('automations')
+    const { supabase, profile } = await getSessionWithProfile()
     const { error } = await supabase
       .from('workflows')
       .delete()
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
     revalidatePath('/[locale]/app/workflows', 'page')
@@ -156,11 +162,13 @@ export async function deleteWorkflow(id: string): Promise<ActionResult> {
 
 export async function toggleWorkflow(id: string, isActive: boolean): Promise<ActionResult> {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('automations')
+    const { supabase, profile } = await getSessionWithProfile()
     const { error } = await supabase
       .from('workflows')
       .update({ is_active: isActive, updated_at: new Date().toISOString() })
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
     revalidatePath('/[locale]/app/workflows', 'page')
@@ -177,6 +185,7 @@ export async function toggleWorkflow(id: string, isActive: boolean): Promise<Act
 
 export async function getWorkflowExecutions(workflowId?: string): Promise<ActionResult<WorkflowExecution[]>> {
   try {
+    await requireModuleAccess('automations')
     const { supabase, profile } = await getSessionWithProfile()
     let query = supabase
       .from('workflow_execution_logs')

@@ -33,8 +33,32 @@ export async function createGuestCheckoutPreference(
       accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN! 
     })
 
-    // 1. Calculate total server-side to prevent client tampering
-    const total = items.reduce((sum, item) => sum + (item.price_at_time * item.quantity), 0)
+    // 1. Fetch correct prices from the database to prevent client tampering
+    const entityIds = items.map(item => item.entity_id)
+    const { data: dbItems, error: dbError } = await supabaseAdmin
+      .from('entities')
+      .select('id, data')
+      .eq('business_id', businessId)
+      .in('id', entityIds)
+
+    if (dbError) throw new Error(`Failed to fetch items: ${dbError.message}`)
+
+    const validatedItems = items.map(clientItem => {
+      const dbItem = dbItems?.find(db => db.id === clientItem.entity_id)
+      if (!dbItem) throw new Error(`Item not found: ${clientItem.entity_id}`)
+      
+      const itemData = dbItem.data as Record<string, unknown> | null
+      const price = Number(itemData?.price) || 0
+      if (price <= 0) throw new Error(`Invalid price for item: ${clientItem.entity_id}`)
+      
+      return {
+        ...clientItem,
+        price_at_time: price,
+        item_name: itemData?.name ? String(itemData.name) : clientItem.item_name
+      }
+    })
+
+    const total = validatedItems.reduce((sum, item) => sum + (item.price_at_time * item.quantity), 0)
 
     // 2. Create pending transaction (user_id is intentionally null for guests)
     const { data: tx, error: txError } = await supabaseAdmin
@@ -52,7 +76,7 @@ export async function createGuestCheckoutPreference(
     if (txError) throw new Error(`Transaction creation failed: ${txError.message}`)
 
     // 3. Insert line items
-    const txItems = items.map(item => ({
+    const txItems = validatedItems.map(item => ({
       transaction_id: tx.id,
       entity_id: item.entity_id,
       quantity: item.quantity,
@@ -72,7 +96,7 @@ export async function createGuestCheckoutPreference(
     
     const response = await preference.create({
       body: {
-        items: items.map(item => ({
+        items: validatedItems.map(item => ({
           id: item.entity_id,
           title: item.item_name,
           quantity: item.quantity,

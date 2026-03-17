@@ -20,9 +20,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 import { Loader2, Coins, Banknote, FileSpreadsheet } from 'lucide-react'
 
 export default function SettingsPage() {
+  const t = useTranslations('settings')
   const [isPending, startTransition] = useTransition()
   const [isLoading, setIsLoading] = useState(true)
   
@@ -120,19 +122,19 @@ export default function SettingsPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Business Settings</h1>
-        <p className="text-muted-foreground">Manage your public profile and global branding.</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+        <p className="text-muted-foreground">{t('subtitle')}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Branding Assets</CardTitle>
-            <CardDescription>Upload your logo and cover photo for the public directory.</CardDescription>
+            <CardTitle>{t('branding')}</CardTitle>
+            <CardDescription>{t('brandingDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-8">
             <div className="space-y-3">
-              <Label>Business Logo (1:1)</Label>
+              <Label>{t('logo')}</Label>
               <ImageUpload
                 folder="branding"
                 value={formData.logo_url || undefined}
@@ -143,7 +145,7 @@ export default function SettingsPage() {
             </div>
             
             <div className="space-y-3">
-              <Label>Cover Photo (16:9)</Label>
+              <Label>{t('cover')}</Label>
               <ImageUpload
                 folder="branding"
                 value={formData.cover_url || undefined}
@@ -157,12 +159,12 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
-            <CardDescription>Core details used for generating your URL slug and receipts.</CardDescription>
+            <CardTitle>{t('basicInfo')}</CardTitle>
+            <CardDescription>{t('basicInfoDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Business Name</Label>
+              <Label htmlFor="name">{t('bizName')}</Label>
               <Input
                 id="name"
                 value={formData.name}
@@ -171,7 +173,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="city">Operating City</Label>
+              <Label htmlFor="city">{t('city')}</Label>
               <Input
                 id="city"
                 value={formData.city}
@@ -184,12 +186,12 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Contact Information</CardTitle>
-            <CardDescription>How customers can reach you.</CardDescription>
+            <CardTitle>{t('contactInfo')}</CardTitle>
+            <CardDescription>{t('contactDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Public Email</Label>
+              <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -199,7 +201,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone">{t('phone')}</Label>
               <Input
                 id="phone"
                 value={formData.contact.phone}
@@ -208,7 +210,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="website">Website</Label>
+              <Label htmlFor="website">{t('website')}</Label>
               <Input
                 id="website"
                 type="url"
@@ -222,12 +224,12 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Location</CardTitle>
-            <CardDescription>Your physical business address.</CardDescription>
+            <CardTitle>{t('location')}</CardTitle>
+            <CardDescription>{t('locationDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="address">Address</Label>
+              <Label htmlFor="address">{t('address')}</Label>
               <Input
                 id="address"
                 value={formData.location.address}
@@ -244,10 +246,10 @@ export default function SettingsPage() {
             <div>
               <div className="flex items-center gap-2">
                 <Coins className="w-5 h-5 text-primary" />
-                <CardTitle>Loyalty Program</CardTitle>
+                <CardTitle>{t('loyalty')}</CardTitle>
               </div>
               <CardDescription className="mt-1">
-                Reward regular customers with &quot;BOM Points&quot; on every purchase.
+                {t('loyaltyDesc')}
               </CardDescription>
             </div>
             <Switch
@@ -259,7 +261,7 @@ export default function SettingsPage() {
           <CardContent className={`space-y-6 transition-opacity ${loyaltyData.is_active ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="points_rate">Points Earned per $1 MXN</Label>
+                <Label htmlFor="points_rate">{t('pointsRate')}</Label>
                 <Input
                   id="points_rate"
                   type="number"
@@ -268,11 +270,11 @@ export default function SettingsPage() {
                   onChange={e => setLoyaltyData(s => ({ ...s, points_per_currency: parseFloat(e.target.value) }))}
                   disabled={isPending}
                 />
-                <p className="text-[10px] text-muted-foreground">e.g. 1.0 = 1 point per peso spent.</p>
+                <p className="text-[10px] text-muted-foreground">{t('pointsRateHelp')}</p>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="redemption_ratio">Redemption Value ($ per point)</Label>
+                <Label htmlFor="redemption_ratio">{t('redemptionValue')}</Label>
                 <Input
                   id="redemption_ratio"
                   type="number"
@@ -281,11 +283,11 @@ export default function SettingsPage() {
                   onChange={e => setLoyaltyData(s => ({ ...s, redemption_ratio: parseFloat(e.target.value) }))}
                   disabled={isPending}
                 />
-                <p className="text-[10px] text-muted-foreground">e.g. 0.05 = 100 points give a $5 discount.</p>
+                <p className="text-[10px] text-muted-foreground">{t('redemptionHelp')}</p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="min_points">Min. Points to Redeem</Label>
+                <Label htmlFor="min_points">{t('minPoints')}</Label>
                 <Input
                   id="min_points"
                   type="number"
@@ -293,7 +295,7 @@ export default function SettingsPage() {
                   onChange={e => setLoyaltyData(s => ({ ...s, min_points_to_redeem: parseInt(e.target.value) }))}
                   disabled={isPending}
                 />
-                <p className="text-[10px] text-muted-foreground">Threshold before points can be used.</p>
+                <p className="text-[10px] text-muted-foreground">{t('minPointsHelp')}</p>
               </div>
             </div>
           </CardContent>
@@ -304,15 +306,15 @@ export default function SettingsPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <Banknote className="w-5 h-5 text-blue-600" />
-              <CardTitle>Currency & Payments</CardTitle>
+              <CardTitle>{t('currencyTitle')}</CardTitle>
             </div>
             <CardDescription>
-              Select which currencies your POS terminals will accept and set your primary currency.
+              {t('currencyDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <Label>Accepted Currencies</Label>
+              <Label>{t('acceptedCurrencies')}</Label>
               <div className="flex gap-6">
                 {['MXN', 'USD', 'EUR'].map(code => (
                   <div key={code} className="flex items-center space-x-2">
@@ -335,7 +337,7 @@ export default function SettingsPage() {
             </div>
 
             <div className="space-y-2 max-w-[200px]">
-              <Label htmlFor="default_currency">Default / Primary Currency</Label>
+              <Label htmlFor="default_currency">{t('defaultCurrency')}</Label>
               <Select 
                 value={currencyData.default} 
                 onValueChange={(val) => setCurrencyData(s => ({ ...s, default: val || 'MXN' }))}
@@ -351,7 +353,7 @@ export default function SettingsPage() {
                 </SelectContent>
               </Select>
               <p className="text-[10px] text-muted-foreground italic">
-                Exchange rates are updated automatically every 4 hours.
+                {t('currencyHelp')}
               </p>
             </div>
           </CardContent>
@@ -363,10 +365,10 @@ export default function SettingsPage() {
             <div>
               <div className="flex items-center gap-2">
                 <FileSpreadsheet className="w-5 h-5 text-amber-600" />
-                <CardTitle>Automated Business Reports</CardTitle>
+                <CardTitle>{t('reportsTitle')}</CardTitle>
               </div>
               <CardDescription className="mt-1">
-                Receive weekly PDF summaries of your revenue, hot leads, and inventory alerts.
+                {t('reportsDesc')}
               </CardDescription>
             </div>
             <Switch
@@ -378,7 +380,7 @@ export default function SettingsPage() {
           <CardContent className={`space-y-4 transition-opacity ${reportData.is_active ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="report_email">Recipient Email</Label>
+                <Label htmlFor="report_email">{t('recipientEmail')}</Label>
                 <Input
                   id="report_email"
                   type="email"
@@ -388,12 +390,12 @@ export default function SettingsPage() {
                   disabled={isPending}
                 />
                 <p className="text-[10px] text-muted-foreground italic">
-                  Leave blank to send to the business owner&apos;s primary email.
+                  {t('recipientHelp')}
                 </p>
               </div>
               <div className="space-y-2">
-                <Label>Frequency</Label>
-                <Badge variant="outline" className="h-9 px-4 bg-card">Weekly (Mondays 8:00 AM)</Badge>
+                <Label>{t('frequency')}</Label>
+                <Badge variant="outline" className="h-9 px-4 bg-card">{t('weekly')}</Badge>
               </div>
             </div>
           </CardContent>
@@ -402,7 +404,7 @@ export default function SettingsPage() {
         <div className="flex justify-end">
           <Button type="submit" disabled={isPending} size="lg">
             {isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-            Save Changes
+            {t('saveChanges')}
           </Button>
         </div>
       </form>

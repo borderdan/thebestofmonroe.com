@@ -107,3 +107,25 @@ CREATE POLICY "Public Access" ON storage.objects FOR SELECT USING (bucket_id = '
 
 DROP POLICY IF EXISTS "Tenant Upload" ON storage.objects;
 CREATE POLICY "Tenant Upload" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'tenant-assets' AND auth.uid() = owner);
+
+-- RLS Enforcement
+ALTER TABLE public.businesses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.modules ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.entities ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.activity_log ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.analytics ENABLE ROW LEVEL SECURITY;
+
+
+-- Tenant Isolation Policies
+CREATE POLICY "Users can view their own business" ON public.businesses FOR SELECT USING (id = auth.business_id() OR auth.is_superadmin());
+CREATE POLICY "Public businesses are visible" ON public.businesses FOR SELECT USING (is_visible = true);
+CREATE POLICY "Super-admins can manage all businesses" ON public.businesses FOR ALL USING (auth.is_superadmin()) WITH CHECK (auth.is_superadmin());
+CREATE POLICY "Users can view team members" ON public.users FOR SELECT USING (business_id = auth.business_id() OR auth.is_superadmin());
+CREATE POLICY "Business entities access" ON public.entities FOR ALL USING (business_id = auth.business_id() OR auth.is_superadmin()) WITH CHECK (business_id = auth.business_id() OR auth.is_superadmin());
+CREATE POLICY "Business modules access" ON public.modules FOR ALL USING (business_id = auth.business_id() OR auth.is_superadmin()) WITH CHECK (business_id = auth.business_id() OR auth.is_superadmin());
+CREATE POLICY "Business transactions access" ON public.transactions FOR ALL USING (business_id = auth.business_id() OR auth.is_superadmin()) WITH CHECK (business_id = auth.business_id() OR auth.is_superadmin());
+CREATE POLICY "Business analytics access" ON public.analytics FOR ALL USING (business_id = auth.business_id() OR auth.is_superadmin()) WITH CHECK (business_id = auth.business_id() OR auth.is_superadmin());
+CREATE POLICY "Business activity log access" ON public.activity_log FOR ALL USING (business_id = auth.business_id() OR auth.is_superadmin()) WITH CHECK (business_id = auth.business_id() OR auth.is_superadmin());
+

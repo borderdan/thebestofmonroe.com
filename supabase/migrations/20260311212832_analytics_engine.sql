@@ -23,3 +23,10 @@ LANGUAGE sql SECURITY DEFINER AS $$
   GROUP BY business_id
   ORDER BY total_score DESC;
 $$;
+
+-- RLS Enforcement
+ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
+
+-- Tenant Isolation Policy
+CREATE POLICY "Tenant Isolation for analytics_events" ON public.analytics_events FOR ALL USING (business_id = auth.business_id() OR auth.is_superadmin()) WITH CHECK (business_id = auth.business_id() OR auth.is_superadmin());
+

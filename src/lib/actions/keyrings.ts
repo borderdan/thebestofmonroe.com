@@ -55,11 +55,27 @@ export async function claimNfcTag(guid: string, pin: string) {
 
 export async function updateNfcTag(id: string, updates: { target_type?: string; target_url?: string; status?: string }) {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { success: false, error: 'Authentication required' }
+  }
+
+  const { data: profile } = await supabase
+    .from('users')
+    .select('business_id')
+    .eq('id', user.id)
+    .single()
+
+  if (!profile?.business_id) {
+    return { success: false, error: 'Tenant profile not found' }
+  }
   
   const { data, error } = await supabase
     .from('nfc_tags')
     .update(updates)
     .eq('id', id)
+    .eq('business_id', profile.business_id)
     .select()
     .single()
 

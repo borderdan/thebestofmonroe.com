@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { TeamClient } from '@/components/team/team-client'
-import { buttonVariants } from '@/components/ui/button'
 import { Shield } from 'lucide-react'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 export default async function TeamPage({
   params,
@@ -11,6 +11,7 @@ export default async function TeamPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  const t = await getTranslations('team')
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -29,7 +30,7 @@ export default async function TeamPage({
     redirect(`/${locale}/app`)
   }
 
-  // Fetch all team members (wrapped for resilience)
+  // Fetch all team members
   const { data: members, error } = await supabase
     .from('users')
     .select('id, full_name, role, created_at, permissions')
@@ -44,19 +45,19 @@ export default async function TeamPage({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Team Management</h1>
-          <p className="text-muted-foreground">Manage team members and their roles.</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('subtitle')}</p>
         </div>
         <Link 
           href={`/${locale}/app/users/audit-logs`}
-          className={buttonVariants({ variant: 'outline', size: 'sm' })}
+          className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-2.5 h-7 text-[0.8rem] font-medium transition-all hover:bg-muted hover:text-foreground"
         >
           <Shield className="w-4 h-4 mr-2 text-emerald-500" />
-          Audit Logs
+          {t('audit_logs.title', { defaultValue: 'Audit Logs' })}
         </Link>
       </div>
       <TeamClient
-        members={members || []}
+        members={(members as any) || []}
         currentUserId={user.id}
         currentUserRole={profile.role}
       />

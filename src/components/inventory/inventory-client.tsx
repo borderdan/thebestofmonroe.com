@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   ColumnDef,
   flexRender,
@@ -51,6 +52,7 @@ interface InventoryClientProps {
 const LOW_STOCK_THRESHOLD = 5
 
 export function InventoryClient({ items, userRole }: InventoryClientProps) {
+  const t = useTranslations('inventory')
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -71,7 +73,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           className="-ml-4"
         >
-          Name
+          {t('name')}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -82,7 +84,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
     {
       id: 'category',
       accessorFn: (row) => row.data.category || '—',
-      header: 'Category',
+      header: t('category'),
       cell: ({ row }) => (
         <span className="text-muted-foreground">
           {row.original.data.category || '—'}
@@ -98,7 +100,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           className="-ml-4"
         >
-          Price
+          {t('price')}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -123,7 +125,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           className="-ml-4"
         >
-          Stock
+          {t('stockLevel')}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -184,10 +186,10 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
     {
       id: 'status',
       accessorFn: (row) => row.is_active,
-      header: 'Status',
+      header: t('status'),
       cell: ({ row }) => (
         <Badge variant={row.original.is_active ? 'default' : 'secondary'}>
-          {row.original.is_active ? 'Active' : 'Inactive'}
+          {row.original.is_active ? t('active') : t('inactive')}
         </Badge>
       ),
     },
@@ -242,7 +244,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
   const handleCreate = async (values: Record<string, unknown>) => {
     const result = await createMenuItem(values)
     if (result.success) {
-      toast.success('Item created successfully')
+      toast.success(t('createSuccess') || 'Item created successfully')
       setFormOpen(false)
     } else {
       toast.error(result.error)
@@ -253,7 +255,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
     if (!editItem) return
     const result = await updateMenuItem(editItem.id, values)
     if (result.success) {
-      toast.success('Item updated successfully')
+      toast.success(t('updateSuccess') || 'Item updated successfully')
       setFormOpen(false)
       setEditItem(null)
     } else {
@@ -265,7 +267,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
     if (!deleteTarget) return
     const result = await deleteMenuItem(deleteTarget.id)
     if (result.success) {
-      toast.success('Item deleted successfully')
+      toast.success(t('deleteSuccess') || 'Item deleted successfully')
       setDeleteTarget(null)
     } else {
       toast.error(result.error)
@@ -277,7 +279,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-2 w-full md:max-w-sm">
           <Input
-            placeholder="Filter by name..."
+            placeholder={t('filterPlaceholder') || 'Filter by name...'}
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onChange={(e) => table.getColumn('name')?.setFilterValue(e.target.value)}
           />
@@ -293,7 +295,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
               }}
             >
               <Plus className="mr-2 h-4 w-4" />
-              Add Item
+              {t('addItem') || 'Add Item'}
             </Button>
           )}
         </div>
@@ -328,7 +330,7 @@ export function InventoryClient({ items, userRole }: InventoryClientProps) {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No menu items found. Add your first item to get started.
+                  {t('noItems') || 'No menu items found. Add your first item to get started.'}
                 </TableCell>
               </TableRow>
             )}

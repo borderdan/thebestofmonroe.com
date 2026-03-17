@@ -3,8 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { format } from 'date-fns'
+import { getTranslations } from 'next-intl/server'
 
-export default async function GiftCardsPage() {
+export default async function GiftCardsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'giftCards' })
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
@@ -29,14 +32,14 @@ export default async function GiftCardsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Gift Cards</h1>
-        <p className="text-muted-foreground">Manage and track your business&apos;s digital gift cards.</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+        <p className="text-muted-foreground">{t('subtitle')}</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Active Cards</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('totalActiveCards')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{cards?.filter(c => c.status === 'active').length || 0}</div>
@@ -44,7 +47,7 @@ export default async function GiftCardsPage() {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Outstanding Balance</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('outstandingBalance')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -59,11 +62,11 @@ export default async function GiftCardsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Code</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Balance</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>{t('code')}</TableHead>
+                <TableHead>{t('customer')}</TableHead>
+                <TableHead>{t('balance')}</TableHead>
+                <TableHead>{t('status')}</TableHead>
+                <TableHead>{t('created')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -77,13 +80,13 @@ export default async function GiftCardsPage() {
                         <span className="text-xs text-muted-foreground">{(card.customer as { first_name: string, last_name: string, email: string }).email}</span>
                       </div>
                     ) : (
-                      <span className="text-muted-foreground italic text-xs">Guest Card</span>
+                      <span className="text-muted-foreground italic text-xs">{t('guestCard')}</span>
                     )}
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
                       <span className="font-bold">${Number(card.current_balance).toFixed(2)}</span>
-                      <span className="text-[10px] text-muted-foreground">Initial: ${Number(card.initial_balance).toFixed(2)}</span>
+                      <span className="text-[10px] text-muted-foreground">{t('initial')} ${Number(card.initial_balance).toFixed(2)}</span>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -99,7 +102,7 @@ export default async function GiftCardsPage() {
               {!cards?.length && (
                 <TableRow>
                   <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
-                    No gift cards issued yet. Sell one from the POS!
+                    {t('noCards')}
                   </TableCell>
                 </TableRow>
               )}

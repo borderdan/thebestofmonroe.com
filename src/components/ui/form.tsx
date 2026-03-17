@@ -1,8 +1,6 @@
 "use client"
 
 import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
 import {
   Controller,
   FormProvider,
@@ -85,7 +83,7 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
 function FormLabel({
   className,
   ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+}: React.ComponentProps<"label">) {
   const { error, formItemId } = useFormField()
 
   return (
@@ -96,6 +94,33 @@ function FormLabel({
     />
   )
 }
+
+type SlotProps = React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode };
+
+const Slot = React.forwardRef<HTMLElement, SlotProps>(({ children, ...props }, ref) => {
+  if (React.isValidElement(children)) {
+    const child = children as React.ReactElement<any>;
+    return React.cloneElement(child, {
+      ...props,
+      ...child.props,
+      style: {
+        ...props.style,
+        ...child.props.style,
+      },
+      className: cn(props.className, child.props.className),
+      ref: (node: any) => {
+        if (typeof ref === 'function') ref(node);
+        else if (ref) (ref as any).current = node;
+        
+        const childRef = (child as any).ref;
+        if (typeof childRef === 'function') childRef(node);
+        else if (childRef) childRef.current = node;
+      }
+    } as any);
+  }
+  return null;
+});
+Slot.displayName = "Slot";
 
 function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
   const { error, formItemId, formDescriptionId, formMessageId } =

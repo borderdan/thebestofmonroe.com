@@ -154,18 +154,18 @@ export default async function DashboardPage({
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col text-center p-3 bg-white/5 rounded-2xl border border-amber-500/10">
                             <span className="text-[10px] text-muted-foreground uppercase font-black">Low Stock</span>
-                            <span className="text-2xl font-black text-amber-600">{inventoryHealth.low_stock_count}</span>
+                            <span className="text-2xl font-black text-amber-600">{(inventoryHealth as any).low_stock_count}</span>
                         </div>
                         <div className="flex flex-col text-center p-3 bg-white/5 rounded-2xl border border-destructive/10">
                             <span className="text-[10px] text-muted-foreground uppercase font-black">Restock</span>
-                            <span className="text-2xl font-black text-destructive">{inventoryHealth.critical_restock_count}</span>
+                            <span className="text-2xl font-black text-destructive">{(inventoryHealth as any).critical_restock_count}</span>
                         </div>
                     </div>
                     <Separator className="bg-amber-500/10" />
                     <div className="flex items-center justify-between text-xs px-2">
                         <span className="text-muted-foreground font-medium">Daily Velocity</span>
                         <Badge variant="outline" className="bg-amber-500/10 border-amber-500/20 text-amber-700 font-mono text-[10px]">
-                            {Number(inventoryHealth.avg_sales_velocity).toFixed(1)} units/day
+                            {Number((inventoryHealth as any).avg_sales_velocity).toFixed(1)} units/day
                         </Badge>
                     </div>
                 </CardContent>

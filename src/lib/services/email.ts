@@ -19,8 +19,13 @@ interface SendEmailParams {
 
 export async function sendTransactionalEmail({ to, subject, templateName, react, businessId }: SendEmailParams) {
   try {
+    const fromEmail = process.env.RESEND_FROM_EMAIL;
+    if (!fromEmail) {
+      throw new Error('RESEND_FROM_EMAIL environment variable is not set');
+    }
+
     const { data, error } = await getResendClient().emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'The Best of Monroe <billing@yourdomain.com>',
+      from: fromEmail,
       to,
       subject,
       react,

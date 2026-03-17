@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { getSessionWithProfile, type ActionResult } from '@/lib/supabase/helpers'
+import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 
 const cartItemSchema = z.object({
   id: z.string(),
@@ -25,6 +25,7 @@ export type CheckoutInput = z.infer<typeof checkoutSchema>
 
 export async function processTransaction(input: unknown): Promise<ActionResult<{ transactionId: string }>> {
   try {
+    await requireModuleAccess('pos')
     const { supabase, user, profile } = await getSessionWithProfile()
     const { items, paymentMethod, customerId, pointsToRedeem, giftCardCode } = checkoutSchema.parse(input)
 

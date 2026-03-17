@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydration } from "@/hooks/use-hydration";
 import { useCartStore } from "@/stores/use-cart-store";
 import {
   processCashCheckout,
@@ -59,6 +60,7 @@ interface CartSidebarProps {
 
 export function CartSidebar({ customers, currencySettings }: CartSidebarProps) {
   const t = useTranslations("pos");
+  const isHydrated = useHydration();
   const items = useCartStore((s) => s.items);
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const clearCart = useCartStore((s) => s.clearCart);
@@ -130,6 +132,15 @@ export function CartSidebar({ customers, currencySettings }: CartSidebarProps) {
       supabase.removeChannel(channel);
     };
   }, [activeTxId, supabase, selectedCustomer?.phone]);
+
+  if (!isHydrated) {
+    return (
+      <div className="w-96 rounded-2xl border border-white/10 bg-card/80 p-4 flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <p className="text-sm text-muted-foreground">Loading Cart...</p>
+      </div>
+    );
+  }
 
   const mapCartForAction = () =>
     items.map((item) => ({

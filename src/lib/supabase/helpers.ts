@@ -23,6 +23,26 @@ export async function getSessionWithProfile() {
 }
 
 /**
+ * Ensures the business has the specified module enabled in the `modules` table config.
+ * Throws an error if access is denied.
+ */
+export async function requireModuleAccess(featureKey: string) {
+  const { supabase, profile } = await getSessionWithProfile()
+  if (profile.is_superadmin) return
+
+  const { data: moduleData } = await supabase
+    .from('modules')
+    .select('config')
+    .eq('business_id', profile.business_id)
+    .single()
+
+  const config = moduleData?.config as Record<string, boolean> | null
+  if (!config?.[featureKey]) {
+    throw new Error(`Access denied. The ${featureKey} module is not enabled for your account.`)
+  }
+}
+
+/**
  * ActionResult: standard return type for all Server Actions.
  * Avoids throwing across the server/client boundary.
  */

@@ -69,13 +69,13 @@ export async function saveBlueprintDraft(
       business_id: profile.business_id,
       name: finalName,
       description: description || null,
-      status: 'draft',
+      status: 'draft' as const,
       content
     }
 
     const { data, error } = await supabase
       .from('blueprints')
-      .upsert(payload as any)
+      .upsert(payload)
       .select('id')
       .single()
 

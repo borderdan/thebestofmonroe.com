@@ -92,7 +92,7 @@ Return a result with title, description, and the array of fields.`
     maxOutputTokens: 8192,
   })
 
-  if (!result.success || !result.data) return result as any
+  if (!result.success || !result.data) return { success: false, error: result.error }
 
   // Transform array of fields into RJSF json_schema and ui_schema
   const properties: Record<string, any> = {}

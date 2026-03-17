@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { triggerAutomation } from './automations'
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile } from '@/lib/supabase/helpers'
+import { getSessionWithProfile, requireModuleAccess } from '@/lib/supabase/helpers'
 
 export async function submitNativeForm(formId: string, businessId: string, payload: Record<string, unknown>) {
   const supabase = await createClient();
@@ -39,11 +39,13 @@ export async function submitNativeForm(formId: string, businessId: string, paylo
 
 export async function deleteEForm(id: string) {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('eforms')
+    const { supabase, profile } = await getSessionWithProfile()
     const { error } = await supabase
       .from('eforms')
       .delete()
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
     

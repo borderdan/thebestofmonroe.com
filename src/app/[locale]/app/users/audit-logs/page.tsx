@@ -4,8 +4,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Terminal, Shield } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
-export default async function AuditLogsPage() {
+export default async function AuditLogsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'audit_logs' })
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
@@ -32,12 +35,12 @@ export default async function AuditLogsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Security Audit Logs</h1>
-          <p className="text-muted-foreground">Trace sensitive actions and staff activities.</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('subtitle')}</p>
         </div>
         <Badge variant="outline" className="h-8 gap-2 px-3">
           <Shield className="w-3.5 h-3.5 text-emerald-500" />
-          Tamper-Proof Ledger
+          {t('tamperProof')}
         </Badge>
       </div>
 
@@ -46,11 +49,11 @@ export default async function AuditLogsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Time</TableHead>
-                <TableHead>User</TableHead>
-                <TableHead>Action</TableHead>
-                <TableHead>Details</TableHead>
-                <TableHead>Network Context</TableHead>
+                <TableHead>{t('timestamp')}</TableHead>
+                <TableHead>{t('user')}</TableHead>
+                <TableHead>{t('action')}</TableHead>
+                <TableHead>{t('details')}</TableHead>
+                <TableHead>{t('networkContext')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -91,7 +94,7 @@ export default async function AuditLogsPage() {
               {!logs?.length && (
                 <TableRow>
                   <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
-                    No activity recorded yet.
+                    {t('noLogs')}
                   </TableCell>
                 </TableRow>
               )}

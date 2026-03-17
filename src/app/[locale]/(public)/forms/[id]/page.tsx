@@ -3,7 +3,6 @@ import { notFound, redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Check } from 'lucide-react'
 import { FormRenderer } from '@/components/forms/form-renderer'
-import { RJSFSchema, UiSchema } from '@rjsf/utils'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyObject = Record<string, any>
@@ -33,7 +32,7 @@ export default async function PublicEFormPage({
   const brandColor = business?.brand_color || '#3b82f6'
 
   // Generate a fallback schema if json_schema is empty (backwards compatibility)
-  const jsonSchema: RJSFSchema = (form.json_schema as RJSFSchema) || {
+  const jsonSchema: any = (form.json_schema as any) || {
     title: form.title,
     type: "object",
     properties: {}
@@ -104,7 +103,7 @@ export default async function PublicEFormPage({
             <CardContent className="px-8 pb-8">
               <FormRenderer 
                 schema={jsonSchema}
-                uiSchema={(form.ui_schema as UiSchema) || {}}
+                uiSchema={(form.ui_schema as any) || {}}
                 onSubmit={submitForm}
                 brandColor={brandColor}
               />

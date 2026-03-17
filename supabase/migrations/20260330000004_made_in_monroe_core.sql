@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS public.vitality_events (
 -- 4. RLS POLICIES
 ALTER TABLE public.canonical_entities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.grocery_prices ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.vitality_events ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Public view canonical entities" ON public.canonical_entities FOR SELECT USING (is_visible = true);
 CREATE POLICY "Public view grocery prices" ON public.grocery_prices FOR SELECT USING (true);

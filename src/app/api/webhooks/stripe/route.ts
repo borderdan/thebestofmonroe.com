@@ -39,11 +39,12 @@ export async function POST(req: Request) {
 
     // 2. Payment Succeeded: Activate/Renew Subscription
     if (event.type === 'invoice.payment_succeeded') {
-      const invoice = event.data.object as Stripe.Invoice;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const subscriptionId = (invoice as any).subscription as string;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any;
+      const invoice = event.data.object as any;
+      const subscriptionId = typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription?.id;
+      if (!subscriptionId) {
+        throw new Error('No subscription found on invoice');
+      }
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
       const businessId = subscription.metadata?.business_id;
       // Extract plan_id from metadata or use pro as default
       const planId = subscription.metadata?.plan_id || 'pro';
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
             plan_id: planId,
             status: 'active',
             external_subscription_id: subscription.id,
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
+            current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString()
           }, { onConflict: 'business_id' });
           // Note: The database trigger 'on_subscription_status_change' will automatically sync modules.config
 

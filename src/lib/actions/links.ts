@@ -1,26 +1,15 @@
 'use server';
 
-import { type ActionResult } from '@/lib/supabase/helpers';
+import { type ActionResult, getSessionWithProfile, requireModuleAccess } from '@/lib/supabase/helpers';
 
 import * as Sentry from '@sentry/nextjs';
 
-import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { linkDataSchema, ProfileLinkData } from '@/lib/schemas/links';
 
 export async function createLink(data: ProfileLinkData) {
-  const supabase = await createClient();
-  
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error('Unauthorized');
-
-  const { data: profile } = await supabase
-    .from('users')
-    .select('business_id')
-    .eq('id', user.id)
-    .single();
-
-  if (!profile?.business_id) throw new Error('Business not found');
+  const { supabase, profile } = await getSessionWithProfile();
+  await requireModuleAccess('links');
 
   // Validate data
   const validated = linkDataSchema.parse(data);
@@ -45,10 +34,9 @@ export async function createLink(data: ProfileLinkData) {
 }
 
 export async function updateLink(id: string, data: Partial<ProfileLinkData>) {
-  const supabase = await createClient();
+  const { supabase, profile } = await getSessionWithProfile();
+  await requireModuleAccess('links');
   
-  // We don't need business_id check here because RLS should handle it
-  // but we should validate what we can
   const { error } = await supabase
     .from('entities')
     .update({
@@ -57,7 +45,8 @@ export async function updateLink(id: string, data: Partial<ProfileLinkData>) {
       is_active: data.is_active
     })
     .eq('id', id)
-    .eq('type', 'profile_link');
+    .eq('type', 'profile_link')
+    .eq('business_id', profile.business_id);
 
   if (error) {
     console.error('Error updating link:', error);
@@ -69,13 +58,15 @@ export async function updateLink(id: string, data: Partial<ProfileLinkData>) {
 }
 
 export async function deleteLink(id: string) {
-  const supabase = await createClient();
+  const { supabase, profile } = await getSessionWithProfile();
+  await requireModuleAccess('links');
 
   const { error } = await supabase
     .from('entities')
     .delete()
     .eq('id', id)
-    .eq('type', 'profile_link');
+    .eq('type', 'profile_link')
+    .eq('business_id', profile.business_id);
 
   if (error) {
     console.error('Error deleting link:', error);
@@ -87,7 +78,8 @@ export async function deleteLink(id: string) {
 }
 
 export async function reorderLinks(updates: { id: string, order_index: number }[]) {
-  const supabase = await createClient();
+  const { supabase, profile } = await getSessionWithProfile();
+  await requireModuleAccess('links');
 
   // Perform multiple updates (not truly batched in Supabase JS but efficient enough)
   const results = await Promise.all(
@@ -97,6 +89,7 @@ export async function reorderLinks(updates: { id: string, order_index: number }[
         .update({ sort_order: update.order_index })
         .eq('id', update.id)
         .eq('type', 'profile_link')
+        .eq('business_id', profile.business_id)
     )
   );
 

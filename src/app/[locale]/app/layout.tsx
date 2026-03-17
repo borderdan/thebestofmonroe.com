@@ -54,9 +54,7 @@ export default async function AppLayout({
         <AppHeader businessName={businessName} />
         <LiveHeader />
         <div className="flex-1 p-4 md:p-6 lg:p-8">
-          <PageTransition>
-            {children}
-          </PageTransition>
+          {children}
         </div>
       </main>
     </SidebarProvider>

@@ -2,8 +2,11 @@ import { getSessionWithProfile } from '@/lib/supabase/helpers'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { BarChart, Users, MousePointer2, TrendingUp } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
-export default async function LinkAnalyticsPage() {
+export default async function LinkAnalyticsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'analytics' })
   const { supabase, profile } = await getSessionWithProfile()
 
   // Fetch aggregate analytics
@@ -25,34 +28,34 @@ export default async function LinkAnalyticsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Smart Link Analytics</h1>
-        <p className="text-muted-foreground">Real-time performance metrics for your digital assets.</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+        <p className="text-muted-foreground">{t('subtitle') || 'Real-time performance metrics for your digital assets.'}</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Total Profile Views</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('totalProfileViews') || 'Total Profile Views'}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{profileViews}</div>
-            <p className="text-xs text-muted-foreground">+0% from last month</p>
+            <p className="text-xs text-muted-foreground">+0% {t('fromLastMonth') || 'from last month'}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Link Clicks</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('linkClicks') || 'Link Clicks'}</CardTitle>
             <MousePointer2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{linkClicks}</div>
-            <p className="text-xs text-muted-foreground">+0% from last month</p>
+            <p className="text-xs text-muted-foreground">+0% {t('fromLastMonth') || 'from last month'}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Click-Through Rate (CTR)</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('ctr') || 'Click-Through Rate (CTR)'}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -67,23 +70,23 @@ export default async function LinkAnalyticsPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Active Links</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('activeLinks') || 'Active Links'}</CardTitle>
             <BarChart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalLinks?.length || 0}</div>
-            <Badge variant="outline" className="mt-1">Operational</Badge>
+            <Badge variant="outline" className="mt-1">{t('operational') || 'Operational'}</Badge>
           </CardContent>
         </Card>
       </div>
 
       <Card className="col-span-4">
         <CardHeader>
-          <CardTitle>Performance Overview</CardTitle>
+          <CardTitle>{t('performanceOverview') || 'Performance Overview'}</CardTitle>
         </CardHeader>
         <CardContent className="h-[300px] flex items-center justify-center border-t">
           <p className="text-muted-foreground italic text-sm">
-            Interactive time-series charts powered by Recharts will load here as data accumulates.
+            {t('chartPlaceholder') || 'Interactive time-series charts powered by Recharts will load here as data accumulates.'}
           </p>
         </CardContent>
       </Card>

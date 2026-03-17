@@ -3,12 +3,13 @@
 import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile, type ActionResult } from '@/lib/supabase/helpers'
+import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 import { CustomerSchema, NoteSchema } from '@/lib/schemas/crm'
 import { triggerAutomation } from './automations'
 
 export async function createCustomer(values: unknown): Promise<ActionResult> {
   try {
+    await requireModuleAccess('crm')
     const { supabase, profile } = await getSessionWithProfile()
     const validated = CustomerSchema.parse(values)
 
@@ -42,7 +43,8 @@ export async function createCustomer(values: unknown): Promise<ActionResult> {
 
 export async function updateCustomer(id: string, values: unknown): Promise<ActionResult> {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('crm')
+    const { supabase, profile } = await getSessionWithProfile()
     const validated = CustomerSchema.parse(values)
 
     const { error } = await supabase
@@ -56,6 +58,7 @@ export async function updateCustomer(id: string, values: unknown): Promise<Actio
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
 
@@ -71,12 +74,14 @@ export async function updateCustomer(id: string, values: unknown): Promise<Actio
 
 export async function deleteCustomer(id: string): Promise<ActionResult> {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('crm')
+    const { supabase, profile } = await getSessionWithProfile()
 
     const { error } = await supabase
       .from('crm_customers')
       .delete()
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
 
@@ -91,7 +96,8 @@ export async function deleteCustomer(id: string): Promise<ActionResult> {
 
 export async function updateCustomerStatus(id: string, status: string): Promise<ActionResult> {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('crm')
+    const { supabase, profile } = await getSessionWithProfile()
 
     const { error } = await supabase
       .from('crm_customers')
@@ -100,6 +106,7 @@ export async function updateCustomerStatus(id: string, status: string): Promise<
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
 
@@ -115,6 +122,7 @@ export async function updateCustomerStatus(id: string, status: string): Promise<
 
 export async function addCustomerNote(customerId: string, values: unknown): Promise<ActionResult> {
   try {
+    await requireModuleAccess('crm')
     const { supabase, profile, user } = await getSessionWithProfile()
     const validated = NoteSchema.parse(values)
 
@@ -138,12 +146,14 @@ export async function addCustomerNote(customerId: string, values: unknown): Prom
 
 export async function deleteCustomerNote(noteId: string, customerId: string): Promise<ActionResult> {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('crm')
+    const { supabase, profile } = await getSessionWithProfile()
 
     const { error } = await supabase
       .from('crm_notes')
       .delete()
       .eq('id', noteId)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
 

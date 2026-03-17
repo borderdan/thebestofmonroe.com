@@ -28,37 +28,15 @@ export default async function InventoryPage({
     .eq('business_id', profile.business_id)
     .order('name', { ascending: true })
 
-  const sanitizeDuplicated = (val: string | number | null | undefined) => {
-    if (typeof val === 'string') {
-      const half = val.length / 2;
-      if (val.length > 0 && val.length % 2 === 0) {
-        const part1 = val.substring(0, half);
-        const part2 = val.substring(half);
-        if (part1 === part2) return part1;
-      }
-    }
-    if (typeof val === 'number') {
-      // If it looks like 1515 instead of 15
-      const s = val.toString();
-      const half = s.length / 2;
-      if (s.length > 0 && s.length % 2 === 0) {
-        const part1 = s.substring(0, half);
-        const part2 = s.substring(half);
-        if (part1 === part2) return Number(part1);
-      }
-    }
-    return val;
-  };
-
   const items = (products || []).map(p => ({
     id: p.id,
     data: {
-      name: sanitizeDuplicated(p.name),
-      price: sanitizeDuplicated(Number(p.price)),
+      name: p.name,
+      price: Number(p.price),
       stock_level: p.stock_quantity,
       barcode: p.barcode,
       sku: p.sku,
-      category: sanitizeDuplicated(p.category),
+      category: p.category,
       description: p.description
     } as MenuItemData,
     is_active: p.is_active,

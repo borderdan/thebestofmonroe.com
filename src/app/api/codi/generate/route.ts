@@ -42,16 +42,33 @@ export async function POST(request: NextRequest) {
       ts: Date.now().toString(), // Timestamp
     }
 
-    // Sign the payload (Stubbed for now)
-    const signature = 'SIGNATURE_STUB' // This would be generated using crypto.sign(...)
+    const codiApiUrl = process.env.CODI_API_URL || 'https://api.stpmex.com/v1/codi'
 
-    const finalPayload = {
-      ...payload,
-      s: signature
+    const response = await fetch(codiApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.CODI_API_KEY || 'STUB_KEY'}`
+      },
+      body: JSON.stringify(payload)
+    })
+
+    let finalPayload
+    let deepLink
+    let encodedPayload
+
+    if (response.ok) {
+      const responseData = await response.json()
+      finalPayload = responseData.payload || { ...payload, s: responseData.signature || 'SIGNATURE_STUB' }
+      encodedPayload = Buffer.from(JSON.stringify(finalPayload)).toString('base64')
+      deepLink = responseData.deepLink || `codi://pay?payload=${encodedPayload}`
+    } else {
+      console.warn('CoDi API returned an error:', await response.text())
+      // Fallback for development/testing if API fails
+      finalPayload = { ...payload, s: 'SIGNATURE_STUB' }
+      encodedPayload = Buffer.from(JSON.stringify(finalPayload)).toString('base64')
+      deepLink = `codi://pay?payload=${encodedPayload}`
     }
-
-    const encodedPayload = Buffer.from(JSON.stringify(finalPayload)).toString('base64')
-    const deepLink = `codi://pay?payload=${encodedPayload}`
 
     // Log the generation for analytics
     await supabase.from('activity_log').insert({

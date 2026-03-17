@@ -63,6 +63,9 @@ export const executeWorkflowActions = task({
 
           case 'send_email': {
             const to = action.config.to as string || (payload.record.email as string)
+            const fromEmail = process.env.RESEND_FROM_EMAIL;
+            if (!fromEmail) throw new Error('RESEND_FROM_EMAIL is not set')
+
             const response = await fetch('https://api.resend.com/emails', {
               method: 'POST',
               headers: {
@@ -70,7 +73,7 @@ export const executeWorkflowActions = task({
                 Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
               },
               body: JSON.stringify({
-                from: process.env.RESEND_FROM_EMAIL || 'The Best of Monroe <noreply@thebestofmonroe.com>',
+                from: fromEmail,
                 to: [to],
                 subject: action.config.subject as string || 'Notification',
                 text: action.config.body as string || '',

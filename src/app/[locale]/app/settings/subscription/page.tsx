@@ -6,6 +6,8 @@ import { CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 interface Plan {
   name: string
@@ -22,6 +24,8 @@ export default function SubscriptionPage() {
   const [loading, setLoading] = useState(true)
   const [subscription, setSubscription] = useState<Subscription | null>(null)
   const supabase = createClient()
+  const t = useTranslations('subscription')
+  const { locale } = useParams()
 
   useEffect(() => {
     loadSubscription()
@@ -52,21 +56,21 @@ export default function SubscriptionPage() {
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Subscription</h2>
-        <p className="text-muted-foreground">Manage your plan, billing, and feature access.</p>
+        <h2 className="text-3xl font-bold tracking-tight">{t('title')}</h2>
+        <p className="text-muted-foreground">{t('subtitle')}</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <Card className="shadow-lg border-primary/10">
           <CardHeader>
-            <CardTitle>Current Plan</CardTitle>
-            <CardDescription>You are currently on the {plan?.name || 'Free'} plan.</CardDescription>
+            <CardTitle>{t('currentPlan')}</CardTitle>
+            <CardDescription>You are currently on the {plan?.name || t('freePlan')} plan.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold">{plan?.price ? `$${plan.price}/mo` : 'Free'}</span>
+              <span className="text-2xl font-bold">{plan?.price ? `$${plan.price}/mo` : t('freePlan')}</span>
               <Badge variant={subscription?.status === 'active' ? 'default' : 'secondary'} className="px-3 py-1">
-                {subscription?.status || 'Active'}
+                {subscription?.status || t('active')}
               </Badge>
             </div>
             
@@ -82,7 +86,7 @@ export default function SubscriptionPage() {
             </div>
           </CardContent>
           <CardFooter className="bg-muted/50 border-t flex justify-between gap-4 p-6">
-            <Button variant="outline" className="flex-1" onClick={() => window.open('/en/app/upgrade')}>
+            <Button variant="outline" className="flex-1" onClick={() => window.open(`/${locale}/app/upgrade`)}>
               Change Plan
             </Button>
             <Button variant="ghost" size="icon" title="Refresh status" onClick={loadSubscription}>
@@ -93,8 +97,8 @@ export default function SubscriptionPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Usage & Quotas</CardTitle>
-            <CardDescription>Your resource usage for the current period.</CardDescription>
+            <CardTitle>{t('usageLimits')}</CardTitle>
+            <CardDescription>{t('monitorLimits')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
@@ -122,8 +126,8 @@ export default function SubscriptionPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Features Included</CardTitle>
-          <CardDescription>What&apos;s available in your current tier.</CardDescription>
+          <CardTitle>{t('featuresIncluded')}</CardTitle>
+          <CardDescription>{t('featuresDesc')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-3">
@@ -147,9 +151,9 @@ export default function SubscriptionPage() {
       <div className="flex items-start gap-4 p-4 rounded-lg bg-indigo-50 border border-indigo-100 dark:bg-indigo-950/20 dark:border-indigo-900/50">
         <AlertCircle className="h-5 w-5 text-indigo-600 dark:text-indigo-400 mt-0.5" />
         <div>
-          <h4 className="text-sm font-semibold text-indigo-900 dark:text-indigo-200">Need more power?</h4>
+          <h4 className="text-sm font-semibold text-indigo-900 dark:text-indigo-200">{t('needMorePower')}</h4>
           <p className="text-sm text-indigo-700 dark:text-indigo-300">
-            Upgrade to the **Business Pro** plan to unlock advanced Point of Sale features, unlimited team members, and Facturama SAT integration.
+            {t('upgradeDesc')}
           </p>
         </div>
       </div>

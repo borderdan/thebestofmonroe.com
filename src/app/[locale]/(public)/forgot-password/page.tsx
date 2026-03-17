@@ -1,10 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useTranslations } from 'next-intl'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -19,7 +18,6 @@ import { cn } from '@/lib/utils'
 
 export default function ForgotPasswordPage() {
   const t = useTranslations('auth')
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   const {
@@ -38,8 +36,8 @@ export default function ForgotPasswordPage() {
 
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+      await supabase.auth.resetPasswordForEmail(values.email, {
+        redirectTo: `${window.location.origin}/api/auth/callback?next=/reset-password`,
       })
 
       // Security: Always show success to prevent user enumeration

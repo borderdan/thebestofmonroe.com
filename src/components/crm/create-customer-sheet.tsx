@@ -14,7 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button-variants'
 import {
   Form,
   FormControl,
@@ -23,6 +23,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -65,7 +66,7 @@ export function CreateCustomerSheet() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger render={<Button />}>{t('addCustomer')}</SheetTrigger>
+      <SheetTrigger className={buttonVariants()}>{t('addCustomer')}</SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>{t('addCustomer')}</SheetTitle>

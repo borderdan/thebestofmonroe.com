@@ -141,7 +141,7 @@ async function processUnifiedTransaction(payload: CheckoutPayload, method: strin
     .single()
 
   if (txError) throw txError
-  console.log(`[POS-ACTION] Transaction ${tx.id} inserted for business ${businessId}`)
+
 
   // 4. Insert Transaction Items
   const lineItems = payload.cart.map(item => ({
@@ -157,11 +157,11 @@ async function processUnifiedTransaction(payload: CheckoutPayload, method: strin
     console.error('[POS-ACTION] Transaction items insert error:', itemsError)
     throw itemsError
   }
-  console.log(`[POS-ACTION] ${lineItems.length} line items inserted`)
+
 
   // 5. Atomic Stock Deduction
   for (const item of payload.cart) {
-    console.log(`[POS-ACTION] Deducting stock for ${item.name} (${item.quantity})`)
+
     const { error: stockError } = await supabase.rpc('deduct_product_stock', {
       row_id: item.id,
       quantity_to_deduct: item.quantity
@@ -313,7 +313,42 @@ export async function createCodiIntent(data: CheckoutPayload) {
     const parsed = checkoutSchema.parse(data)
     const externalRef = `codi_${crypto.randomUUID()}`
     const { transactionId: txId, receiptToken } = await processUnifiedTransaction(parsed, 'codi', 'pending', externalRef)
-    const qrPayloadString = `{"v":"1","type":"codi","amt":${parsed.amount},"ref":"${externalRef}"}`
+    
+    const participantId = process.env.BANXICO_PARTICIPANT_ID || '00001'
+    const terminalId = process.env.BANXICO_TERMINAL_ID || 'T001'
+
+    const payload = {
+      v: 1,
+      ic: 0,
+      dn: 'Payment Request',
+      cr: parsed.amount.toFixed(2),
+      cc: 'MXN',
+      rf: externalRef,
+      pi: participantId,
+      ti: terminalId,
+      ts: Date.now().toString(),
+    }
+
+    const codiApiUrl = process.env.CODI_API_URL || 'https://api.stpmex.com/v1/codi'
+
+    const response = await fetch(codiApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.CODI_API_KEY || 'STUB_KEY'}`
+      },
+      body: JSON.stringify(payload)
+    })
+
+    let qrPayloadString
+    if (response.ok) {
+      const responseData = await response.json()
+      const finalPayload = responseData.payload || { ...payload, s: responseData.signature || 'SIGNATURE_STUB' }
+      qrPayloadString = JSON.stringify(finalPayload)
+    } else {
+      console.warn('CoDi API returned an error:', await response.text())
+      qrPayloadString = `{"v":"1","type":"codi","amt":${parsed.amount},"ref":"${externalRef}"}`
+    }
 
     setTimeout(async () => {
         const supabase = await createClient()

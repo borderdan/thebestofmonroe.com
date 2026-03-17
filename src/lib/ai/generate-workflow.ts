@@ -90,7 +90,7 @@ Return a result with name, nodes, and the connections list.`
     maxOutputTokens: 8192,
   })
 
-  if (!result.success || !result.data) return result as any
+  if (!result.success || !result.data) return { success: false, error: result.error }
 
   // Transform flat connections array into n8n's nested port format
   // Format: { "SourceNode": { "main": [[ { "node": "TargetNode", "type": "main", "index": 0 } ]] } }

@@ -3,7 +3,7 @@
 import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile, type ActionResult } from '@/lib/supabase/helpers'
+import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 import { z } from 'zod'
 
 const automationConfigSchema = z.object({
@@ -22,6 +22,7 @@ export type AutomationConfig = z.infer<typeof automationConfigSchema> & {
 
 export async function getAutomationConfigs(): Promise<ActionResult<AutomationConfig[]>> {
   try {
+    await requireModuleAccess('automations')
     const { supabase, profile } = await getSessionWithProfile()
     const { data, error } = await supabase
       .from('automation_configs')
@@ -38,6 +39,7 @@ export async function getAutomationConfigs(): Promise<ActionResult<AutomationCon
 
 export async function saveAutomationConfig(values: unknown): Promise<ActionResult> {
   try {
+    await requireModuleAccess('automations')
     const { supabase, profile } = await getSessionWithProfile()
     const validated = automationConfigSchema.parse(values)
 
@@ -143,11 +145,13 @@ export async function triggerAutomation(
 
 export async function deleteAutomationConfig(id: string): Promise<ActionResult> {
   try {
-    const { supabase } = await getSessionWithProfile()
+    await requireModuleAccess('automations')
+    const { supabase, profile } = await getSessionWithProfile()
     const { error } = await supabase
       .from('automation_configs')
       .delete()
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
 

@@ -3,7 +3,7 @@
 import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile, type ActionResult } from '@/lib/supabase/helpers'
+import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 import { menuItemSchema } from '@/lib/schemas/inventory'
 import type { MenuItemData } from '@/lib/types/entity-data'
 import { requirePermission } from '@/lib/security/permissions'
@@ -12,6 +12,7 @@ import { checkStockAndTriggerAutomation } from '@/lib/actions/inventory-intellig
 
 export async function createMenuItem(values: unknown): Promise<ActionResult> {
   try {
+    await requireModuleAccess('inventory')
     await requirePermission('can_manage_inventory')
     const { supabase, profile } = await getSessionWithProfile()
     const validated = menuItemSchema.parse(values) as { name: string, description: string, price: number, stock_level: number, category: string, barcode: string, sku: string, image_url: string, clave_prod_serv: string, clave_unidad: string }
@@ -49,8 +50,9 @@ export async function createMenuItem(values: unknown): Promise<ActionResult> {
 
 export async function updateMenuItem(id: string, values: unknown): Promise<ActionResult> {
   try {
+    await requireModuleAccess('inventory')
     await requirePermission('can_manage_inventory')
-    const { supabase } = await getSessionWithProfile()
+    const { supabase, profile } = await getSessionWithProfile()
     const validated = menuItemSchema.parse(values) as { name: string, description: string, price: number, stock_level: number, category: string, barcode: string, sku: string, image_url: string, clave_prod_serv: string, clave_unidad: string }
 
     const { error } = await supabase
@@ -69,6 +71,7 @@ export async function updateMenuItem(id: string, values: unknown): Promise<Actio
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
 
@@ -87,13 +90,15 @@ export async function updateMenuItem(id: string, values: unknown): Promise<Actio
 
 export async function deleteMenuItem(id: string): Promise<ActionResult> {
   try {
+    await requireModuleAccess('inventory')
     await requirePermission('can_manage_inventory')
-    const { supabase } = await getSessionWithProfile()
+    const { supabase, profile } = await getSessionWithProfile()
 
     const { error } = await supabase
       .from('products')
       .delete()
       .eq('id', id)
+      .eq('business_id', profile.business_id)
 
     if (error) return { success: false, error: error.message }
 
@@ -109,6 +114,7 @@ export async function deleteMenuItem(id: string): Promise<ActionResult> {
 
 export async function getMenuItems(): Promise<ActionResult<Array<{ id: string; data: MenuItemData; is_active: boolean | null; sort_order: number | null; created_at: string | null }>>> {
   try {
+    await requireModuleAccess('inventory')
     const { supabase, profile } = await getSessionWithProfile()
 
     const { data, error } = await supabase

@@ -1,6 +1,6 @@
 'use server'
 
-import { type ActionResult } from '@/lib/supabase/helpers';
+import { type ActionResult, getSessionWithProfile } from '@/lib/supabase/helpers';
 
 import * as Sentry from '@sentry/nextjs';
 
@@ -25,18 +25,7 @@ export async function uploadAsset(formData: FormData): Promise<ActionResult<{url
       throw new Error('File size must be less than 5MB.')
     }
 
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) throw new Error('Unauthorized')
-
-    // Retrieve business ID to construct the tenant-isolated path
-    const { data: profile } = await supabase
-      .from('users')
-      .select('business_id')
-      .eq('id', user.id)
-      .single()
-
-    if (!profile?.business_id) throw new Error('Business profile not found')
+    const { supabase, profile } = await getSessionWithProfile()
 
     // Construct secure storage path: business_id/folder/uuid-filename
     // The UUID prevents cache collisions and overwriting identical filenames
@@ -71,7 +60,7 @@ export async function deleteAsset(url: string) {
   try {
     if (!url) return { success: false }
 
-    const supabase = await createClient()
+    const { supabase, profile } = await getSessionWithProfile()
     
     // Extract the relative path from the full public URL
     // Public URLs look like: https://[project].supabase.co/storage/v1/object/public/tenant-assets/[business_id]/[folder]/[filename]
@@ -83,6 +72,11 @@ export async function deleteAsset(url: string) {
 
     // Remove the base url + trailing slash to get the exact file path
     const filePath = url.replace(`${baseUrl}/`, '')
+    
+    // Defense in depth: Verify the user is deleting from their own tenant folder
+    if (!filePath.startsWith(`${profile.business_id}/`)) {
+      throw new Error('Unauthorized deletion attempt')
+    }
     
     // Deletion requires authenticated session context, RLS ensures they only delete their own folder
     const { error } = await supabase.storage

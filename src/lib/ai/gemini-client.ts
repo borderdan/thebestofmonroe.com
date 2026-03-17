@@ -81,7 +81,7 @@ export async function generateStructuredJSON<T>(
       const parsed = JSON.parse(text) as T
       return { success: true, data: parsed }
     } catch (parseErr) {
-      console.error('Gemini JSON Parse Error at position:', (parseErr as any).message)
+      console.error('Gemini JSON Parse Error at position:', (parseErr as Error).message)
       console.error('Raw text (first 500 chars):', text.slice(0, 500))
       console.error('Raw text (last 500 chars):', text.slice(-500))
       
@@ -95,7 +95,7 @@ export async function generateStructuredJSON<T>(
       } catch (innerErr) {
         return {
           success: false,
-          error: `Failed to parse generated JSON: ${(parseErr as any).message}`,
+          error: `Failed to parse generated JSON: ${(parseErr as Error).message}`,
         }
       }
     }

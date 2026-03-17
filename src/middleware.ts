@@ -5,27 +5,8 @@ import { updateSession } from '@/lib/supabase/middleware'
 
 const intlMiddleware = createIntlMiddleware({ locales, defaultLocale })
 
-// Basic in-memory rate limiting for Edge (clears on isolate reset)
-const rateLimitMap = new Map<string, { count: number, resetAt: number }>()
-const RATE_LIMIT_WINDOW_MS = 60 * 1000 // 1 minute
-const MAX_REQUESTS_PER_WINDOW = 30
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const record = rateLimitMap.get(ip)
-
-  if (!record || now > record.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-    return true
-  }
-
-  if (record.count >= MAX_REQUESTS_PER_WINDOW) {
-    return false
-  }
-
-  record.count++
-  return true
-}
+// TODO: Implement persistent rate limiting with Redis/Upstash
+// Removed in-memory map as it doesn't persist across edge isolates.
 
 export default async function proxy(request: NextRequest) {
   // 1. Handle i18n routing logic first (determines locale matching)
@@ -33,16 +14,11 @@ export default async function proxy(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
-  // Rate Limiting for public APIs
+  // Rate Limiting for public APIs (TODO: reimplement)
   if (pathname.startsWith('/api/codi/generate') || 
       pathname.startsWith('/api/health') || 
       pathname.startsWith('/api/vcard/')) {
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
-    const isAllowed = checkRateLimit(ip)
-    
-    if (!isAllowed) {
-      return new NextResponse('Too Many Requests', { status: 429 })
-    }
+    // const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
   }
 
   // 2. Wrap that response with Supabase Auth logic to maintain session cookies
@@ -80,6 +56,19 @@ export default async function proxy(request: NextRequest) {
       const locale = localeInPath || defaultLocale
       const unlockUrl = new URL(`/${locale}/app/pos/unlock`, request.url)
       return NextResponse.redirect(unlockUrl)
+    }
+  }
+
+  // Checkout Route Guard: Prevent direct access without session params
+  const isCheckoutRoute = pathname.includes('/checkout')
+  if (isCheckoutRoute) {
+    const sessionId = request.nextUrl.searchParams.get('session_id') || 
+                      request.nextUrl.searchParams.get('stripe_session_id')
+    if (!sessionId) {
+      const localeInPath = locales.find(lang => pathname.startsWith(`/${lang}/`))
+      const locale = localeInPath || defaultLocale
+      const pricingUrl = new URL(`/${locale}/pricing`, request.url)
+      return NextResponse.redirect(pricingUrl)
     }
   }
 

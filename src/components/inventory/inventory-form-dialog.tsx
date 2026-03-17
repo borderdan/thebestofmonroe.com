@@ -3,6 +3,7 @@
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { menuItemSchema, type MenuItemFormValues } from '@/lib/schemas/inventory'
 import type { MenuItemData } from '@/lib/types/entity-data'
 import {
@@ -55,6 +56,7 @@ export function InventoryFormDialog({
   onSubmit,
   mode,
 }: InventoryFormDialogProps) {
+  const t = useTranslations('inventory')
   const [isPending, startTransition] = useTransition()
 
   const form = useForm<MenuItemFormValues>({
@@ -117,12 +119,12 @@ export function InventoryFormDialog({
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
           <DialogTitle>
-            {mode === 'create' ? 'Add Menu Item' : 'Edit Menu Item'}
+            {mode === 'create' ? t('createItem') || 'Add Menu Item' : t('editItem') || 'Edit Menu Item'}
           </DialogTitle>
           <DialogDescription>
             {mode === 'create'
-              ? 'Add a new item to your inventory catalog.'
-              : 'Update the details for this menu item.'}
+              ? t('createItemDesc') || 'Add a new item to your inventory catalog.'
+              : t('editItemDesc') || 'Update the details for this menu item.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -133,7 +135,7 @@ export function InventoryFormDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name *</FormLabel>
+                  <FormLabel>{t('name') || 'Name'} *</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g. Tacos al Pastor" {...field} disabled={isPending} />
                   </FormControl>
@@ -148,7 +150,7 @@ export function InventoryFormDialog({
                 name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Price ($) *</FormLabel>
+                    <FormLabel>{t('price') || 'Price'} ($) *</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -170,7 +172,7 @@ export function InventoryFormDialog({
                 name="stock_level"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Stock Level *</FormLabel>
+                    <FormLabel>{t('stockLevel') || 'Stock Level'} *</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -193,7 +195,7 @@ export function InventoryFormDialog({
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>{t('category') || 'Category'}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}

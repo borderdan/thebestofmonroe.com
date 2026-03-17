@@ -13,6 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { evaluateConditions, type WorkflowCondition } from '@/lib/utils/evaluate-conditions'
+import { submitInvoiceRequest } from '@/lib/actions/invoices'
 
 // Use the service role key for cross-tenant queries (this is an internal webhook)
 const supabase = createClient(
@@ -218,6 +219,11 @@ async function executeAction(
         throw new Error('RESEND_API_KEY not configured')
       }
 
+      const fromEmail = process.env.RESEND_FROM_EMAIL;
+      if (!fromEmail) {
+        throw new Error('RESEND_FROM_EMAIL environment variable is not set');
+      }
+
       const response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -225,7 +231,7 @@ async function executeAction(
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: process.env.RESEND_FROM_EMAIL || 'The Best of Monroe <noreply@thebestofmonroe.com>',
+          from: fromEmail,
           to: [to],
           subject,
           text: body,
@@ -241,16 +247,66 @@ async function executeAction(
     }
 
     case 'send_whatsapp': {
-      // TODO: Integrate with WhatsApp Business API
-      // For now, log the action
-      console.log(`[Workflow] WhatsApp action for business ${businessId}:`, action.config)
-      return { status: 'queued', provider: 'whatsapp' }
+      const to = (action.config.to as string) || (record.phone as string)
+      const message = (action.config.message as string) || 'No message provided'
+
+      if (!to) {
+        throw new Error('WhatsApp action requires a "to" phone number')
+      }
+
+      if (!process.env.WHATSAPP_PHONE_NUMBER_ID || !process.env.WHATSAPP_API_TOKEN) {
+        throw new Error('WhatsApp API credentials are not configured')
+      }
+
+      const response = await fetch(`https://graph.facebook.com/v17.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.WHATSAPP_API_TOKEN}`,
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          to: to.replace(/\D/g, ''),
+          type: 'text',
+          text: {
+            body: message
+          }
+        }),
+      })
+
+      if (!response.ok) {
+        const err = await response.text()
+        throw new Error(`WhatsApp send failed: ${err}`)
+      }
+
+      return { status: 'completed', sent_to: to, provider: 'whatsapp' }
     }
 
     case 'generate_cfdi': {
-      // TODO: Invoke Facturama API via existing SAT config
-      console.log(`[Workflow] CFDI generation for business ${businessId}`)
-      return { status: 'queued', provider: 'facturama' }
+      const transactionId = record.id as string
+      if (!transactionId) {
+        throw new Error('generate_cfdi action requires a transaction id from the record')
+      }
+
+      const rfc = (action.config.rfc_receptor as string) || 'XAXX010101000'
+      const nombre = (action.config.nombre_receptor as string) || 'PUBLICO EN GENERAL'
+      const uso = (action.config.uso_cfdi as string) || 'S01'
+      const regimen = (action.config.regimen_fiscal as string) || '616'
+      const cp = (action.config.cp_receptor as string) || '00000'
+
+      try {
+        const result = await submitInvoiceRequest({
+          transaction_id: transactionId,
+          rfc_receptor: rfc,
+          nombre_receptor: nombre,
+          uso_cfdi: uso,
+          regimen_fiscal: regimen,
+          cp_receptor: cp
+        })
+        return { status: 'completed', provider: 'facturama', result }
+      } catch (err: any) {
+        throw new Error(`CFDI generation failed: ${err.message}`)
+      }
     }
 
     case 'update_record': {

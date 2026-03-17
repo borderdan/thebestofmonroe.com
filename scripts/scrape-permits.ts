@@ -66,7 +66,7 @@ async function scrapeMonroeCity(page: any) {
   // Parse the results grid if present
   const rows = await page.$$('table.cv-grid tr:not(:first-child)');
   for (const row of rows) {
-    const cells = await row.$$eval('td', tds => tds.map(td => td.innerText.trim()));
+    const cells = await row.$$eval('td', (tds: any[]) => tds.map(td => td.innerText.trim()));
     if (cells.length < 4) continue;
 
     const [appNo, type, workClass, status] = cells;

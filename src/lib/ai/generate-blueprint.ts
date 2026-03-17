@@ -107,8 +107,9 @@ export async function deployBlueprintEForm(form: BlueprintStep): Promise<{ succe
   try {
     const { supabase, profile } = await getSessionWithProfile()
     
-    const fields = (form as any).fields || form.config?.fields || []
-    const title = (form as any).title || form.config?.title || 'New E-Form'
+    const config = form.config || {}
+    const fields = config.fields || []
+    const title = form.title || config.title || 'New E-Form'
     
     // Transform simplified fields to BuilderField schema
     const builderFields = fields.map((f: any) => ({
@@ -145,8 +146,9 @@ export async function deployBlueprintEForm(form: BlueprintStep): Promise<{ succe
 
 export async function deployBlueprintAutomation(auto: BlueprintStep): Promise<{ success: boolean; webhookUrl?: string; error?: string }> {
   try {
-    const triggerType = (auto as any).trigger_type || auto.config?.trigger_type
-    const webhookUrl = (auto as any).suggested_webhook_url || auto.config?.suggested_webhook_url || 'https://api.example.com/webhook/pending-configuration'
+    const config = auto.config || {}
+    const triggerType = config.trigger_type
+    const webhookUrl = config.suggested_webhook_url || 'https://api.example.com/webhook/pending-configuration'
     
     if (!triggerType) {
       return { success: false, error: 'Missing trigger_type in automation configuration' }
@@ -171,9 +173,10 @@ export async function deployBlueprintAutomation(auto: BlueprintStep): Promise<{ 
 
 export async function deployBlueprintWorkflow(flow: BlueprintStep, projectName: string): Promise<{ success: boolean; id?: string; error?: string }> {
   try {
-    const nodes = (flow as any).nodes || flow.config?.nodes || []
-    const edges = (flow as any).edges || flow.config?.edges || []
-    const name = (flow as any).name || (flow as any).title || flow.config?.name || 'Visual Workflow'
+    const config = flow.config || {}
+    const nodes = config.nodes || []
+    const edges = config.edges || []
+    const name = flow.title || config.name || 'Visual Workflow'
 
     // Use generic placeholders for auto-layout positions if not provided by AI
     const nodesWithPositions = nodes.map((n: any, i: number) => ({

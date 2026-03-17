@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { UpdateStatusButton } from './_components/update-status-button';
+import { UploadButton } from './_components/upload-button';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 
@@ -32,7 +33,7 @@ export default async function VaultPage({
     .order('created_at', { ascending: false });
 
   if (q) {
-    query = query.ilike('form_id', `%${q}%`);
+    query = query.or(`form_id.ilike.%${q}%,payload::text.ilike.%${q}%`);
   }
 
   const { data: submissions, error } = await query;
@@ -63,9 +64,7 @@ export default async function VaultPage({
               Buscar
             </Button>
           </form>
-          <Button variant="default">
-            {t('upload')}
-          </Button>
+          <UploadButton label={t('upload')} />
         </div>
       </div>
 

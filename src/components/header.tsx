@@ -5,6 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { SearchBar } from "@/components/search-bar"
 import { useTranslations } from 'next-intl'
 import { useState, useEffect } from 'react'
+import { CurrencySwitcher } from "@/components/currency-switcher"
 
 interface AppHeaderProps {
   businessName?: string
@@ -12,7 +13,7 @@ interface AppHeaderProps {
 
 function UtcClock() {
   const [time, setTime] = useState('')
-  
+
   useEffect(() => {
     const update = () => {
       const now = new Date()
@@ -22,7 +23,7 @@ function UtcClock() {
     const id = setInterval(update, 1000)
     return () => clearInterval(id)
   }, [])
-  
+
   return (
     <span className="font-mono text-xs text-muted-foreground tabular-nums">
       {time} <span className="text-muted-foreground/60">UTC</span>
@@ -47,7 +48,7 @@ export function AppHeader({ businessName = 'Dashboard' }: AppHeaderProps) {
   return (
     <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b border-white/5 bg-card/80 backdrop-blur-xl px-6 sticky top-0 z-50">
       <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
-      
+
       <div className="flex items-center gap-3 flex-1 min-w-0">
         <h1 className="font-semibold text-base text-foreground truncate">{businessName}</h1>
         <div className="hidden md:flex items-center gap-3 ml-2">
@@ -61,7 +62,10 @@ export function AppHeader({ businessName = 'Dashboard' }: AppHeaderProps) {
         <SearchBar />
       </div>
 
-      <ThemeToggle />
+      <div className="flex items-center gap-3">
+        <CurrencySwitcher />
+        <ThemeToggle />
+      </div>
     </header>
   )
 }

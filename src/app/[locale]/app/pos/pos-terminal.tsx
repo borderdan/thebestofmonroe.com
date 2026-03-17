@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useCartStore } from '@/stores/use-cart-store'
-import { useBarcodeScanner } from '@/hooks/use-barcode-scanner'
+import { useNfcReader } from '@/hooks/use-nfc-reader'
 import { ProductGrid } from '@/components/pos/product-grid'
 import { CartSidebar } from '@/components/pos/cart-sidebar'
 import { Input } from '@/components/ui/input'
@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { useInventorySync } from '@/hooks/use-inventory-sync'
+import { Nfc } from 'lucide-react'
 import type { Database } from '@/lib/database.types'
 
 type Product = Database['public']['Tables']['products']['Row']
@@ -85,24 +86,25 @@ export function POSTerminal({ initialProducts, initialCustomers, currencySetting
     hydrate()
   }, [])
 
-  // Intercept hardware scanner inputs
-  useBarcodeScanner({
-    onScan: (barcode) => {
-      // Look up barcode in menu items
+  // NFC Scanner integration
+  const { startScan, isScanning, isSupported } = useNfcReader({
+    onScan: (data) => {
+      // Look up barcode/sku in menu items
       const found = menuItems.find(
-        (item) => item.id === barcode || (item.data as Record<string, unknown>)?.sku === barcode || (item.data as Record<string, unknown>)?.barcode === barcode
+        (item) => item.id === data || (item.data as Record<string, unknown>)?.sku === data || (item.data as Record<string, unknown>)?.barcode === data
       )
 
       if (found) {
+        if (!isScanning) return; // Prevent multiple scans if we stopped
         addItem({
           id: found.id,
           name: (found.data as Record<string, unknown>)?.name as string || 'Unnamed',
           price: Number((found.data as Record<string, unknown>)?.price) || 0,
           quantity: 1,
         })
-        toast.success(`Scanned: ${(found.data as Record<string, unknown>)?.name as string || barcode}`)
+        toast.success(`Scanned: ${(found.data as Record<string, unknown>)?.name as string || data}`)
       } else {
-        toast.error(`Product not found: ${barcode}`)
+        toast.error(`Product not found: ${data}`)
       }
     },
   })
@@ -144,6 +146,16 @@ export function POSTerminal({ initialProducts, initialCustomers, currencySetting
               onChange={(e) => setManualCode(e.target.value)}
               className="flex-1"
             />
+            {isSupported && (
+              <Button 
+                type="button" 
+                variant={isScanning ? "secondary" : "outline"} 
+                onClick={() => startScan()}
+              >
+                <Nfc className={`h-4 w-4 mr-2 ${isScanning ? 'animate-pulse text-emerald-500' : ''}`} />
+                {isScanning ? 'Scanning...' : 'Start NFC'}
+              </Button>
+            )}
             <Button type="submit">{t('checkout') === 'Checkout' ? 'Add' : 'Agregar'}</Button>
           </form>
         </div>

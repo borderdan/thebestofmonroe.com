@@ -24,12 +24,6 @@ export async function requireFeature(featureKey: string, locale: string) {
     return { business_id: profile.business_id, isAuthorized: true }
   }
 
-  // E2E Test users bypass feature gating
-  const testEmails = process.env.E2E_TEST_EMAILS?.split(',') || [];
-  if (user.email && testEmails.includes(user.email)) {
-    return { business_id: profile?.business_id, isAuthorized: true }
-  }
-
   // Fetch tenant's active module configuration
   const { data: moduleData } = await supabase
     .from('modules')

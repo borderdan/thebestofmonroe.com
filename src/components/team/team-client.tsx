@@ -19,7 +19,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
-import { UserPlus, Trash2, Shield, Loader2 } from 'lucide-react'
+import { UserPlus, Trash2, Shield, Loader2, Settings2 } from 'lucide-react'
 import { updateUserRole, removeTeamMember, updateUserPermissions } from '@/lib/actions/team'
 import { InviteDialog } from './invite-dialog'
 import {
@@ -29,7 +29,8 @@ import {
 } from '@/components/ui/popover'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
-import { Settings2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 interface TeamMember {
   id: string
@@ -60,6 +61,8 @@ const PERMISSION_LABELS: Record<string, string> = {
 }
 
 export function TeamClient({ members, currentUserId, currentUserRole }: TeamClientProps) {
+  const t = useTranslations('team')
+  const { locale } = useParams()
   const [inviteOpen, setInviteOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const isOwner = currentUserRole === 'owner'
@@ -85,7 +88,7 @@ export function TeamClient({ members, currentUserId, currentUserRole }: TeamClie
   }
 
   const handleRemove = (userId: string, name: string) => {
-    if (!confirm(`Are you sure you want to remove ${name} from the team?`)) return
+    if (!confirm(t('remove_confirm', { name: name }))) return
     startTransition(async () => {
       const result = await removeTeamMember(userId)
       if (result.success) {
@@ -100,12 +103,12 @@ export function TeamClient({ members, currentUserId, currentUserRole }: TeamClie
     <>
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          {members.length} team member{members.length !== 1 ? 's' : ''}
+          {t('member_count', { count: members.length })}
         </p>
         {isOwner && (
           <Button onClick={() => setInviteOpen(true)}>
             <UserPlus className="mr-2 h-4 w-4" />
-            Invite Member
+            {t('invite')}
           </Button>
         )}
       </div>
@@ -114,11 +117,11 @@ export function TeamClient({ members, currentUserId, currentUserRole }: TeamClie
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Member</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Permissions</TableHead>
-              <TableHead>Joined</TableHead>
-              {isOwner && <TableHead className="text-right">Actions</TableHead>}
+              <TableHead>{t('col_member')}</TableHead>
+              <TableHead>{t('col_role')}</TableHead>
+              <TableHead>{t('col_permissions')}</TableHead>
+              <TableHead>{t('col_joined')}</TableHead>
+              {isOwner && <TableHead className="text-right">{t('col_actions')}</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -152,16 +155,16 @@ export function TeamClient({ members, currentUserId, currentUserRole }: TeamClie
                       <SelectContent>
                         <SelectItem value="owner">
                           <span className="flex items-center gap-2">
-                            <Shield className="h-3 w-3" /> Owner
+                            <Shield className="h-3 w-3" /> {t('roles.owner')}
                           </span>
                         </SelectItem>
-                        <SelectItem value="manager">Manager</SelectItem>
-                        <SelectItem value="staff">Staff</SelectItem>
+                        <SelectItem value="manager">{t('roles.manager')}</SelectItem>
+                        <SelectItem value="staff">{t('roles.staff')}</SelectItem>
                       </SelectContent>
                     </Select>
                   ) : (
                     <Badge variant={ROLE_COLORS[member.role] || 'secondary'}>
-                      {member.role}
+                      {t(`roles.${member.role}`)}
                     </Badge>
                   )}
                 </TableCell>
@@ -170,11 +173,11 @@ export function TeamClient({ members, currentUserId, currentUserRole }: TeamClie
                     <Popover>
                       <PopoverTrigger render={<Button variant="outline" size="sm" className="h-8 gap-2" />}>
                           <Settings2 className="h-3.5 w-3.5" />
-                          Configure
-                    </PopoverTrigger>
+                          {t('configure')}
+                      </PopoverTrigger>
                       <PopoverContent className="w-56 p-4">
                         <div className="space-y-4">
-                          <h4 className="font-medium leading-none text-sm">Permissions</h4>
+                          <h4 className="font-medium leading-none text-sm">{t('permissions')}</h4>
                           <div className="grid gap-3">
                             {Object.entries(PERMISSION_LABELS).map(([key, label]) => (
                               <div key={key} className="flex items-center space-x-2">
@@ -206,7 +209,7 @@ export function TeamClient({ members, currentUserId, currentUserRole }: TeamClie
                 </TableCell>
                 <TableCell className="text-muted-foreground">
                   {member.created_at
-                    ? new Date(member.created_at).toLocaleDateString('en-US', {
+                    ? new Date(member.created_at).toLocaleDateString(locale as string, {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric',

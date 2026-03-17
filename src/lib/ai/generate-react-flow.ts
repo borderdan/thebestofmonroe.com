@@ -107,7 +107,7 @@ Generate at least 2-4 nodes to make a functional pipeline. Keep IDs simple (e.g.
   })
 
   if (!result.success || !result.data) {
-    return result as any
+    return { success: false, error: result.error }
   }
 
   // Translate the AI's simplified conceptual graph into actual React Flow Nodes and Edges

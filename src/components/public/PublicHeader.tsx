@@ -57,7 +57,7 @@ export default function PublicHeader({ locale }: { locale: string }) {
             {/* Mobile Nav */}
             <div className="md:hidden">
               <Sheet>
-                <SheetTrigger render={<Button variant="ghost" size="icon" className="mr-2" />}>
+                <SheetTrigger className={buttonVariants({ variant: "ghost", size: "icon", className: "mr-2" })}>
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle Menu</span>
                 </SheetTrigger>

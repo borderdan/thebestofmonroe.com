@@ -1,6 +1,6 @@
 'use server'
 
-import { type ActionResult } from '@/lib/supabase/helpers';
+import { type ActionResult, getSessionWithProfile, requireModuleAccess } from '@/lib/supabase/helpers';
 
 import * as Sentry from '@sentry/nextjs';
 
@@ -155,13 +155,16 @@ async function processInvoiceBackground(
 
 export async function cancelInvoice(invoiceId: string, motive: string = '02', uuidReplacement?: string) {
   try {
+    const { supabase: userClient, profile } = await getSessionWithProfile()
+    await requireModuleAccess('pos')
     const supabase = getAdminClient()
     
     // Get the invoice to find its business and uuid_sat
-    const { data: invoice, error: invoiceErr } = await supabase
+    const { data: invoice, error: invoiceErr } = await userClient
       .from('invoices')
       .select('uuid_sat, business_id, cfdi_status')
       .eq('id', invoiceId)
+      .eq('business_id', profile.business_id)
       .single()
       
     if (invoiceErr || !invoice) throw new Error('Factura no encontrada')

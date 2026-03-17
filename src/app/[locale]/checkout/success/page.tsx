@@ -4,16 +4,22 @@ import { CheckCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { ClearGuestCart } from '@/components/checkout/clear-guest-cart'
+import { redirect } from 'next/navigation'
 
 export default async function CheckoutSuccessPage({
   searchParams,
   params,
 }: {
-  searchParams: Promise<{ payment_id?: string; external_reference?: string }>
+  searchParams: Promise<{ payment_id?: string; external_reference?: string; session_id?: string }>
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const { payment_id, external_reference } = await searchParams
+  const { payment_id, external_reference, session_id } = await searchParams
+  
+  if (!payment_id && !external_reference && !session_id) {
+    redirect(`/${locale}/app`)
+  }
+
   const t = await getTranslations('checkout')
 
   return (
@@ -40,6 +46,12 @@ export default async function CheckoutSuccessPage({
             <div className="bg-muted/50 p-4 rounded-lg flex justify-between items-center text-sm">
               <span className="text-muted-foreground">{t('orderReference')}</span>
               <span className="font-mono font-medium">{external_reference}</span>
+            </div>
+          )}
+          {session_id && (
+            <div className="bg-muted/50 p-4 rounded-lg flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Session ID</span>
+              <span className="font-mono font-medium max-w-[200px] truncate" title={session_id}>{session_id}</span>
             </div>
           )}
           
