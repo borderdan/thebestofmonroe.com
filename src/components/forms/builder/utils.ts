@@ -1,15 +1,14 @@
-import { RJSFSchema, UiSchema } from '@rjsf/utils'
 import { BuilderField } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function generateSchemas(fields: BuilderField[]): { jsonSchema: any; uiSchema: any } {
-  const jsonSchema: RJSFSchema = {
+  const jsonSchema: any = {
     type: 'object',
     properties: {},
     required: [],
   }
 
-  const uiSchema: UiSchema = {
+  const uiSchema: any = {
     'ui:order': fields.map((f) => f.id),
   }
 
@@ -77,8 +76,11 @@ export function generateSchemas(fields: BuilderField[]): { jsonSchema: any; uiSc
       currentUi['ui:help'] = 'Enter a valid phone number'
     }
 
-    if (Object.keys(currentUi).length > 0) {
-      uiSchema[field.id] = currentUi
+    if (Object.keys(currentUi).length > 0 || field.colSpan) {
+      uiSchema[field.id] = {
+        ...currentUi,
+        'ui:colSpan': field.colSpan || 2 // Default to full width
+      }
     }
 
     if (field.pattern) {

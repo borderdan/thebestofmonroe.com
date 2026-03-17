@@ -22,6 +22,7 @@ export interface BuilderField {
   pattern?: string // Regex
   min?: number
   max?: number
+  colSpan?: 1 | 2 // 1 = Half, 2 = Full
 }
 
 export const FIELD_TYPES: { type: FieldType; label: string; icon: string }[] = [

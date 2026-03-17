@@ -45,7 +45,7 @@ export default async function EFormsListPage({ params }: { params: Promise<{ loc
           <p className="text-muted-foreground">{t('subtitle')}</p>
         </div>
         <Link href={`/${locale}/app/eforms/create`}>
-          <Button shadow-md="true">
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_8px_16px_rgba(var(--primary),0.25)] rounded-full px-6 transition-all hover:scale-105 active:scale-95">
             <Plus className="w-4 h-4 mr-2" /> {t('createForm')}
           </Button>
         </Link>

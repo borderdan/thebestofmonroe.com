@@ -84,24 +84,35 @@ export default function EFormsEditPage() {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)] -mt-6 -mx-8">
+    <div className="flex flex-col h-[calc(100vh-80px)] -mt-6 -mx-8 bg-slate-50/50">
       {/* Top Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b bg-card">
+      <div className="flex items-center justify-between px-6 h-14 border-b bg-card/80 backdrop-blur-md sticky top-0 z-20 shadow-sm border-slate-200/60 dark:border-slate-800/60">
         <div className="flex items-center gap-4">
           <Link href={`/${locale}/app/eforms`}>
-            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full"><ArrowLeft className="w-4 h-4" /></Button>
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full transition-all hover:bg-primary/10 hover:text-primary active:scale-90">
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
           </Link>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">Edit E-Form</h1>
+          <div className="flex flex-col">
+            <h1 className="text-sm font-black uppercase tracking-widest text-primary/70 leading-none mb-1">E-Form Editor</h1>
+            <div className="flex items-center gap-2">
+              <Input 
+                placeholder="Edit your masterpiece..." 
+                value={title} 
+                onChange={e => setTitle(e.target.value)}
+                className="w-80 h-7 text-lg font-bold bg-transparent border-none p-0 focus-visible:ring-0 placeholder:opacity-30"
+              />
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Input 
-            placeholder="Form Title..." 
-            value={title} 
-            onChange={e => setTitle(e.target.value)}
-            className="w-64 h-8 bg-slate-50 border-slate-200"
-          />
+          <Button 
+            onClick={() => handleSave(null, null, [])} // Temporary wrapper for toolbar save logic
+            disabled={saving || !title}
+            className="h-9 rounded-full px-6 font-bold shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95"
+          >
+            {saving ? 'Saving...' : 'Update Form'}
+          </Button>
         </div>
       </div>
 

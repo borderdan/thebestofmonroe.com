@@ -14,7 +14,7 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
+  rectSortingStrategy,
 } from '@dnd-kit/sortable'
 import { BuilderField } from './types'
 import { SortableField } from './sortable-field'
@@ -28,7 +28,11 @@ interface CanvasProps {
 
 export function Canvas({ fields, onFieldsChange, onSelectField, selectedFieldId }: CanvasProps) {
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -58,9 +62,9 @@ export function Canvas({ fields, onFieldsChange, onSelectField, selectedFieldId 
       >
         <SortableContext 
           items={fields.map(f => f.id)}
-          strategy={verticalListSortingStrategy}
+          strategy={rectSortingStrategy}
         >
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {fields.map((field) => (
               <SortableField 
                 key={field.id} 

@@ -16,6 +16,7 @@ import { generateEForm } from '@/lib/ai/generate-eform'
 import { BuilderField, FieldType } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 interface AIEFormGeneratorProps {
   onGenerate: (fields: BuilderField[], title: string, description: string) => void
@@ -25,6 +26,7 @@ export function AIEFormGenerator({ onGenerate }: AIEFormGeneratorProps) {
   const [open, setOpen] = useState(false)
   const [prompt, setPrompt] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
+  const t = useTranslations('eforms.builder')
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return
@@ -32,7 +34,7 @@ export function AIEFormGenerator({ onGenerate }: AIEFormGeneratorProps) {
     setIsGenerating(true)
     try {
       const res = await generateEForm(prompt)
-      
+
       if (res.success && res.data) {
         const generatedFields: BuilderField[] = []
         const properties = (res.data.json_schema?.properties || {}) as Record<string, any>
@@ -98,22 +100,22 @@ export function AIEFormGenerator({ onGenerate }: AIEFormGeneratorProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-emerald-500/50 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-100 shadow-sm h-9 px-4 py-2 hover:scale-105">
         <Sparkles className="w-4 h-4 mr-2 text-emerald-400" />
-          Generate with AI
+          {t('aiGenerate')}
         </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-emerald-500" />
-            AI Form Generator
+            {t('aiTitle')}
           </DialogTitle>
           <DialogDescription>
-            Describe the form you want to build in plain Spanish. The AI will instantly generate the fields for you.
+            {t('aiDesc')}
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-4 py-4">
           <Textarea
-            placeholder="Ej: Una encuesta de satisfacción del cliente solicitando nombre, correo, calificación y comentarios..."
+            placeholder={t('aiPlaceholder')}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             className="h-32 resize-none"
@@ -123,15 +125,15 @@ export function AIEFormGenerator({ onGenerate }: AIEFormGeneratorProps) {
 
         <div className="flex justify-end gap-3">
           <Button variant="ghost" onClick={() => setOpen(false)} disabled={isGenerating}>
-            Cancel
+            {t('cancel')}
           </Button>
-          <Button 
-            onClick={handleGenerate} 
+          <Button
+            onClick={handleGenerate}
             disabled={!prompt.trim() || isGenerating}
             className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
           >
             {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-            {isGenerating ? 'Generating...' : 'Generate Form'}
+            {isGenerating ? t('generating') : t('generateForm')}
           </Button>
         </div>
       </DialogContent>
