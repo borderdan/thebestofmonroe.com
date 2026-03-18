@@ -289,10 +289,19 @@ async function run() {
   // ---------------------------------------------------
   console.log('5. Upserting to Supabase...');
 
+  // Dedupe allRows by facility_id+date before upserting (CSV may have duplicates)
+  const seen = new Map<string, InspectionRow>();
+  for (const r of allRows) {
+    const key = `${r.stateId || r.name}|${r.dateStr}`;
+    if (!seen.has(key)) seen.set(key, r);
+  }
+  const dedupedRows = Array.from(seen.values());
+  console.log(`   After dedup: ${dedupedRows.length} unique records (from ${allRows.length} raw)`);
+
   // Batch upserts for performance (50 at a time)
   const BATCH_SIZE = 50;
-  for (let i = 0; i < allRows.length; i += BATCH_SIZE) {
-    const batch = allRows.slice(i, i + BATCH_SIZE);
+  for (let i = 0; i < dedupedRows.length; i += BATCH_SIZE) {
+    const batch = dedupedRows.slice(i, i + BATCH_SIZE);
     const records = batch.map(r => {
       let inspectionDate = new Date().toISOString().split('T')[0];
       try {
@@ -324,13 +333,13 @@ async function run() {
       console.error(`   Batch ${Math.floor(i / BATCH_SIZE) + 1} error: ${error.message}`);
     } else {
       processed += batch.length;
-      if ((i / BATCH_SIZE) % 10 === 0 || i + BATCH_SIZE >= allRows.length) {
-        console.log(`   Progress: ${processed}/${allRows.length} records upserted`);
+      if ((i / BATCH_SIZE) % 10 === 0 || i + BATCH_SIZE >= dedupedRows.length) {
+        console.log(`   Progress: ${processed}/${dedupedRows.length} records upserted`);
       }
     }
   }
 
-  console.log(`\n=== Done: ${processed} records upserted ===`);
+  console.log(`\n=== Done: ${processed}/${dedupedRows.length} records upserted ===`);
 }
 
 run().catch(console.error);
