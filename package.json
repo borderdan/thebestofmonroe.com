@@ -22,6 +22,10 @@
     "ingest:grocery": "tsx scripts/scrape-grocery.ts",
     "resolve:entities": "tsx scripts/resolve-entities.ts",
     "scrape:permits": "tsx scripts/scrape-permits.ts",
+    "ingest:council-meetings": "tsx scripts/ingest-council-meetings.ts",
+    "ingest:restaurant-inspections": "tsx scripts/ingest-restaurant-inspections.ts",
+    "ingest:agendas": "tsx scripts/ingest-agendas.ts",
+    "ingest:property-sales": "tsx scripts/ingest-property-sales.ts",
     "types:generate": "npx supabase gen types typescript --project-id amrqoakoyknuozwlftuf > src/lib/database.types.ts"
   },
   "dependencies": {
