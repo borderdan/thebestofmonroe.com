@@ -28,6 +28,13 @@ export default function PublicHeader({ locale }: { locale: string }) {
 
         <div className="flex items-center justify-end space-x-4">
           <nav className="flex items-center space-x-2">
+            {/* Desktop Nav Links */}
+            <div className="hidden md:flex items-center space-x-1 mr-2">
+              <Link href={`/${locale}/council-meetings`} className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                City Council Meetings
+              </Link>
+            </div>
+
             {/* Theme Toggle */}
             <DropdownMenu>
               <DropdownMenuTrigger render={
@@ -74,6 +81,9 @@ export default function PublicHeader({ locale }: { locale: string }) {
                     </Link>
                     <Link href={`/${locale}/news`} className="text-muted-foreground hover:text-foreground">
                       Local News
+                    </Link>
+                    <Link href={`/${locale}/council-meetings`} className="text-muted-foreground hover:text-foreground">
+                      City Council Meetings
                     </Link>
                   </div>
                   <div className="flex flex-col gap-2 mt-auto pb-8">

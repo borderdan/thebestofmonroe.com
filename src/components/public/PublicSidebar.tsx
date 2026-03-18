@@ -18,6 +18,12 @@ import {
   ChevronRight,
   LayoutDashboard,
   Wallet,
+  UtensilsCrossed,
+  FileText,
+  LandPlot,
+  Droplets,
+  AlertTriangle,
+  Video,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -49,6 +55,15 @@ const civicNav = [
   { title: "Aviation (KEQY)", url: "/pulse/aviation", icon: Plane },
   { title: "Development Watch", url: "/pulse/development", icon: HardHat },
   { title: "Weather Center", url: "/pulse/weather", icon: CloudSun },
+];
+
+const communityNav = [
+  { title: "Restaurant Inspections", url: "/community/restaurant-inspections", icon: UtensilsCrossed },
+  { title: "City Agendas & Minutes", url: "/community/agendas", icon: FileText },
+  { title: "Property Sales", url: "/community/property-sales", icon: LandPlot },
+  { title: "Water Quality", url: "/community/water-quality", icon: Droplets },
+  { title: "FDA Recalls", url: "/community/recalls", icon: AlertTriangle },
+  { title: "Council Meetings", url: "/council-meetings", icon: Video },
 ];
 
 const walletNav = [
@@ -136,6 +151,33 @@ export function PublicSidebar({ locale }: { locale: string }) {
                             <item.icon className={`h-5 w-5 shrink-0 ${isActive(item.url) ? 'text-primary' : 'text-muted-foreground'}`} />
                             {!collapsed && <span className="font-bold text-sm tracking-tight">{item.title}</span>}
                         </Link>
+                    }
+                  />
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarSeparator className="my-2 opacity-50" />
+
+        {/* City & Community */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/50 px-2 mb-2">
+            City & Community
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-1">
+              {communityNav.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    isActive={isActive(item.url)}
+                    tooltip={item.title}
+                    render={
+                      <Link href={`/${locale}${item.url}`} className="flex items-center gap-3 py-6">
+                        <item.icon className={`h-5 w-5 shrink-0 ${isActive(item.url) ? 'text-primary' : 'text-muted-foreground'}`} />
+                        {!collapsed && <span className="font-bold text-sm tracking-tight">{item.title}</span>}
+                      </Link>
                     }
                   />
                 </SidebarMenuItem>

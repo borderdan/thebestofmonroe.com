@@ -1,0 +1,126 @@
+name: Weekly Community Data Ingestion
+
+on:
+  schedule:
+    # Every Monday at 6 AM EST (11:00 UTC)
+    - cron: '0 11 * * 1'
+  workflow_dispatch:
+    inputs:
+      script:
+        description: 'Run a specific script (or "all")'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - council-meetings
+          - restaurant-inspections
+          - agendas
+          - property-sales
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # --------------------------------------------------------
+  # Job 1: Property Sales (pure fetch, ~30s)
+  # --------------------------------------------------------
+  property-sales:
+    name: 📊 Property Sales
+    if: >-
+      github.event_name == 'schedule' ||
+      github.event.inputs.script == 'all' ||
+      github.event.inputs.script == 'property-sales'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm install --legacy-peer-deps
+      - name: Ingest property sales
+        run: npm run ingest:property-sales
+
+  # --------------------------------------------------------
+  # Job 2: City Agendas (fetch + Gemini PDF summarization, ~2min)
+  # --------------------------------------------------------
+  agendas:
+    name: 📋 City Agendas
+    if: >-
+      github.event_name == 'schedule' ||
+      github.event.inputs.script == 'all' ||
+      github.event.inputs.script == 'agendas'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm install --legacy-peer-deps
+      - name: Ingest city agendas
+        run: npm run ingest:agendas
+
+  # --------------------------------------------------------
+  # Job 3: Restaurant Inspections (pure HTTP POST + CSV, ~2min)
+  # --------------------------------------------------------
+  restaurant-inspections:
+    name: 🍽️ Restaurant Inspections
+    if: >-
+      github.event_name == 'schedule' ||
+      github.event.inputs.script == 'all' ||
+      github.event.inputs.script == 'restaurant-inspections'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm install --legacy-peer-deps
+      - name: Ingest restaurant inspections
+        run: npm run ingest:restaurant-inspections
+
+  # --------------------------------------------------------
+  # Job 4: Council Meetings (yt-dlp + Gemini transcription, ~5min)
+  # --------------------------------------------------------
+  council-meetings:
+    name: 🎥 Council Meetings
+    if: >-
+      github.event_name == 'schedule' ||
+      github.event.inputs.script == 'all' ||
+      github.event.inputs.script == 'council-meetings'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm install --legacy-peer-deps
+      - name: Install yt-dlp
+        run: |
+          sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+          sudo chmod a+rx /usr/local/bin/yt-dlp
+          yt-dlp --version
+      - name: Ingest council meetings
+        run: npm run ingest:council-meetings
