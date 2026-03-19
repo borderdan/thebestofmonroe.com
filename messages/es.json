@@ -553,5 +553,21 @@
     "rfcLabel": "RFC del Emisor",
     "regimenLabel": "Régimen Fiscal",
     "saveConfig": "Guardar Configuración"
+  },
+  "councilMeetings": {
+    "title": "Reuniones del Concejo Municipal",
+    "subtitle": "Transcripciones y resúmenes de las reuniones del Concejo de la Ciudad de Monroe, NC",
+    "noMeetings": "Aún no hay reuniones disponibles. Vuelve pronto.",
+    "agendaItems": "temas de agenda",
+    "decisions": "decisiones",
+    "backToMeetings": "Volver a reuniones",
+    "watchOnYouTube": "Ver en YouTube",
+    "keyHighlights": "Puntos Clave",
+    "agendaItemsTitle": "Temas de Agenda",
+    "votesTitle": "Votaciones",
+    "decisionsTitle": "Decisiones",
+    "actionItemsTitle": "Acciones a Seguir",
+    "publicCommentsTitle": "Comentarios Públicos",
+    "fullTranscript": "Transcripción Completa"
   }
 }

@@ -4,15 +4,16 @@ import { createClient } from '@supabase/supabase-js';
 // Edge runtime for minimum latency on physical hardware taps
 export const runtime = 'edge';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const getSupabase = () => createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy_key'
 );
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ guid: string; locale: string }> }
 ) {
+  const supabase = getSupabase();
   const resolvedParams = await params;
   const { guid, locale } = resolvedParams || {};
 

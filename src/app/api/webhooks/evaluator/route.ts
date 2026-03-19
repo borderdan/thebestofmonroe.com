@@ -11,15 +11,12 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseAdmin } from '@/lib/supabase/admin'
 import { evaluateConditions, type WorkflowCondition } from '@/lib/utils/evaluate-conditions'
 import { submitInvoiceRequest } from '@/lib/actions/invoices'
 
-// Use the service role key for cross-tenant queries (this is an internal webhook)
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Helper to get the admin client lazily
+const getSupabase = () => getSupabaseAdmin()
 
 interface EvaluatorPayload {
   trigger_event: string
@@ -28,6 +25,7 @@ interface EvaluatorPayload {
 }
 
 export async function POST(req: NextRequest) {
+  const supabase = getSupabase()
   // 1. Validate webhook secret
   const secret = req.headers.get('x-webhook-secret')
   if (!process.env.WEBHOOK_SECRET || secret !== process.env.WEBHOOK_SECRET) {
@@ -67,7 +65,7 @@ export async function POST(req: NextRequest) {
   // 3. Evaluate conditions and dispatch matching workflows
   const results = await Promise.allSettled(
     workflows.map(async (wf) => {
-      const conditions = (wf.conditions as WorkflowCondition[]) || []
+      const conditions = (wf.conditions as unknown as WorkflowCondition[]) || []
       const passes = evaluateConditions(conditions, record)
 
       if (!passes) {
@@ -83,7 +81,7 @@ export async function POST(req: NextRequest) {
           trigger_event,
           status: 'queued',
           record_id: (record as Record<string, unknown>).id as string || null,
-          input_payload: { trigger_event, record },
+          input_payload: { trigger_event, record } as any,
         })
         .select('id')
         .single()
@@ -102,7 +100,7 @@ export async function POST(req: NextRequest) {
       // When Trigger.dev is configured, replace this with:
       // await executeWorkflowActions.trigger({ ... })
       try {
-        await processWorkflowActions(wf.id, business_id, wf.actions as WorkflowAction[], record, execLog?.id)
+        await processWorkflowActions(wf.id, business_id, wf.actions as unknown as WorkflowAction[], record, execLog?.id)
       } catch (execError) {
         console.error(`[Evaluator] Workflow ${wf.id} execution failed:`, execError)
         if (execLog?.id) {
@@ -144,6 +142,7 @@ async function processWorkflowActions(
   record: Record<string, unknown>,
   executionLogId?: string
 ) {
+  const supabase = getSupabase()
   const startTime = Date.now()
 
   // Mark as running
@@ -179,7 +178,7 @@ async function processWorkflowActions(
       .from('workflow_execution_logs')
       .update({
         status: hasFailures ? 'failed' : 'success',
-        output_payload: results,
+        output_payload: results as any,
         duration_ms: duration,
       })
       .eq('id', executionLogId)
@@ -191,6 +190,7 @@ async function executeAction(
   businessId: string,
   record: Record<string, unknown>
 ): Promise<unknown> {
+  const supabase = getSupabase()
   switch (action.type) {
     case 'send_webhook': {
       const url = action.config.url as string
@@ -318,7 +318,7 @@ async function executeAction(
         throw new Error('update_record requires table, updates, and record_id')
       }
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from(table)
         .update(updates)
         .eq('id', matchId)

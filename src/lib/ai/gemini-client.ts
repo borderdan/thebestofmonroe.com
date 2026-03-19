@@ -17,7 +17,7 @@ interface GeminiResponse<T> {
   error?: string
 }
 
-const DEFAULT_MODEL = 'gemini-3.1-flash-lite-preview'
+const DEFAULT_MODEL = 'gemini-2.5-flash'
 
 /**
  * Calls the Gemini API and returns structured JSON output.

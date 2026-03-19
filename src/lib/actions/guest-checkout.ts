@@ -4,7 +4,7 @@ import { type ActionResult } from '@/lib/supabase/helpers';
 
 import * as Sentry from '@sentry/nextjs';
 
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseAdmin } from '@/lib/supabase/admin'
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 
 // Clients are initialized inside the function body to prevent startup crashes when env vars are missing
@@ -24,10 +24,7 @@ export async function createGuestCheckoutPreference(
   try {
     if (!items.length) throw new Error('Cart is empty')
 
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    )
+    const supabaseAdmin = getSupabaseAdmin()
 
     const client = new MercadoPagoConfig({ 
       accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN! 
@@ -68,7 +65,8 @@ export async function createGuestCheckoutPreference(
         user_id: null, 
         total: total,
         payment_method: 'mercadopago',
-        payment_status: 'pending'
+        payment_status: 'pending',
+        status: 'pending'
       })
       .select('id')
       .single()

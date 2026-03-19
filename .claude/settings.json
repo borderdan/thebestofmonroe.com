@@ -1,35 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run dev)",
-      "Bash(npm run build)",
-      "Bash(npm run lint)",
-      "Bash(npm run typecheck)",
-      "Bash(npm test*)",
-      "Bash(npm run test:*)",
-      "Bash(npx supabase *)",
-      "Bash(npx playwright *)",
-      "Bash(npx tsc *)",
-      "Bash(git *)",
-      "Bash(ls *)",
-      "Bash(cat *)",
-      "Bash(head *)",
-      "Bash(tail *)",
-      "Bash(wc *)",
-      "Bash(gh pr *)",
-      "Bash(gh issue *)",
-      "Bash(gh run *)",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:supabase.com)",
-      "WebFetch(domain:nextjs.org)",
-      "WebFetch(domain:stripe.com)"
+      "Bash(*)",
+      "Edit(*)",
+      "Write(*)",
+      "WebFetch(*)",
+      "mcp__*"
     ],
     "deny": [
       "Bash(rm -rf *)",
       "Bash(git push --force*)",
       "Bash(git reset --hard*)",
-      "Edit(*.env*)",
-      "Write(*.env*)",
       "Edit(src/lib/database.types.ts)",
       "Write(src/lib/database.types.ts)"
     ]

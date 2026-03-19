@@ -4,8 +4,6 @@ import { useHydration } from "@/hooks/use-hydration";
 import { useCartStore } from "@/stores/use-cart-store";
 import {
   processCashCheckout,
-  createMercadoPagoIntent,
-  createCodiIntent,
   processGiftCardCheckout,
   createGiftCard,
 } from "@/app/[locale]/app/pos/actions";
@@ -15,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
-import { Loader2, Trash2, Smartphone, Banknote, QrCode, Gift, Ticket, RefreshCw, Coins, UserPlus, CheckCircle2, MessageCircle } from "lucide-react";
+import { Loader2, Trash2, Banknote, Gift, Ticket, RefreshCw, Coins, UserPlus, CheckCircle2, MessageCircle, CreditCard } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -172,53 +170,6 @@ export function CartSidebar({ customers, currencySettings }: CartSidebarProps) {
     setLoading(false);
   };
 
-  const handleMP = async () => {
-    if (items.length === 0) return;
-    setLoading(true);
-    const res = await createMercadoPagoIntent(
-      { 
-        amount: finalTotalInSelected, 
-        currency: selectedCurrency,
-        exchangeRate: currentRate,
-        cart: mapCartForAction(),
-        customerId: selectedCustomerId === "guest" ? undefined : selectedCustomerId,
-        pointsToRedeem: pointsToRedeem,
-        paymentMethod: "mercadopago"
-      },
-      "terminal_123",
-    );
-    if (res.success && 'transactionId' in res) {
-      setActiveTxId(res.transactionId || null);
-      setQrData(null);
-      setModalOpen(true);
-    } else {
-      toast.error((res as { error?: string }).error || "Failed to start MP payment");
-    }
-    setLoading(false);
-  };
-
-  const handleCodi = async () => {
-    if (items.length === 0) return;
-    setLoading(true);
-    const res = await createCodiIntent({
-      amount: finalTotalInSelected,
-      currency: selectedCurrency,
-      exchangeRate: currentRate,
-      cart: mapCartForAction(),
-      customerId: selectedCustomerId === "guest" ? undefined : selectedCustomerId,
-      pointsToRedeem: pointsToRedeem,
-      paymentMethod: "codi"
-    }) as { success: boolean, transactionId?: string, qrPayload?: string, error?: string };
-    if (res.success && res.transactionId && res.qrPayload) {
-      setActiveTxId(res.transactionId);
-      setQrData(res.qrPayload || null);
-      setModalOpen(true);
-    } else {
-
-      toast.error((res as { error?: string }).error || "Failed to start CoDi payment");
-    }
-    setLoading(false);
-  };
 
   const handleGiftCard = async () => {
     if (items.length === 0 || !giftCardCode) return;
@@ -513,26 +464,15 @@ export function CartSidebar({ customers, currencySettings }: CartSidebarProps) {
               <Button variant="ghost" onClick={() => setShowGCInput(false)}>X</Button>
             </div>
           ) : (
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="outline"
                 className="w-full h-12 text-blue-600 border-blue-200 hover:bg-blue-50"
                 disabled={items.length === 0 || loading}
-                onClick={handleMP}
-                data-testid="checkout-terminal-btn"
+                onClick={() => toast.info("Stripe Terminal Integration Coming Soon")}
               >
-                <Smartphone className="w-4 h-4 mr-2" />
-                Terminal
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full h-12 text-purple-600 border-purple-200 hover:bg-purple-50"
-                disabled={items.length === 0 || loading}
-                onClick={handleCodi}
-                data-testid="checkout-codi-btn"
-              >
-                <QrCode className="w-4 h-4 mr-2" />
-                CoDi
+                <CreditCard className="w-4 h-4 mr-2" />
+                Card
               </Button>
               <Button
                 variant="outline"
@@ -609,7 +549,7 @@ export function CartSidebar({ customers, currencySettings }: CartSidebarProps) {
                   </div>
                 ) : (
                   <div className="mt-8 mb-4 animate-pulse">
-                    <Smartphone className="w-24 h-24 mx-auto text-blue-500 mb-6" />
+                    <CreditCard className="w-24 h-24 mx-auto text-blue-500 mb-6" />
                     <span className="text-lg text-muted-foreground">
                       Please ask the customer to complete payment on the card
                       reader.

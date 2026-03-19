@@ -517,5 +517,21 @@
     "rfcLabel": "Issuer RFC",
     "regimenLabel": "Tax Regime",
     "saveConfig": "Save Configuration"
+  },
+  "councilMeetings": {
+    "title": "City Council Meetings",
+    "subtitle": "Transcripts and summaries from City of Monroe, NC Council meetings",
+    "noMeetings": "No meetings available yet. Check back soon.",
+    "agendaItems": "agenda items",
+    "decisions": "decisions",
+    "backToMeetings": "Back to meetings",
+    "watchOnYouTube": "Watch on YouTube",
+    "keyHighlights": "Key Highlights",
+    "agendaItemsTitle": "Agenda Items",
+    "votesTitle": "Votes",
+    "decisionsTitle": "Decisions",
+    "actionItemsTitle": "Action Items",
+    "publicCommentsTitle": "Public Comments",
+    "fullTranscript": "Full Transcript"
   }
 }

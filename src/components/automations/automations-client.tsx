@@ -84,8 +84,8 @@ export function AutomationsClient({ initialConfigs, isSuperAdmin }: AutomationsC
   const sortedConfigs = [...filteredConfigs].sort((a, b) => {
     if (!sortConfig) return 0
     
-    let aVal: any = a[sortConfig.key] ?? ''
-    let bVal: any = b[sortConfig.key] ?? ''
+    const aVal: any = a[sortConfig.key] ?? ''
+    const bVal: any = b[sortConfig.key] ?? ''
 
     if (aVal < bVal) {
       return sortConfig.direction === 'asc' ? -1 : 1

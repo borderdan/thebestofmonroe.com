@@ -6,8 +6,8 @@ import { InvoiceForm } from './invoice-form'
 // so we need a service role client to fetch the transaction
 function getAdminClient() {
   return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'dummy_key'
   )
 }
 

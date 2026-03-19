@@ -67,8 +67,8 @@ export function WorkflowsClient({ initialWorkflows, locale }: WorkflowsClientPro
   const sortedWorkflows = [...filteredWorkflows].sort((a, b) => {
     if (!sortConfig) return 0
     
-    let aVal: any = a[sortConfig.key] ?? ''
-    let bVal: any = b[sortConfig.key] ?? ''
+    const aVal: any = a[sortConfig.key] ?? ''
+    const bVal: any = b[sortConfig.key] ?? ''
 
     // Handle null values (already handled by ??, but keeping for safety if '' is expected)
 

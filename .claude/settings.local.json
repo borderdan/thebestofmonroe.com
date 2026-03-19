@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(ls -la /c/antigravity/thebestofmonroe.com/src/app/[locale]/)",
+      "Bash(ls -la /c/antigravity/thebestofmonroe.com/messages*)",
+      "Bash(find /c/antigravity/thebestofmonroe.com/scripts -type f -name *.ts)",
+      "Bash(ls -la /c/antigravity/thebestofmonroe.com/src/app/[locale]/app/)",
+      "Bash(find /c/antigravity/thebestofmonroe.com/e2e -type f -name *.ts)",
+      "Bash(head -50 /c/antigravity/thebestofmonroe.com/src/app/[locale]/layout.tsx)",
+      "Bash(claude mcp:*)",
+      "Bash(echo \"exit: $?\")",
+      "WebSearch",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot"
+    ]
+  }
+}
