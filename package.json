@@ -20,6 +20,8 @@
     "ingest:monroe-alerts": "tsx scripts/ingest-monroe-alerts.ts",
     "ingest:city-events": "tsx scripts/ingest-city-events.ts",
     "ingest:grocery": "tsx scripts/scrape-grocery.ts",
+    "ingest:flipp": "npx tsx scripts/ingest-flipp-grocery.ts",
+    "seed:grocery": "tsx scripts/seed-grocery-prices.ts",
     "resolve:entities": "tsx scripts/resolve-entities.ts",
     "scrape:permits": "tsx scripts/scrape-permits.ts",
     "ingest:council-meetings": "tsx scripts/ingest-council-meetings.ts",

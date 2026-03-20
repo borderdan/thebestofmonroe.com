@@ -28,7 +28,7 @@ export default async function AdminLayout({
     { title: 'Overview', href: `/${locale}/admin`, icon: LayoutDashboard },
     { title: 'Tenants', href: `/${locale}/admin/tenants`, icon: Users },
     { title: 'Infrastructure', href: `/${locale}/admin/infrastructure`, icon: ShieldCheck },
-    { title: 'Data Sources', href: `/${locale}/admin/data-sources`, icon: Database },
+    { title: 'Data Pipeline', href: `/${locale}/admin/data-sources`, icon: Database },
     { title: 'Global Settings', href: `/${locale}/admin/settings`, icon: Settings },
   ]
 

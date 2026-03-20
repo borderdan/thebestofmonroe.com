@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from "react";
 import { Info, ShieldCheck, Clock, ExternalLink } from "lucide-react";
 import {
   Sheet,
@@ -22,6 +23,9 @@ interface SourceDrawerProps {
 }
 
 export function SourceDrawer({ source, confidence, lastVerified, rawData, trigger }: SourceDrawerProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const confidenceColor = confidence > 0.8 ? 'text-emerald-500' : confidence > 0.5 ? 'text-amber-500' : 'text-red-500';
 
   const triggerElement = trigger as React.ReactElement || (
@@ -30,6 +34,10 @@ export function SourceDrawer({ source, confidence, lastVerified, rawData, trigge
       Source Transparency
     </button>
   );
+
+  if (!mounted) {
+    return triggerElement;
+  }
 
   return (
     <Sheet>

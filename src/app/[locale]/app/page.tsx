@@ -171,11 +171,11 @@ export default async function DashboardPage({
                 </CardContent>
             </Card>
 
-            {/* The Wallet: Grocery Arbitrage */}
+            {/* Price Intel Summary */}
             <Card className="rounded-3xl border-emerald-500/20 bg-emerald-500/5 overflow-hidden shadow-sm">
                 <CardHeader className="bg-emerald-500/10 pb-4">
                     <CardTitle className="text-emerald-700 flex items-center gap-2 text-lg font-black uppercase tracking-tighter text-center justify-center">
-                        Monroe Wallet
+                        Price Intel
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">

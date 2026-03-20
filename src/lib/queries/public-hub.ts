@@ -17,12 +17,12 @@ export async function getPublicHubData() {
       .order('event_time', { ascending: false })
       .limit(10),
 
-    // Grocery Prices
+    // Grocery Prices — fetch enough to show diverse items across stores
     supabase
       .from('grocery_prices' as any)
       .select('*')
       .order('scraped_at', { ascending: false })
-      .limit(5),
+      .limit(200),
 
     // Total businesses
     supabase

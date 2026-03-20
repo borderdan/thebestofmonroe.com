@@ -78,4 +78,6 @@ npm run types:generate  # Regenerate Supabase types
 - Always use RLS-safe queries; admin client only for service-role operations
 - Webhook routes must verify signatures before processing
 - All user-facing text through next-intl (Spanish first)
+- **When adding a new data source**: follow the mandatory checklist in `.claude/rules/data-pipelines.md` — register in `ALL_PIPELINES`, add to GitHub Actions, log to `ingestion_logs`
+- **When adding a page that uses ingested data**: update the `dependents` array in `data-pipeline-client.tsx`
 - See `.claude/rules/` for detailed conventions per topic

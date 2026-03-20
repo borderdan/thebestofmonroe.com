@@ -9,7 +9,7 @@ import { MarketLeaders } from '@/components/hub/market-leaders'
 import { AviationPanel } from '@/components/hub/aviation-panel'
 import { Plane, TrendingUp, Wallet, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { GroceryArbitrage } from '@/components/hub/grocery-arbitrage'
+import { PriceIntelPreview } from '@/components/wallet/price-intel-preview'
 import { SideHustleRegistry } from '@/components/hub/side-hustle-registry'
 import { FlashDealAggregator } from '@/components/hub/flash-deal-aggregator'
 
@@ -112,9 +112,9 @@ export default async function LocaleIndexPage({
                   </div>
                 </LiveSignalCard>
 
-                {/* The Wallet / Grocery */}
+                {/* Price Intel Summary */}
                 <LiveSignalCard
-                  title="The Wallet"
+                  title="Price Intel"
                   icon={<Wallet className="w-4 h-4" />}
                   timestamp={new Date().toLocaleTimeString()}
                   className="bg-monroe-surface"
@@ -129,9 +129,9 @@ export default async function LocaleIndexPage({
                               <div className="text-lg font-bold tracking-tight text-foreground">${item.price}</div>
                           </div>
                       ))}
-                      <a href="#wallet">
+                      <a href={`/${locale}/wallet/grocery`}>
                         <Button variant="outline" className="w-full mt-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground border-border/50 hover:bg-slate-50 dark:hover:bg-slate-800">
-                            Launch Arbitrage Board
+                            Open Price Intel →
                         </Button>
                       </a>
                   </div>
@@ -152,9 +152,9 @@ export default async function LocaleIndexPage({
           </div>
 
           <div className="space-y-32">
-            {/* Monroe Wallet Section */}
+            {/* Price Intel Section */}
             <section id="wallet" className="scroll-mt-32">
-                <GroceryArbitrage />
+                <PriceIntelPreview locale={locale} groceryPrices={groceryPrices} />
             </section>
 
             {/* Side-Hustle Registry */}

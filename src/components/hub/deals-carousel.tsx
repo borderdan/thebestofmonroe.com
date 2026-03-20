@@ -21,7 +21,7 @@ export function DealsCarousel({ deals }: DealsCarouselProps) {
               <Percent className="w-3.5 h-3.5" />
               Direct Savings
             </div>
-            <h2 className="text-3xl font-display font-black tracking-tight">The Monroe Wallet</h2>
+            <h2 className="text-3xl font-display font-black tracking-tight">The Wallet</h2>
           </div>
           <Button variant="ghost" className="text-primary font-black uppercase text-[10px] tracking-widest hidden sm:flex">
             See All Deals <ArrowRight className="ml-2 w-3 h-3" />
