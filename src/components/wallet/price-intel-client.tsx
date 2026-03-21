@@ -747,7 +747,12 @@ function CompareView({
     return filtered;
   }, [items, search, selectedCategory, sortBy, priceLookup]);
 
-  useEffect(() => { setPage(0); }, [search, selectedCategory, sortBy]);
+  // Sync page reset when search params change
+  const [prevDeps, setPrevDeps] = useState([search, selectedCategory, sortBy]);
+  if (prevDeps[0] !== search || prevDeps[1] !== selectedCategory || prevDeps[2] !== sortBy) {
+    setPage(0);
+    setPrevDeps([search, selectedCategory, sortBy]);
+  }
   const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
   const paginatedItems = filteredItems.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 

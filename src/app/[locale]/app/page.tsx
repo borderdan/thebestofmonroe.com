@@ -203,7 +203,8 @@ export default async function DashboardPage({
             }} />
 
             <div className="w-full">
-                <RecentTransactions transactions={recentTransactions} />
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                <RecentTransactions transactions={recentTransactions as any} />
             </div>
         </div>
       </div>

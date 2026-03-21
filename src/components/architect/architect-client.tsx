@@ -827,18 +827,18 @@ export function ArchitectClient({ initialBlueprints }: { initialBlueprints: Blue
                             {log.status === 'pending' ? <Loader2 className="w-4 h-4 animate-spin text-primary" /> 
                              : log.status === 'success' ? <CheckCircle2 className="w-4 h-4 text-success" />
                              : log.status === 'error' ? <XCircle className="w-4 h-4 text-destructive" />
-                             : getLogIcon(log.type)}
+                             : getLogIcon(log.type as "eform" | "workflow" | "automation" | "n8n" | "info" | "error" | "success") as React.ReactElement}
                           </div>
                           <div className="flex-1">
                             <span className={cn(
                               log.status === 'error' ? "text-destructive" :
                               log.status === 'success' ? "text-success font-medium" : "text-muted-foreground"
                             )}>
-                              {log.message}
+                              {log.message as string}
                             </span>
                             {/* DEEP LINK RENDERER */}
-                            {log.metadata?.link && log.status === 'success' && (
-                              <Link target="_blank" href={log.metadata.link} className="inline-flex items-center gap-1 ml-2 px-1.5 py-0.5 rounded bg-muted/50 hover:bg-muted text-foreground transition-colors">
+                            {!!(log.metadata as Record<string, unknown>)?.link && log.status === 'success' && (
+                              <Link target="_blank" href={(log.metadata as Record<string, unknown>).link as string} className="inline-flex items-center gap-1 ml-2 px-1.5 py-0.5 rounded bg-muted/50 hover:bg-muted text-foreground transition-colors">
                                 Edit <ExternalLink className="w-3 h-3" />
                               </Link>
                             )}

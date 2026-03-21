@@ -44,8 +44,7 @@ export interface DeploymentLog {
   type: 'eform' | 'workflow' | 'automation' | 'n8n' | 'info' | 'error' | 'success'
   message: string
   status: 'pending' | 'success' | 'error'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export type BlueprintStepType = 'data_table' | 'eform' | 'workflow' | 'automation'
@@ -55,8 +54,7 @@ export interface BlueprintStep {
   type: BlueprintStepType
   title: string
   description?: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config: Record<string, any>
+  config: Record<string, unknown>
 }
 
 export interface BlueprintResult {
@@ -114,14 +112,13 @@ export async function deployBlueprintEForm(form: BlueprintStep): Promise<{ succe
     const title = form.title || config.title || 'New E-Form'
     
     // Transform simplified fields to BuilderField schema
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const builderFields = fields.map((f: any) => ({
-      id: f.id || `field-${Math.random().toString(36).slice(2, 9)}`,
-      type: f.type || 'text',
-      label: f.label || 'New Field',
-      required: f.required || false,
-      placeholder: f.placeholder || '',
-      options: f.options || []
+    const builderFields = (fields as Record<string, unknown>[]).map((f) => ({
+      id: (f.id as string) || `field-${Math.random().toString(36).slice(2, 9)}`,
+      type: (f.type as string) || 'text',
+      label: (f.label as string) || 'New Field',
+      required: (f.required as boolean) || false,
+      placeholder: (f.placeholder as string) || '',
+      options: (f.options as string[]) || []
     }))
 
     const { data: dbForm, error } = await supabase
@@ -150,8 +147,8 @@ export async function deployBlueprintEForm(form: BlueprintStep): Promise<{ succe
 export async function deployBlueprintAutomation(auto: BlueprintStep): Promise<{ success: boolean; webhookUrl?: string; error?: string }> {
   try {
     const config = auto.config || {}
-    const triggerType = config.trigger_type
-    const webhookUrl = config.suggested_webhook_url || 'https://api.example.com/webhook/pending-configuration'
+    const triggerType = config.trigger_type as string
+    const webhookUrl = (config.suggested_webhook_url as string) || 'https://api.example.com/webhook/pending-configuration'
     
     if (!triggerType) {
       return { success: false, error: 'Missing trigger_type in automation configuration' }
@@ -168,7 +165,7 @@ export async function deployBlueprintAutomation(auto: BlueprintStep): Promise<{ 
       return { success: false, error: `Wiring failed: ${saveResult.error}` }
     }
 
-    return { success: true, webhookUrl: webhookUrl }
+    return { success: true, webhookUrl: webhookUrl as string }
   } catch (err) {
     return { success: false, error: err instanceof Error ? err.message : 'Failed to deploy Automation' }
   }
@@ -179,11 +176,10 @@ export async function deployBlueprintWorkflow(flow: BlueprintStep, projectName: 
     const config = flow.config || {}
     const nodes = config.nodes || []
     const edges = config.edges || []
-    const name = flow.title || config.name || 'Visual Workflow'
+    const name = flow.title || (config.name as string) || 'Visual Workflow'
 
     // Use generic placeholders for auto-layout positions if not provided by AI
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const nodesWithPositions = nodes.map((n: any, i: number) => ({
+    const nodesWithPositions = (nodes as Record<string, unknown>[]).map((n, i: number) => ({
       ...n,
       position: n.position || { x: i * 250, y: 100 }
     }))

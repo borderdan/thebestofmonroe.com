@@ -50,14 +50,13 @@ export async function upsertCommunityUpdate(input: CommunityUpdateInput) {
   const payload_hash = generateHash(data.raw_data);
 
   const { error } = await supabase
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .from('community_feed' as any)
+    .from('community_feed' as never)
     .upsert({
       ...data,
       geometry: geometry,
       payload_hash,
       updated_at: new Date().toISOString()
-    }, { 
+    } as never, {
       onConflict: 'source_id, type' 
     });
 
@@ -69,21 +68,19 @@ export async function upsertCommunityUpdate(input: CommunityUpdateInput) {
 
 export async function logIngestion(source: string, status: 'success' | 'failure' | 'partial', message?: string, itemsProcessed: number = 0, errorDetails?: unknown) {
     const supabase = getSupabase();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await supabase.from('ingestion_logs' as any).insert({
+    await supabase.from('ingestion_logs' as never).insert({
         source_name: source,
         status,
         message,
         items_processed: itemsProcessed,
         error_details: errorDetails
-    });
+    } as never);
 }
 
 export async function cleanupStaleUpdates() {
   const supabase = getSupabase();
   const { error } = await supabase
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .from('community_feed' as any)
+    .from('community_feed' as never)
     .delete()
     .lt('expires_at', new Date().toISOString());
 
@@ -107,12 +104,11 @@ export async function upsertPoi(input: PoiInput) {
   const { latitude, longitude, ...data } = input;
   
   const { error } = await supabase
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .from('pois' as any)
+    .from('pois' as never)
     .upsert({
       ...data,
       geometry: `POINT(${longitude} ${latitude})`,
-    }, {
+    } as never, {
       onConflict: 'name, category' 
     });
 
@@ -140,12 +136,11 @@ export async function upsertGroceryPrice(input: GroceryPriceInput) {
     // although the UNIQUE constraint in DB handles it, we can be more explicit here if needed.
     
     const { error } = await supabase
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .from('grocery_prices' as any)
+        .from('grocery_prices' as never)
         .upsert({
             ...input,
             scraped_at: new Date().toISOString()
-        }, {
+        } as never, {
             onConflict: 'store_name, store_location, item_name, scraped_at'
         });
 

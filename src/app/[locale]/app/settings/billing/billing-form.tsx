@@ -46,22 +46,15 @@ export function BillingForm({ initialData }: BillingFormProps) {
 
   function onSubmit(values: SatConfigValues) {
     startTransition(async () => {
-      // Use FormData to match action signature
-      const formData = new FormData()
-      formData.append('rfc', values.rfc)
-      formData.append('regimen_fiscal', values.regimen_fiscal)
-      formData.append('csd_password', values.csd_password)
-      formData.append('facturama_api_user', values.facturama_api_user)
-      formData.append('facturama_api_password', values.facturama_api_password)
-
-      const result = await updateSatConfig(formData)
+      const result = await updateSatConfig(values)
       if (result.success) {
         toast.success('Configuración SAT actualizada exitosamente')
         // Optional: clear password fields
         form.setValue('csd_password', '')
         form.setValue('facturama_api_password', '')
       } else {
-        toast.error(result.error || 'Error al actualizar configuración')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        toast.error((result as any).error || 'Error al actualizar configuración')
       }
     })
   }

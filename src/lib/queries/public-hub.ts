@@ -19,8 +19,7 @@ export async function getPublicHubData() {
 
     // Grocery Prices — fetch enough to show diverse items across stores
     supabase
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .from('grocery_prices' as any)
+      .from('grocery_prices' as never)
       .select('*')
       .order('scraped_at', { ascending: false })
       .limit(200),

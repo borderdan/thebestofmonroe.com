@@ -21,12 +21,13 @@ export function useNfcReader({ onScan }: UseNfcReaderProps) {
     }
 
     try {
-      // @ts-ignore - NDEFReader is not fully typed in TS yet
+      // @ts-expect-error - NDEFReader is not widely supported in TS DOM types yet
       const ndef = new window.NDEFReader();
       await ndef.scan();
       setIsScanning(true);
       toast.success('NFC Reader active. Please tap a tag.');
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ndef.onreading = (event: any) => {
         const message = event.message;
         for (const record of message.records) {
@@ -50,6 +51,7 @@ export function useNfcReader({ onScan }: UseNfcReaderProps) {
       ndef.onreadingerror = () => {
         toast.error('NFC read error. Try again.');
       };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('NFC Scan Error:', error);
       setIsScanning(false);

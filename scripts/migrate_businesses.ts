@@ -17,7 +17,8 @@ const newSupabase = createClient(
 
 async function migrateData() {
   console.log('Fetching businesses from old prod...');
-  let allBusinesses = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let allBusinesses: any[] = [];
   for (let i = 0; i < 2; i++) {
     const { data: businesses, error: fetchError } = await oldSupabase
       .from('businesses')
@@ -35,7 +36,11 @@ async function migrateData() {
   // Insert in batches
   const batchSize = 100;
   for (let i = 0; i < allBusinesses.length; i += batchSize) {
-    const batch = allBusinesses.slice(i, i + batchSize).map(({ description, google_place_id, rating, review_count, ...rest }) => rest);
+    const batch = allBusinesses.slice(i, i + batchSize).map(({ description, google_place_id, rating, review_count, ...rest }) => {
+      // Ignore unused variables for TS correctness during destructuring
+      void description; void google_place_id; void rating; void review_count;
+      return rest;
+    });
     const { error: insertError } = await newSupabase
       .from('businesses')
       .upsert(batch, { onConflict: 'id' });
