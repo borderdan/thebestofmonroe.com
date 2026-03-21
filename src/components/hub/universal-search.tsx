@@ -27,6 +27,7 @@ export function UniversalSearch() {
 
   useEffect(() => {
     if (query.length < 2) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResults({ entities: [], feed: [] });
       return;
     }

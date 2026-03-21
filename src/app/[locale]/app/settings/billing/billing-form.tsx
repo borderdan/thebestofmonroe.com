@@ -48,11 +48,11 @@ export function BillingForm({ initialData }: BillingFormProps) {
     startTransition(async () => {
       // Use FormData to match action signature
       const formData = new FormData()
-      formData.append('rfc', values.rfc)
-      formData.append('regimen_fiscal', values.regimen_fiscal)
-      formData.append('csd_password', values.csd_password)
-      formData.append('facturama_api_user', values.facturama_api_user)
-      formData.append('facturama_api_password', values.facturama_api_password)
+      formData.append('rfc', values.rfc || '')
+      formData.append('regimen_fiscal', values.regimen_fiscal || '')
+      formData.append('csd_password', values.csd_password || '')
+      formData.append('facturama_api_user', values.facturama_api_user || '')
+      formData.append('facturama_api_password', values.facturama_api_password || '')
 
       const result = await updateSatConfig(formData)
       if (result.success) {
