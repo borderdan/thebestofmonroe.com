@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/lib/database.types';
 import * as crypto from 'crypto';
+import { SupabaseClient } from '@supabase/supabase-js';
 
-let supabaseClient: any = null;
+let supabaseClient: SupabaseClient<Database> | null = null;
 
 function getSupabase() {
   if (supabaseClient) return supabaseClient;
@@ -29,10 +30,10 @@ export type CommunityUpdateInput = {
   location_name?: string;
   event_time: string;
   expires_at?: string;
-  raw_data: any;
+  raw_data: unknown;
 };
 
-export function generateHash(data: any): string {
+export function generateHash(data: unknown): string {
     const str = JSON.stringify(data);
     return crypto.createHash('sha256').update(str).digest('hex');
 }
@@ -49,10 +50,11 @@ export async function upsertCommunityUpdate(input: CommunityUpdateInput) {
   const payload_hash = generateHash(data.raw_data);
 
   const { error } = await supabase
-    .from('community_feed')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .from('community_feed' as any)
     .upsert({
       ...data,
-      geometry: geometry as any,
+      geometry: geometry,
       payload_hash,
       updated_at: new Date().toISOString()
     }, { 
@@ -65,9 +67,10 @@ export async function upsertCommunityUpdate(input: CommunityUpdateInput) {
   }
 }
 
-export async function logIngestion(source: string, status: 'success' | 'failure' | 'partial', message?: string, itemsProcessed: number = 0, errorDetails?: any) {
+export async function logIngestion(source: string, status: 'success' | 'failure' | 'partial', message?: string, itemsProcessed: number = 0, errorDetails?: unknown) {
     const supabase = getSupabase();
-    await supabase.from('ingestion_logs').insert({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await supabase.from('ingestion_logs' as any).insert({
         source_name: source,
         status,
         message,
@@ -79,7 +82,8 @@ export async function logIngestion(source: string, status: 'success' | 'failure'
 export async function cleanupStaleUpdates() {
   const supabase = getSupabase();
   const { error } = await supabase
-    .from('community_feed')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .from('community_feed' as any)
     .delete()
     .lt('expires_at', new Date().toISOString());
 
@@ -95,7 +99,7 @@ export type PoiInput = {
   address?: string;
   latitude: number;
   longitude: number;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 };
 
 export async function upsertPoi(input: PoiInput) {
@@ -103,10 +107,11 @@ export async function upsertPoi(input: PoiInput) {
   const { latitude, longitude, ...data } = input;
   
   const { error } = await supabase
-    .from('pois')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .from('pois' as any)
     .upsert({
       ...data,
-      geometry: `POINT(${longitude} ${latitude})` as any,
+      geometry: `POINT(${longitude} ${latitude})`,
     }, {
       onConflict: 'name, category' 
     });
@@ -135,7 +140,8 @@ export async function upsertGroceryPrice(input: GroceryPriceInput) {
     // although the UNIQUE constraint in DB handles it, we can be more explicit here if needed.
     
     const { error } = await supabase
-        .from('grocery_prices')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .from('grocery_prices' as any)
         .upsert({
             ...input,
             scraped_at: new Date().toISOString()

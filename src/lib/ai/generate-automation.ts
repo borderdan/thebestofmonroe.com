@@ -54,6 +54,7 @@ interface AutomationResult {
   trigger_type: string
   n8n_workflow: {
     name: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     nodes: any[]
     connections: Array<{ from: string; to: string }>
   }

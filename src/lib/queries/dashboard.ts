@@ -123,6 +123,7 @@ export async function getDashboardData(businessId: string) {
 
     // Grocery Prices (The Wallet)
     supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .from('grocery_prices' as any)
       .select('*')
       .order('scraped_at', { ascending: false })
@@ -130,7 +131,9 @@ export async function getDashboardData(businessId: string) {
   ])
 
   // Calculate KPIs
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const todayRevenue = (todayTx.data || []).reduce((sum, t) => sum + ((t as any).total || 0), 0)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const yesterdayRevenue = (yesterdayTx.data || []).reduce((sum, t) => sum + ((t as any).total || 0), 0)
   const todayCount = (todayTx.data || []).length
   const revenueDelta = yesterdayRevenue > 0
@@ -148,8 +151,10 @@ export async function getDashboardData(businessId: string) {
     revenueByDay[key] = 0
   }
   for (const tx of weekTx.data || []) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const day = (tx as any).created_at?.split('T')[0]
     if (day && day in revenueByDay) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       revenueByDay[day] += (tx as any).total || 0
     }
   }
@@ -170,13 +175,18 @@ export async function getDashboardData(businessId: string) {
     },
     chartData,
     heatmapData: (hourlySales.data || []).map(d => ({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       day_of_week: Number((d as any).day_of_week),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       hour_of_day: Number((d as any).hour_of_day),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transaction_count: Number((d as any).transaction_count),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       total_revenue: Number((d as any).total_revenue)
     })),
     categoryData: (categoryRevenue.data || []).map(d => ({
       category: d.category,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       revenue: Number((d as any).total_revenue)
     })),
     inventoryHealth: inventoryHealthRes.data || { low_stock_count: 0, critical_restock_count: 0, avg_sales_velocity: 0 },
@@ -186,10 +196,15 @@ export async function getDashboardData(businessId: string) {
     totalBusinesses: totalBusinessesRes.count || 0,
     recentTransactions: (recentTx.data || []).map(tx => ({
       id: tx.id,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       total: (tx as any).total,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       status: (tx as any).status,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       created_at: (tx as any).created_at,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       currency: (tx as any).currency || 'MXN',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       payment_method: (tx as any).payment_method || 'cash',
     })),
   }

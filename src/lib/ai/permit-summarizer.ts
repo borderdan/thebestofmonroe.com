@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-export async function summarizePermit(permitData: any) {
+export async function summarizePermit(permitData: Record<string, unknown>) {
   const prompt = `
     Summarize this Monroe building permit for a resident. 
     Use the following data: ${JSON.stringify(permitData)}

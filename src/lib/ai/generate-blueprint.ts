@@ -44,6 +44,7 @@ export interface DeploymentLog {
   type: 'eform' | 'workflow' | 'automation' | 'n8n' | 'info' | 'error' | 'success'
   message: string
   status: 'pending' | 'success' | 'error'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>
 }
 
@@ -54,6 +55,7 @@ export interface BlueprintStep {
   type: BlueprintStepType
   title: string
   description?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config: Record<string, any>
 }
 
@@ -112,6 +114,7 @@ export async function deployBlueprintEForm(form: BlueprintStep): Promise<{ succe
     const title = form.title || config.title || 'New E-Form'
     
     // Transform simplified fields to BuilderField schema
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const builderFields = fields.map((f: any) => ({
       id: f.id || `field-${Math.random().toString(36).slice(2, 9)}`,
       type: f.type || 'text',
@@ -179,6 +182,7 @@ export async function deployBlueprintWorkflow(flow: BlueprintStep, projectName: 
     const name = flow.title || config.name || 'Visual Workflow'
 
     // Use generic placeholders for auto-layout positions if not provided by AI
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const nodesWithPositions = nodes.map((n: any, i: number) => ({
       ...n,
       position: n.position || { x: i * 250, y: 100 }

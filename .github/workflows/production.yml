@@ -46,6 +46,8 @@ jobs:
   unit-tests:
     name: 🧪 Unit Tests
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
     steps:
       - uses: actions/checkout@v4
 
@@ -99,6 +101,10 @@ jobs:
           if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then echo "❌ SUPABASE_SERVICE_ROLE_KEY is missing"; else echo "✅ SUPABASE_SERVICE_ROLE_KEY is defined"; fi
           if [ -z "$E2E_USER_EMAIL" ]; then echo "❌ E2E_USER_EMAIL is missing"; else echo "✅ E2E_USER_EMAIL is defined"; fi
           if [ -z "$E2E_USER_PASSWORD" ]; then echo "❌ E2E_USER_PASSWORD is missing"; else echo "✅ E2E_USER_PASSWORD is defined"; fi
+
+      - name: Create required mock env vars
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-http://127.0.0.1:54321}" >> $GITHUB_ENV
 
       - name: Build Next.js
         run: npm run build

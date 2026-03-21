@@ -94,7 +94,7 @@ Return a result with name, nodes, and the connections list.`
 
   // Transform flat connections array into n8n's nested port format
   // Format: { "SourceNode": { "main": [[ { "node": "TargetNode", "type": "main", "index": 0 } ]] } }
-  const connections: Record<string, any> = {}
+  const connections: Record<string, Record<string, Array<Array<{ node: string; type: string; index: number }>>>> = {}
 
   result.data.connections.forEach((c) => {
     if (!connections[c.from]) {
