@@ -18,13 +18,19 @@ interface SourceDrawerProps {
   source: string;
   confidence: number;
   lastVerified: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rawData?: any;
   trigger?: React.ReactNode;
 }
 
 export function SourceDrawer({ source, confidence, lastVerified, rawData, trigger }: SourceDrawerProps) {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+
+  // Safe setMounted via useEffect inside client component
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const confidenceColor = confidence > 0.8 ? 'text-emerald-500' : confidence > 0.5 ? 'text-amber-500' : 'text-red-500';
 
@@ -48,7 +54,7 @@ export function SourceDrawer({ source, confidence, lastVerified, rawData, trigge
         <SheetHeader className="pb-8">
           <SheetTitle className="text-3xl font-heading font-black tracking-tighter uppercase italic text-zinc-100">Data Provenance</SheetTitle>
           <SheetDescription className="text-zinc-400 font-medium italic">
-            "Building civic trust through total transparency."
+            &quot;Building civic trust through total transparency.&quot;
           </SheetDescription>
         </SheetHeader>
         

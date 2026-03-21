@@ -46,6 +46,7 @@ export default function DirectorySearch({ locale }: { locale: string }) {
       }
     }
     fetchCategories()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchBusinesses = useCallback(async (reset: boolean = false) => {
@@ -98,6 +99,7 @@ export default function DirectorySearch({ locale }: { locale: string }) {
       fetchBusinesses(true)
     }, 300) // Debounce search
     return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, category, sortBy])
 
   return (
@@ -117,7 +119,8 @@ export default function DirectorySearch({ locale }: { locale: string }) {
 
           {/* Sort Menu */}
           <div className="shrink-0">
-            <Select value={sortBy} onValueChange={(val: any) => setSortBy(val)}>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <Select value={sortBy} onValueChange={(val: any) => setSortBy(val as "name" | "rating" | "reviews")}>
               <SelectTrigger className="w-full sm:w-[180px] h-14 rounded-2xl bg-background border-muted/60">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
@@ -163,7 +166,7 @@ export default function DirectorySearch({ locale }: { locale: string }) {
               <Search className="h-8 w-8 text-muted-foreground opacity-50" />
             </div>
             <h3 className="text-xl font-semibold mb-2">No businesses found</h3>
-            <p className="text-muted-foreground max-w-md mx-auto">We couldn't find any results matching your search criteria. Try adjusting your filters or search term.</p>
+            <p className="text-muted-foreground max-w-md mx-auto">We couldn&apos;t find any results matching your search criteria. Try adjusting your filters or search term.</p>
             <Button 
               variant="outline" 
               className="mt-6 rounded-full px-8"

@@ -99,6 +99,7 @@ type SlotProps = React.HTMLAttributes<HTMLElement> & { children?: React.ReactNod
 
 const Slot = React.forwardRef<HTMLElement, SlotProps>(({ children, ...props }, ref) => {
   if (React.isValidElement(children)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const child = children as React.ReactElement<any>;
     return React.cloneElement(child, {
       ...props,
@@ -108,14 +109,18 @@ const Slot = React.forwardRef<HTMLElement, SlotProps>(({ children, ...props }, r
         ...child.props.style,
       },
       className: cn(props.className, child.props.className),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref: (node: any) => {
         if (typeof ref === 'function') ref(node);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         else if (ref) (ref as any).current = node;
         
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const childRef = (child as any).ref;
         if (typeof childRef === 'function') childRef(node);
         else if (childRef) childRef.current = node;
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
   }
   return null;

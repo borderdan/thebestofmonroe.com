@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
-import { Loader2, Trash2, Banknote, Gift, Ticket, RefreshCw, Coins, UserPlus, CheckCircle2, MessageCircle, CreditCard } from "lucide-react";
+import { Loader2, Trash2, Banknote, Gift, Ticket, RefreshCw, Coins, CheckCircle2, MessageCircle, CreditCard } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -72,6 +72,7 @@ export function CartSidebar({ customers, currencySettings }: CartSidebarProps) {
 
   const [loading, setLoading] = useState(false);
   const [activeTxId, setActiveTxId] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [qrData, setQrData] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [successData, setSuccessData] = useState<{ txId: string, token: string } | null>(null);

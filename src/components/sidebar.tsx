@@ -41,7 +41,9 @@ interface AppSidebarProps {
 interface NavItem {
   title: string
   url: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subItems?: { title: string; url: string; icon: any }[]
 }
 

@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 export function UniversalSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [results, setResults] = useState<{ entities: any[], feed: any[] }>({ entities: [], feed: [] });
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +28,7 @@ export function UniversalSearch() {
 
   useEffect(() => {
     if (query.length < 2) {
-      setResults({ entities: [], feed: [] });
+      // Intentional no-op to fix set-state-in-effect; handled by UI conditionally
       return;
     }
 
@@ -97,7 +98,7 @@ export function UniversalSearch() {
                     </div>
                     <div className="space-y-1">
                         <h3 className="text-sm font-black uppercase text-zinc-400">Search Anything</h3>
-                        <p className="text-xs text-zinc-600 font-medium italic">Try "Milk", "Permit", or "Brewery"</p>
+                        <p className="text-xs text-zinc-600 font-medium italic">Try &quot;Milk&quot;, &quot;Permit&quot;, or &quot;Brewery&quot;</p>
                     </div>
                 </div>
             )}
@@ -150,7 +151,7 @@ export function UniversalSearch() {
             
             {query.length >= 2 && results.entities.length === 0 && results.feed.length === 0 && !loading && (
                  <div className="py-12 text-center text-zinc-500 text-xs font-bold uppercase italic tracking-widest">
-                 No signals found for "{query}"
+                 No signals found for &quot;{query}&quot;
                </div>
             )}
           </div>

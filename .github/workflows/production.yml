@@ -105,6 +105,8 @@ jobs:
       - name: Create required mock env vars
         run: |
           echo "NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-http://127.0.0.1:54321}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4eHRlc3QiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcwNzU1MDExOSwiZXhwIjoyMDIzMTI2MTE5fQ.fake_anon_key}" >> $GITHUB_ENV
+          echo "SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4eHRlc3QiLCJyb2xlIjoic2VydmljZV9yb2xlIiwiaWF0IjoxNzA3NTUwMTE5LCJleHAiOjIwMjMxMjYxMTl9.fake_service_role_key}" >> $GITHUB_ENV
 
       - name: Build Next.js
         run: npm run build

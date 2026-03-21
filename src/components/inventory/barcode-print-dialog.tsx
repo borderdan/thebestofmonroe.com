@@ -10,8 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Printer, Check, Copy } from 'lucide-react'
-import JsBarcode from 'jsbarcode'
+import { Printer } from 'lucide-react'
 import { InventoryRow } from './inventory-client'
 
 interface BarcodePrintDialogProps {

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Star, MapPin, ExternalLink, Phone } from 'lucide-react'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardTitle } from '@/components/ui/card'
 
 export interface Business {
   id: string
@@ -13,7 +12,9 @@ export interface Business {
   review_count: number
   logo_url: string | null
   cover_url: string | null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   contact: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   location: any
 }
 
