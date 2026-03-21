@@ -5,7 +5,7 @@ import { processTransaction } from '../pos'
 describe('POS Actions', () => {
   it('should recalculate totals server-side and ignore client input', async () => {
     // Mock getSessionWithProfile
-    const { getSessionWithProfile } = await import('@/lib/supabase/helpers')
+    const { getSessionWithProfile, requireModuleAccess } = await import('@/lib/supabase/helpers')
     const { requireRole } = await import('@/lib/auth/rbac')
     
     // We mock the supabase insert to return a successful transaction
@@ -41,6 +41,7 @@ describe('POS Actions', () => {
 
     vi.mocked(getSessionWithProfile).mockResolvedValue(mockAuthContext)
     vi.mocked(requireRole).mockResolvedValue(mockAuthContext)
+    vi.mocked(requireModuleAccess).mockResolvedValue(true)
 
     const result = await processTransaction({ 
       items: [{ id: 'item-1', name: 'Test Item', price: 100, quantity: 2 }], 
