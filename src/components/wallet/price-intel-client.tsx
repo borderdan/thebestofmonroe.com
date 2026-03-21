@@ -964,53 +964,6 @@ export default function PriceIntelClient({
     return savings > 0.01 ? { storeItems, splitTotal, savings, singleBest } : null;
   }, [basket, stores, priceLookup, basketTotals]);
 
-  const summaryStats = useMemo(() => {
-    const totalItems = items.length;
-
-    const uniqueDeals = new Set(
-      prices.filter(p => p.is_deal).map(p => p.item_name)
-    ).size;
-
-    let totalSavings = 0;
-    let savingsCount = 0;
-    for (const storePrices of Object.values(priceLookup)) {
-      const allPrices = Object.values(storePrices).map(p => p.price);
-      if (allPrices.length >= 2) {
-        totalSavings += Math.max(...allPrices) - Math.min(...allPrices);
-        savingsCount++;
-      }
-    }
-    const avgSavings = savingsCount > 0 ? totalSavings / savingsCount : 0;
-
-    const storeWins: Record<string, number> = {};
-    for (const store of Object.values(bestPriceStore)) {
-      storeWins[store] = (storeWins[store] || 0) + 1;
-    }
-    let bestValueStore = stores[0] || 'Walmart';
-    let maxWins = 0;
-    for (const [store, wins] of Object.entries(storeWins)) {
-      if (wins > maxWins) {
-        maxWins = wins;
-        bestValueStore = store;
-      }
-    }
-
-    const catCount = categories.length;
-
-    let lastUpdated = 'Unknown';
-    if (prices.length > 0) {
-      const latest = prices.reduce((max, p) => p.scraped_at > max ? p.scraped_at : max, prices[0].scraped_at);
-      try {
-        const d = new Date(latest);
-        lastUpdated = d.toLocaleDateString(locale || 'en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-      } catch {
-        lastUpdated = 'Unknown';
-      }
-    }
-
-    return { totalItems, uniqueDeals, avgSavings, bestValueStore, maxWins, catCount, lastUpdated };
-  }, [items, prices, priceLookup, bestPriceStore, stores, categories, locale]);
-
   if (prices.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -1031,48 +984,6 @@ export default function PriceIntelClient({
 
   return (
     <div className="space-y-6">
-      {/* Summary Statistics Banner */}
-      <div className="bg-gradient-to-r from-emerald-500/10 via-cyan-500/5 to-emerald-500/10 border border-emerald-500/20 p-4 rounded-2xl">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-black font-mono text-emerald-400">{summaryStats.totalItems}</div>
-            <div className="text-[10px] text-gray-500 dark:text-white/40 uppercase tracking-wider font-bold">Items Tracked</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-black font-mono text-amber-400 flex items-center justify-center gap-1">
-              <Flame className="h-5 w-5" /> {summaryStats.uniqueDeals}
-            </div>
-            <div className="text-[10px] text-gray-500 dark:text-white/40 uppercase tracking-wider font-bold">Active Deals</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-black font-mono text-emerald-400">${summaryStats.avgSavings.toFixed(2)}</div>
-            <div className="text-[10px] text-gray-500 dark:text-white/40 uppercase tracking-wider font-bold">Avg Savings</div>
-          </div>
-          <div className="text-center flex flex-col items-center justify-center">
-            <div className="flex items-center gap-1.5 h-8">
-              {storeLogos[summaryStats.bestValueStore] ? (
-                <img src={storeLogos[summaryStats.bestValueStore]} alt={summaryStats.bestValueStore} className="h-6 w-6 rounded-md object-contain bg-white/10" loading="lazy" />
-              ) : (
-                <Store className={`h-6 w-6 ${storeInfo[summaryStats.bestValueStore]?.color || 'text-white'}`} />
-              )}
-              <span className={`text-sm font-black ${storeInfo[summaryStats.bestValueStore]?.color || 'text-white'}`}>{summaryStats.bestValueStore}</span>
-            </div>
-            <div className="text-[10px] text-gray-500 dark:text-white/40 uppercase tracking-wider font-bold flex flex-col items-center mt-1">
-              <span>Best Value</span>
-              <span className="text-[8px] opacity-70 lowercase">{summaryStats.maxWins} wins</span>
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-black font-mono text-cyan-400">{summaryStats.catCount}</div>
-            <div className="text-[10px] text-gray-500 dark:text-white/40 uppercase tracking-wider font-bold">Categories</div>
-          </div>
-          <div className="text-center flex flex-col items-center justify-center h-full">
-            <div className="text-sm font-black text-gray-400 h-8 flex items-center">{summaryStats.lastUpdated}</div>
-            <div className="text-[10px] text-gray-500 dark:text-white/40 uppercase tracking-wider font-bold mt-1">Last Updated</div>
-          </div>
-        </div>
-      </div>
-
       {/* Store cards strip */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         {stores.map(store => {
