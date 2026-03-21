@@ -17,7 +17,7 @@ const newSupabase = createClient(
 
 async function migrateData() {
   console.log('Fetching businesses from old prod...');
-  let allBusinesses = [];
+  let allBusinesses: any[] = [];
   for (let i = 0; i < 2; i++) {
     const { data: businesses, error: fetchError } = await oldSupabase
       .from('businesses')
