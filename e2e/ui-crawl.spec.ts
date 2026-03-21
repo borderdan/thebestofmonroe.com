@@ -13,7 +13,7 @@
  * Run:
  *   npx playwright test e2e/ui-crawl.spec.ts --project=chromium
  */
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 import fs from 'fs'
 import path from 'path'
 
@@ -290,7 +290,7 @@ test.describe('UI Crawl — Full Route Inventory', () => {
       // Screenshot
       await page.screenshot({ path: screenshotPath, fullPage: true })
 
-    } catch (err) {
+    } catch {
       status = 'timeout'
       try {
         await page.screenshot({ path: screenshotPath, fullPage: true })

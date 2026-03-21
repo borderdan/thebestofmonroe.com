@@ -9,7 +9,7 @@ const supabase = createClient(
 )
 
 async function run() {
-  const { data, error, count } = await supabase.from('businesses').select('*').eq('is_visible', true).order('created_at', { ascending: false }).limit(5000)
+  const { data, error } = await supabase.from('businesses').select('*').eq('is_visible', true).order('created_at', { ascending: false }).limit(5000)
   console.log('Error:', error)
   console.log('Data Length:', data ? data.length : null)
 }

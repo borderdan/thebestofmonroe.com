@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { Client } = require('pg');
 const client = new Client('postgresql://postgres:postgres@127.0.0.1:54322/postgres');
 client.connect()

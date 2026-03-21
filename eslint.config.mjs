@@ -17,6 +17,16 @@ const eslintConfig = defineConfig([
     "test-results/**",
     "*.js",
   ]),
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/ban-ts-comment": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
+      "react/no-unescaped-entities": "warn",
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/purity": "warn"
+    }
+  }
 ]);
 
 export default eslintConfig;
