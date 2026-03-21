@@ -915,6 +915,7 @@ function CompareView({
 export default function PriceIntelClient({
   prices,
   stores,
+  locale: _locale, // eslint-disable-line @typescript-eslint/no-unused-vars
 }: {
   prices: GroceryPrice[];
   stores: string[];
