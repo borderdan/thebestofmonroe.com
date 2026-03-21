@@ -747,6 +747,7 @@ function CompareView({
     return filtered;
   }, [items, search, selectedCategory, sortBy, priceLookup]);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setPage(0); }, [search, selectedCategory, sortBy]);
   const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
   const paginatedItems = filteredItems.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
