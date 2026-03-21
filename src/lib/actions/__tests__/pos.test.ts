@@ -5,7 +5,8 @@ import { processTransaction } from '../pos'
 describe('POS Actions', () => {
   it('should recalculate totals server-side and ignore client input', async () => {
     // Mock getSessionWithProfile
-    const { getSessionWithProfile } = await import('@/lib/supabase/helpers')
+    const helpers = await import('@/lib/supabase/helpers')
+    const { getSessionWithProfile } = helpers
     
     // We mock the supabase insert to return a successful transaction
     const mockSupabase = {
