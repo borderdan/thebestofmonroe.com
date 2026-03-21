@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require("fs");
 const en = JSON.parse(fs.readFileSync("messages/en.json"));
 const es = JSON.parse(fs.readFileSync("messages/es.json"));

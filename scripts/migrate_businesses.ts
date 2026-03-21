@@ -35,7 +35,7 @@ async function migrateData() {
   // Insert in batches
   const batchSize = 100;
   for (let i = 0; i < allBusinesses.length; i += batchSize) {
-    const batch = allBusinesses.slice(i, i + batchSize).map(({ description: _d, google_place_id: _g, rating: _ra, review_count: _re, ...rest }) => rest);
+    const batch = allBusinesses.slice(i, i + batchSize).map(({ description, google_place_id, rating, review_count, ...rest }) => rest);
     const { error: insertError } = await newSupabase
       .from('businesses')
       .upsert(batch, { onConflict: 'id' });

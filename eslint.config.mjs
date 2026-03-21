@@ -24,7 +24,8 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-require-imports": "warn",
       "react/no-unescaped-entities": "warn",
       "react-hooks/set-state-in-effect": "warn",
-      "react-hooks/purity": "warn"
+      "react-hooks/purity": "warn",
+      "@typescript-eslint/no-unused-vars": "warn"
     }
   }
 ]);

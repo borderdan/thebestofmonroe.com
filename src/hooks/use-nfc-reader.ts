@@ -21,7 +21,7 @@ export function useNfcReader({ onScan }: UseNfcReaderProps) {
     }
 
     try {
-      // @ts-expect-error - NDEFReader is not fully typed in TS yet
+      // @ts-ignore - NDEFReader is not fully typed in TS yet
       const ndef = new window.NDEFReader();
       await ndef.scan();
       setIsScanning(true);

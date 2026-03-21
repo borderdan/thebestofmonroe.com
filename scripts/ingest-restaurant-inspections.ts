@@ -325,7 +325,7 @@ async function run() {
       };
     });
 
-    const { error } = await supabase
+    const { error, count } = await supabase
       .from('restaurant_inspections')
       .upsert(records, { onConflict: 'facility_id,inspection_date' });
 
