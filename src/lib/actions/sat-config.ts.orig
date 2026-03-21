@@ -19,7 +19,7 @@ export async function updateSatConfig(formData: FormData) {
   if (!parsed.success) return { success: false, error: 'Invalid data' }
 
   // Update logic using Supabase
-  const updateData: Record<string, string> = {
+  const updateData: any = {
     rfc: parsed.data.rfc,
     regimen_fiscal: parsed.data.regimen_fiscal,
   }

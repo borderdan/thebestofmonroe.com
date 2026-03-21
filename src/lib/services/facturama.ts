@@ -1,4 +1,4 @@
-export async function stampCfdi(config: { facturama_api_user?: string, facturama_api_password?: string }, cfdiPayload: any) {
+export async function stampCfdi(config: { facturama_api_user?: string, facturama_api_password?: string }, cfdiPayload: unknown) {
   // Replace with actual Facturama API call
   const auth = Buffer.from(`${config.facturama_api_user}:${config.facturama_api_password}`).toString('base64')
 
@@ -19,9 +19,9 @@ export async function stampCfdi(config: { facturama_api_user?: string, facturama
 
     const data = await res.json()
     return { success: true, Id: data.Id }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Facturama Stamp Error:', error)
-    throw new Error(error.message)
+    throw new Error((error as Error).message || String(error))
   }
 }
 
@@ -43,8 +43,8 @@ export async function cancelCfdi(config: { facturama_api_user?: string, facturam
     }
 
     return { success: true }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Facturama Cancel Error:', error)
-    throw new Error(error.message)
+    throw new Error((error as Error).message || String(error))
   }
 }
