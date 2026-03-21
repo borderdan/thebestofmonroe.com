@@ -7,7 +7,6 @@ import {
   Check,
   ShoppingCart,
   TrendingDown,
-  MapPin,
   Store,
   Plus,
   Minus,
@@ -19,12 +18,8 @@ import {
   Table2,
   Swords,
   Tag,
-  DollarSign,
   ChevronLeft,
-  ChevronRight,
-  Filter,
   Image,
-  Star,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
@@ -273,9 +268,9 @@ function ProductCard({
 
 /* ── VIEW: Deals Feed ────────────────────────────────────────────── */
 function DealsView({
-  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket
+  stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket
 }: {
-  prices: GroceryPrice[]; stores: string[];
+  stores: string[];
   priceLookup: Record<string, Record<string, GroceryPrice>>;
   items: { name: string; category: string; unit: string }[];
   bestPriceStore: Record<string, string>;
@@ -356,11 +351,10 @@ function DealsView({
 
 /* ── VIEW: Store Mode ────────────────────────────────────────────── */
 function StoreView({
-  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket
+  prices, stores, priceLookup, bestPriceStore, basket, addToBasket, removeFromBasket
 }: {
   prices: GroceryPrice[]; stores: string[];
   priceLookup: Record<string, Record<string, GroceryPrice>>;
-  items: { name: string; category: string; unit: string }[];
   bestPriceStore: Record<string, string>;
   basket: BasketItem[]; addToBasket: (n: string, u: string) => void; removeFromBasket: (n: string) => void;
 }) {
@@ -500,12 +494,11 @@ function StoreView({
 
 /* ── VIEW: Head to Head ──────────────────────────────────────────── */
 function HeadToHeadView({
-  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket
+  stores, priceLookup, items, basket, addToBasket, removeFromBasket
 }: {
-  prices: GroceryPrice[]; stores: string[];
+  stores: string[];
   priceLookup: Record<string, Record<string, GroceryPrice>>;
   items: { name: string; category: string; unit: string }[];
-  bestPriceStore: Record<string, string>;
   basket: BasketItem[]; addToBasket: (n: string, u: string) => void; removeFromBasket: (n: string) => void;
 }) {
   const [storeA, setStoreA] = useState(stores.includes('Food Lion') ? 'Food Lion' : stores[0]);
@@ -643,9 +636,9 @@ function HeadToHeadView({
 
 /* ── VIEW: Category Browser ──────────────────────────────────────── */
 function CategoryView({
-  prices, stores, priceLookup, items, categories, bestPriceStore, basket, addToBasket, removeFromBasket
+  priceLookup, items, categories, bestPriceStore, basket, addToBasket, removeFromBasket
 }: {
-  prices: GroceryPrice[]; stores: string[]; categories: string[];
+  categories: string[];
   priceLookup: Record<string, Record<string, GroceryPrice>>;
   items: { name: string; category: string; unit: string }[];
   bestPriceStore: Record<string, string>;
@@ -739,9 +732,9 @@ function CategoryView({
 
 /* ── VIEW: Comparison Table (original) ───────────────────────────── */
 function CompareView({
-  prices, stores, priceLookup, items, categories, bestPriceStore, basket, addToBasket, removeFromBasket
+  stores, priceLookup, items, categories, bestPriceStore, basket, addToBasket, removeFromBasket
 }: {
-  prices: GroceryPrice[]; stores: string[]; categories: string[];
+  stores: string[]; categories: string[];
   priceLookup: Record<string, Record<string, GroceryPrice>>;
   items: { name: string; category: string; unit: string }[];
   bestPriceStore: Record<string, string>;
@@ -751,6 +744,21 @@ function CompareView({
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'name' | 'savings'>('name');
   const [page, setPage] = useState(0);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    setPage(0);
+  };
+
+  const handleCategorySelect = (cat: string | null) => {
+    setSelectedCategory(cat);
+    setPage(0);
+  };
+
+  const handleSortChange = () => {
+    setSortBy(sortBy === 'name' ? 'savings' : 'name');
+    setPage(0);
+  };
   const PAGE_SIZE = 50;
 
   const filteredItems = useMemo(() => {
@@ -773,7 +781,6 @@ function CompareView({
     return filtered;
   }, [items, search, selectedCategory, sortBy, priceLookup]);
 
-  useEffect(() => { setPage(0); }, [search, selectedCategory, sortBy]);
   const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
   const paginatedItems = filteredItems.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
@@ -784,22 +791,22 @@ function CompareView({
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/30" />
           <input type="text" placeholder="Search items or brands..." value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearchChange}
             className="w-full pl-9 pr-4 py-2 text-xs rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-emerald-500/50" />
         </div>
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
-          <button onClick={() => setSelectedCategory(null)}
+          <button onClick={() => handleCategorySelect(null)}
             className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer ${
               !selectedCategory ? 'bg-white/10 text-white border border-white/20' : 'bg-white/[0.03] text-white/40 border border-white/[0.06]'
             }`}>All</button>
           {categories.map(cat => (
-            <button key={cat} onClick={() => setSelectedCategory(cat === selectedCategory ? null : cat)}
+            <button key={cat} onClick={() => handleCategorySelect(cat === selectedCategory ? null : cat)}
               className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer ${
                 cat === selectedCategory ? 'bg-white/10 text-white border border-white/20' : 'bg-white/[0.03] text-white/40 border border-white/[0.06]'
               }`}>{cat}</button>
           ))}
         </div>
-        <button onClick={() => setSortBy(sortBy === 'name' ? 'savings' : 'name')}
+        <button onClick={handleSortChange}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-white/[0.03] text-white/40 border border-white/[0.06] hover:text-white/60 transition-all cursor-pointer whitespace-nowrap">
           <ArrowUpDown className="h-3 w-3" /> {sortBy === 'name' ? 'A→Z' : '$ Savings'}
         </button>
@@ -908,7 +915,6 @@ function CompareView({
 export default function PriceIntelClient({
   prices,
   stores,
-  locale,
 }: {
   prices: GroceryPrice[];
   stores: string[];
@@ -1159,23 +1165,23 @@ export default function PriceIntelClient({
 
       {/* Active View */}
       {view === 'deals' && (
-        <DealsView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
+        <DealsView stores={stores} priceLookup={priceLookup} items={items}
           bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
       )}
       {view === 'store' && (
-        <StoreView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
+        <StoreView prices={prices} stores={stores} priceLookup={priceLookup}
           bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
       )}
       {view === 'head2head' && (
-        <HeadToHeadView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
-          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
+        <HeadToHeadView stores={stores} priceLookup={priceLookup} items={items}
+          basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
       )}
       {view === 'categories' && (
-        <CategoryView prices={prices} stores={stores} priceLookup={priceLookup} items={items} categories={categories}
+        <CategoryView priceLookup={priceLookup} items={items} categories={categories}
           bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
       )}
       {view === 'compare' && (
-        <CompareView prices={prices} stores={stores} priceLookup={priceLookup} items={items} categories={categories}
+        <CompareView stores={stores} priceLookup={priceLookup} items={items} categories={categories}
           bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
       )}
     </div>
