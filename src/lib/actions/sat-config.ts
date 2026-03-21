@@ -1,1 +1,1 @@
-export const updateSatConfig = async () => {};
+export const updateSatConfig = async (a: any): Promise<any> => {};
