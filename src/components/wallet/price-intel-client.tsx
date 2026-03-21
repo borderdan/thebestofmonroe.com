@@ -823,7 +823,13 @@ function CompareView({
     return filtered;
   }, [items, search, selectedCategory, sortBy, priceLookup]);
 
-  useEffect(() => { setPage(0); }, [search, selectedCategory, sortBy]);
+  // Reset page when filters change
+  const [prevFilters, setPrevFilters] = useState({ search, selectedCategory, sortBy });
+  if (search !== prevFilters.search || selectedCategory !== prevFilters.selectedCategory || sortBy !== prevFilters.sortBy) {
+    setPrevFilters({ search, selectedCategory, sortBy });
+    setPage(0);
+  }
+
   const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
   const paginatedItems = filteredItems.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
