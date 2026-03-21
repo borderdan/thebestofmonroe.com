@@ -50,9 +50,9 @@ export function BillingForm({ initialData }: BillingFormProps) {
       const formData = new FormData()
       formData.append('rfc', values.rfc)
       formData.append('regimen_fiscal', values.regimen_fiscal)
-      formData.append('csd_password', values.csd_password)
-      formData.append('facturama_api_user', values.facturama_api_user)
-      formData.append('facturama_api_password', values.facturama_api_password)
+      if (values.csd_password) formData.append('csd_password', values.csd_password)
+      if (values.facturama_api_user) formData.append('facturama_api_user', values.facturama_api_user)
+      if (values.facturama_api_password) formData.append('facturama_api_password', values.facturama_api_password)
 
       const result = await updateSatConfig(formData)
       if (result.success) {
@@ -61,7 +61,7 @@ export function BillingForm({ initialData }: BillingFormProps) {
         form.setValue('csd_password', '')
         form.setValue('facturama_api_password', '')
       } else {
-        toast.error(result.error || 'Error al actualizar configuración')
+        toast.error((result as any).error || 'Error al actualizar configuración')
       }
     })
   }
