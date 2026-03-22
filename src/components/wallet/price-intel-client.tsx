@@ -161,9 +161,9 @@ function ProductCard({
   const storesWithPrice = Object.keys(itemPrices);
 
   return (
-    <div className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] transition-all overflow-hidden">
+    <div className="group relative rounded-xl border border-gray-200 dark:border-white/[0.12] bg-white dark:bg-white/[0.05] hover:bg-gray-50 dark:hover:bg-white/[0.08] shadow-sm transition-all overflow-hidden">
       {/* Image area */}
-      <div className="relative h-32 bg-white/[0.02] flex items-center justify-center overflow-hidden">
+      <div className="relative h-32 bg-gray-50 dark:bg-white/[0.03] flex items-center justify-center overflow-hidden">
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -194,8 +194,8 @@ function ProductCard({
       {/* Content */}
       <div className="p-3 space-y-2">
         <div className="min-w-0">
-          <h3 className="text-xs font-semibold text-white/80 leading-tight line-clamp-2">{item.name}</h3>
-          {brand && <p className="text-[9px] text-white/30 mt-0.5 truncate">{brand}</p>}
+          <h3 className="text-xs font-semibold text-gray-800 dark:text-white/80 leading-tight line-clamp-2">{item.name}</h3>
+          {brand && <p className="text-[9px] text-gray-500 dark:text-white/30 mt-0.5 truncate">{brand}</p>}
         </div>
 
         {/* Best price highlight */}
@@ -219,7 +219,7 @@ function ProductCard({
             className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
               inBasket
                 ? 'bg-emerald-500/20 text-emerald-400'
-                : 'bg-white/[0.06] text-white/30 hover:bg-white/[0.12] hover:text-white/60'
+                : 'bg-white/[0.06] text-gray-500 dark:text-white/30 hover:bg-white/[0.12] hover:text-white/60'
             }`}
           >
             {inBasket ? <Check className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
@@ -392,18 +392,18 @@ function StoreView({
       {/* Store stats bar */}
       <div className="flex gap-4 items-center px-1">
         <div className="flex items-center gap-2">
-          <span className="text-2xl font-black font-mono text-white/80">{storeItems.length}</span>
-          <span className="text-[10px] text-white/30 uppercase tracking-wider">Items<br />This Week</span>
+          <span className="text-2xl font-black font-mono text-gray-800 dark:text-white/80">{storeItems.length}</span>
+          <span className="text-[10px] text-gray-500 dark:text-white/30 uppercase tracking-wider">Items<br />This Week</span>
         </div>
         <div className="h-8 w-px bg-white/10" />
         <div className="flex items-center gap-2">
           <span className={`text-2xl font-black font-mono ${info.color}`}>{dealCount}</span>
-          <span className="text-[10px] text-white/30 uppercase tracking-wider">On<br />Sale</span>
+          <span className="text-[10px] text-gray-500 dark:text-white/30 uppercase tracking-wider">On<br />Sale</span>
         </div>
         <div className="h-8 w-px bg-white/10" />
         <div className="flex items-center gap-2">
           <span className="text-2xl font-black font-mono text-emerald-400">{cheapestCount}</span>
-          <span className="text-[10px] text-white/30 uppercase tracking-wider">Cheapest<br />vs Others</span>
+          <span className="text-[10px] text-gray-500 dark:text-white/30 uppercase tracking-wider">Cheapest<br />vs Others</span>
         </div>
         <div className="flex-1" />
         {/* Sort controls */}
@@ -413,7 +413,7 @@ function StoreView({
               key={mode}
               onClick={() => setSortMode(mode)}
               className={`px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider cursor-pointer transition-all ${
-                sortMode === mode ? 'bg-white/10 text-white' : 'text-white/30 hover:text-white/50'
+                sortMode === mode ? 'bg-white/10 text-white' : 'text-gray-500 dark:text-white/30 hover:text-white/50'
               }`}
             >
               {mode === 'deals' ? '🔥 Deals' : mode === 'price-asc' ? '$ Low' : mode === 'price-desc' ? '$ High' : 'A→Z'}
@@ -428,7 +428,7 @@ function StoreView({
           <div
             key={p.id}
             className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
-              p.is_deal ? `${info.border} ${info.bg}` : 'border-white/[0.04] bg-white/[0.01] hover:bg-white/[0.03]'
+              p.is_deal ? `${info.border} ${info.bg}` : 'border-gray-200 dark:border-white/[0.10] bg-white dark:bg-white/[0.03] hover:bg-gray-50 dark:hover:bg-white/[0.06]'
             }`}
           >
             {p.image_url ? (
@@ -440,7 +440,7 @@ function StoreView({
               </div>
             )}
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-white/80 truncate">{p.item_name}</p>
+              <p className="text-xs font-semibold text-gray-800 dark:text-white/80 truncate">{p.item_name}</p>
               {p.brand && <p className="text-[9px] text-white/25 truncate">{p.brand}</p>}
               <div className="flex items-center gap-2 mt-1">
                 {p.is_deal && <Badge className="text-[7px] h-3.5 bg-amber-500/20 text-amber-400 border-none px-1">SALE</Badge>}
@@ -545,13 +545,13 @@ function HeadToHeadView({
             <span className={`text-xs font-bold ${infoA.color}`}>{storeA}</span>
           </div>
           <div className={`text-3xl font-black font-mono ${infoA.color}`}>{comparison.aWins}</div>
-          <div className="text-[9px] text-white/30 uppercase tracking-wider mt-1">Wins</div>
+          <div className="text-[9px] text-gray-500 dark:text-white/30 uppercase tracking-wider mt-1">Wins</div>
           <div className="text-[10px] font-mono text-emerald-400 mt-1">Saves ${comparison.totalSavingsA.toFixed(2)}</div>
         </div>
         <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02] text-center">
-          <div className="text-xs font-bold text-white/30 mb-1">Shared Items</div>
+          <div className="text-xs font-bold text-gray-500 dark:text-white/30 mb-1">Shared Items</div>
           <div className="text-3xl font-black font-mono text-white/60">{comparison.shared.length}</div>
-          <div className="text-[9px] text-white/30 uppercase tracking-wider mt-1">{comparison.ties} Ties</div>
+          <div className="text-[9px] text-gray-500 dark:text-white/30 uppercase tracking-wider mt-1">{comparison.ties} Ties</div>
         </div>
         <div className={`p-4 rounded-xl border ${infoB.border} ${infoB.bg} text-center`}>
           <div className="flex items-center justify-center gap-2 mb-1">
@@ -559,17 +559,17 @@ function HeadToHeadView({
             <span className={`text-xs font-bold ${infoB.color}`}>{storeB}</span>
           </div>
           <div className={`text-3xl font-black font-mono ${infoB.color}`}>{comparison.bWins}</div>
-          <div className="text-[9px] text-white/30 uppercase tracking-wider mt-1">Wins</div>
+          <div className="text-[9px] text-gray-500 dark:text-white/30 uppercase tracking-wider mt-1">Wins</div>
           <div className="text-[10px] font-mono text-emerald-400 mt-1">Saves ${comparison.totalSavingsB.toFixed(2)}</div>
         </div>
       </div>
 
       {/* Items comparison - biggest differences first */}
-      <div className="rounded-xl border border-white/[0.06] overflow-hidden">
+      <div className="rounded-xl border border-gray-200 dark:border-white/[0.12] overflow-hidden">
         <div className="grid grid-cols-[1fr_100px_60px_100px_40px] gap-0 bg-white/[0.03] border-b border-white/[0.06] px-4 py-2">
-          <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-white/30">Item</span>
+          <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-gray-500 dark:text-white/30">Item</span>
           <span className={`text-[9px] font-mono font-bold uppercase tracking-wider ${infoA.color} text-center`}>{storeA}</span>
-          <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-white/30 text-center">Diff</span>
+          <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-gray-500 dark:text-white/30 text-center">Diff</span>
           <span className={`text-[9px] font-mono font-bold uppercase tracking-wider ${infoB.color} text-center`}>{storeB}</span>
           <span />
         </div>
@@ -662,7 +662,7 @@ function CategoryView({
         >
           <ChevronLeft className="h-3.5 w-3.5" /> Back to categories
         </button>
-        <h3 className="text-lg font-black uppercase tracking-wider text-white/80">{selectedCat}</h3>
+        <h3 className="text-lg font-black uppercase tracking-wider text-gray-800 dark:text-white/80">{selectedCat}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
           {filteredItems.map(item => (
             <ProductCard
@@ -696,7 +696,7 @@ function CategoryView({
             )}
           </div>
           <div className="p-4">
-            <h3 className="text-sm font-black uppercase tracking-wider text-white/80">{cat.category || 'Other'}</h3>
+            <h3 className="text-sm font-black uppercase tracking-wider text-gray-800 dark:text-white/80">{cat.category || 'Other'}</h3>
             <div className="flex items-center gap-3 mt-1.5">
               <span className="text-[10px] font-mono text-white/40">{cat.itemCount} items</span>
               {cat.withDeals > 0 && (
@@ -756,10 +756,10 @@ function CompareView({
       {/* Search + filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/30" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-500 dark:text-white/30" />
           <input type="text" placeholder="Search items or brands..." value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-emerald-500/50" />
+            className="w-full pl-9 pr-4 py-2 text-xs rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder:text-gray-500 dark:text-white/30 focus:outline-none focus:ring-1 focus:ring-emerald-500/50" />
         </div>
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
           <button onClick={() => setSelectedCategory(null)}
@@ -780,10 +780,10 @@ function CompareView({
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-white/[0.06] overflow-x-auto">
+      <div className="rounded-xl border border-gray-200 dark:border-white/[0.12] shadow-sm overflow-x-auto">
         <div className="grid gap-0" style={{ gridTemplateColumns: `minmax(200px, 1.5fr) repeat(${stores.length}, minmax(80px, 1fr)) 48px` }}>
           <div className="p-3 bg-white/[0.03] border-b border-r border-white/[0.06]">
-            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/30">Item</span>
+            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-white/30">Item</span>
           </div>
           {stores.map(store => {
             const info = storeInfo[store] || storeInfo['Walmart'];
@@ -811,8 +811,8 @@ function CompareView({
                 {imageUrl && <img src={imageUrl} alt={item.name} className="h-10 w-10 rounded-md object-contain flex-shrink-0 bg-white/5" loading="lazy"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
                 <div className="flex flex-col min-w-0">
-                  <span className="text-xs font-semibold text-white/80 truncate">{item.name}</span>
-                  {brand && <span className="text-[9px] text-white/30 truncate">{brand}</span>}
+                  <span className="text-xs font-semibold text-gray-800 dark:text-white/80 truncate">{item.name}</span>
+                  {brand && <span className="text-[9px] text-gray-500 dark:text-white/30 truncate">{brand}</span>}
                   <div className="flex items-center gap-2">
                     {item.unit && <span className="text-[9px] text-white/25 font-mono">per {item.unit}</span>}
                     {maxSavings && parseFloat(maxSavings) > 0 && (
@@ -852,7 +852,7 @@ function CompareView({
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between px-2">
-          <span className="text-[10px] font-mono text-white/30">
+          <span className="text-[10px] font-mono text-gray-500 dark:text-white/30">
             Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, filteredItems.length)} of {filteredItems.length}
           </span>
           <div className="flex items-center gap-1">
@@ -1080,7 +1080,7 @@ export default function PriceIntelClient({
           const count = prices.filter(p => p.store_name === store).length;
           const deals = prices.filter(p => p.store_name === store && p.is_deal).length;
           return (
-            <div key={store} className={`p-2.5 rounded-xl border ${info.border} ${info.bg} backdrop-blur-sm`}>
+            <div key={store} className={`p-2.5 rounded-xl border ${info.border} ${info.bg} backdrop-blur-sm shadow-sm`}>
               <div className="flex items-center gap-1.5 mb-1">
                 {storeLogos[store] ? (
                   <img src={storeLogos[store]} alt={store} className="h-5 w-5 rounded-md object-contain bg-white/10" loading="lazy"
@@ -1104,7 +1104,7 @@ export default function PriceIntelClient({
       </div>
 
       {/* View mode tabs */}
-      <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] overflow-x-auto no-scrollbar">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-gray-100 dark:bg-white/[0.06] border border-gray-200 dark:border-white/[0.10] overflow-x-auto no-scrollbar">
         {views.map(v => (
           <button
             key={v.key}
@@ -1135,20 +1135,20 @@ export default function PriceIntelClient({
 
       {/* Smart Basket Panel */}
       {showBasket && (
-        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.03] backdrop-blur-sm p-4 space-y-4">
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/[0.06] backdrop-blur-sm p-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ShoppingCart className="h-4 w-4 text-emerald-400" />
               <span className="text-sm font-bold text-emerald-400">Smart Basket</span>
-              <span className="text-[10px] text-white/30 font-mono">{basket.length} item{basket.length !== 1 ? 's' : ''}</span>
+              <span className="text-[10px] text-gray-500 dark:text-white/30 font-mono">{basket.length} item{basket.length !== 1 ? 's' : ''}</span>
             </div>
             {basket.length > 0 && (
-              <button onClick={() => setBasket([])} className="text-[10px] text-white/30 hover:text-red-400 transition-colors cursor-pointer">Clear all</button>
+              <button onClick={() => setBasket([])} className="text-[10px] text-gray-500 dark:text-white/30 hover:text-red-400 transition-colors cursor-pointer">Clear all</button>
             )}
           </div>
 
           {basket.length === 0 ? (
-            <p className="text-xs text-white/30 text-center py-4">Click + on any item to add it to your basket.</p>
+            <p className="text-xs text-gray-500 dark:text-white/30 text-center py-4">Click + on any item to add it to your basket.</p>
           ) : (
             <>
               <div className="flex flex-wrap gap-2">
@@ -1156,9 +1156,9 @@ export default function PriceIntelClient({
                   <div key={item.item_name} className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/[0.06] border border-white/[0.08]">
                     <span className="text-[10px] font-medium text-white/70">{item.item_name}</span>
                     <div className="flex items-center gap-0.5 ml-1">
-                      <button onClick={() => updateQty(item.item_name, -1)} className="p-0.5 hover:text-white/80 text-white/30 cursor-pointer"><Minus className="h-2.5 w-2.5" /></button>
+                      <button onClick={() => updateQty(item.item_name, -1)} className="p-0.5 hover:text-gray-800 dark:text-white/80 text-gray-500 dark:text-white/30 cursor-pointer"><Minus className="h-2.5 w-2.5" /></button>
                       <span className="text-[10px] font-mono font-bold text-white/60 min-w-[14px] text-center">{item.qty}</span>
-                      <button onClick={() => updateQty(item.item_name, 1)} className="p-0.5 hover:text-white/80 text-white/30 cursor-pointer"><Plus className="h-2.5 w-2.5" /></button>
+                      <button onClick={() => updateQty(item.item_name, 1)} className="p-0.5 hover:text-gray-800 dark:text-white/80 text-gray-500 dark:text-white/30 cursor-pointer"><Plus className="h-2.5 w-2.5" /></button>
                     </div>
                     <button onClick={() => removeFromBasket(item.item_name)} className="p-0.5 hover:text-red-400 text-white/20 ml-1 cursor-pointer"><Trash2 className="h-2.5 w-2.5" /></button>
                   </div>
