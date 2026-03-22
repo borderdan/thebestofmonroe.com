@@ -7,7 +7,7 @@ process.env.STRIPE_SECRET_KEY = 'sk_test_123'
 process.env.STRIPE_WEBHOOK_SECRET = 'whsec_123'
 
 vi.mock('@/lib/supabase/helpers', () => ({
-  requireModuleAccess: vi.fn().mockResolvedValue(true),
+  requireModuleAccess: vi.fn().mockResolvedValue(undefined),
   getSessionWithProfile: vi.fn().mockResolvedValue({
     supabase: {
       from: vi.fn().mockReturnThis(),
