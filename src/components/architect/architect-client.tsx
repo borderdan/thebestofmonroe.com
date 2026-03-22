@@ -834,11 +834,11 @@ export function ArchitectClient({ initialBlueprints }: { initialBlueprints: Blue
                               log.status === 'error' ? "text-destructive" :
                               log.status === 'success' ? "text-success font-medium" : "text-muted-foreground"
                             )}>
-                              {log.message}
+                              {String(log.message)}
                             </span>
                             {/* DEEP LINK RENDERER */}
-                            {log.metadata?.link && log.status === 'success' && (
-                              <Link target="_blank" href={log.metadata.link} className="inline-flex items-center gap-1 ml-2 px-1.5 py-0.5 rounded bg-muted/50 hover:bg-muted text-foreground transition-colors">
+                            {Boolean(log.metadata?.link && log.status === 'success') && (
+                              <Link target="_blank" href={String(log.metadata?.link || '')} className="inline-flex items-center gap-1 ml-2 px-1.5 py-0.5 rounded bg-muted/50 hover:bg-muted text-foreground transition-colors">
                                 Edit <ExternalLink className="w-3 h-3" />
                               </Link>
                             )}

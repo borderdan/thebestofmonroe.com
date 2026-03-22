@@ -43,7 +43,7 @@ export default async function WorkflowLogsPage({ params }: { params: Promise<{ l
         </Card>
       ) : (
         <div className="space-y-3">
-          {executions.map((exec) => {
+          {executions.map((exec: any) => {
             const status = STATUS_CONFIG[exec.status] || STATUS_CONFIG.queued
             const StatusIcon = status.icon
             return (
