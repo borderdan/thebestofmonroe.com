@@ -29,6 +29,18 @@ export default async function PriceIntelPage({
   }
   const prices = Array.from(priceMap.values());
 
+  // Fetch historical prices from 7-14 days ago for trend analysis
+  const now = new Date();
+  const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString();
+
+  const { data: historicalPrices } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .from('grocery_prices' as any)
+    .select('item_name, store_name, price, scraped_at')
+    .gte('scraped_at', twoWeeksAgo)
+    .lte('scraped_at', oneWeekAgo);
+
   // Get unique stores and most recent scrape
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const stores = [...new Set(prices.map((p: any) => p.store_name))].sort();
@@ -64,6 +76,7 @@ export default async function PriceIntelPage({
 
         <PriceIntelClient
           prices={prices}
+          historicalPrices={historicalPrices || undefined}
           stores={stores as string[]}
           locale={locale}
         />
