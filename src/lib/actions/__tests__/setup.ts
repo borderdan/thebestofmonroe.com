@@ -25,6 +25,7 @@ vi.mock('@/lib/supabase/helpers', () => ({
       is_superadmin: false,
     }
   }),
+  requireModuleAccess: vi.fn().mockResolvedValue(true),
 }))
 
 vi.mock('@/lib/auth/rbac', () => ({
