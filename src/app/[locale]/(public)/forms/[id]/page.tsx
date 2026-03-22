@@ -32,6 +32,7 @@ export default async function PublicEFormPage({
   const brandColor = business?.brand_color || '#3b82f6'
 
   // Generate a fallback schema if json_schema is empty (backwards compatibility)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const jsonSchema: any = (form.json_schema as any) || {
     title: form.title,
     type: "object",
@@ -103,6 +104,7 @@ export default async function PublicEFormPage({
             <CardContent className="px-8 pb-8">
               <FormRenderer 
                 schema={jsonSchema}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 uiSchema={(form.ui_schema as any) || {}}
                 onSubmit={submitForm}
                 brandColor={brandColor}
