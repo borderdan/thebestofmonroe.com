@@ -215,7 +215,7 @@ export default async function CouncilMeetingsPage({
           <p className="text-xs text-center text-muted-foreground">
             Meeting recordings sourced from the City of Monroe YouTube channel.
             AI summaries are generated from video transcripts for informational purposes.
-            For official meeting records, contact the City Clerk's office.
+            For official meeting records, contact the City Clerk&apos;s office.
           </p>
         </footer>
       </main>

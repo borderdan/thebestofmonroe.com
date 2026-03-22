@@ -6,12 +6,14 @@ export default async function AdminDataPipelinePage() {
 
   // Fetch data sources
   const { data: sources } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from('data_sources' as any)
     .select('*')
     .order('category', { ascending: true });
 
   // Fetch recent ingestion logs (last 200)
   const { data: logs } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from('ingestion_logs' as any)
     .select('*')
     .order('created_at', { ascending: false })
@@ -26,11 +28,17 @@ export default async function AdminDataPipelinePage() {
     agendasCount,
     propertySalesCount,
   ] = await Promise.all([
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     supabase.from('community_feed' as any).select('id', { count: 'exact', head: true }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     supabase.from('grocery_prices' as any).select('id', { count: 'exact', head: true }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     supabase.from('restaurant_inspections' as any).select('id', { count: 'exact', head: true }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     supabase.from('council_meetings' as any).select('id', { count: 'exact', head: true }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     supabase.from('city_agendas' as any).select('id', { count: 'exact', head: true }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     supabase.from('property_sales' as any).select('id', { count: 'exact', head: true }),
   ]);
 

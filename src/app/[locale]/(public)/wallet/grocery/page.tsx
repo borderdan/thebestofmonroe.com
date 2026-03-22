@@ -14,12 +14,14 @@ export default async function PriceIntelPage({
 
   // Fetch all grocery prices, most recent per store+item
   const { data: rawPrices } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from('grocery_prices' as any)
     .select('*')
     .order('scraped_at', { ascending: false })
     .limit(2000);
 
   // Dedupe to latest price per store+item combo
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const priceMap = new Map<string, any>();
   for (const row of rawPrices ?? []) {
     const key = `${row.store_name}|${row.item_name}`;
@@ -28,6 +30,7 @@ export default async function PriceIntelPage({
   const prices = Array.from(priceMap.values());
 
   // Get unique stores and most recent scrape
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const stores = [...new Set(prices.map((p: any) => p.store_name))].sort();
   const mostRecent = rawPrices?.[0]?.scraped_at;
 

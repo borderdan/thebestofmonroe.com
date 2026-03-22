@@ -1,0 +1,639 @@
+﻿
+> thebestofmonroe_temp@0.1.0 lint
+> eslint
+
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\(public)\council-meetings\page.tsx
+  139:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\admin\infrastructure\page.tsx
+  1:29  warning  'CardDescription' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\eforms\create\page.tsx
+   8:10  warning  'Textarea' is defined but never used                 @typescript-eslint/no-unused-vars
+   9:10  warning  'Card' is defined but never used                     @typescript-eslint/no-unused-vars
+   9:16  warning  'CardContent' is defined but never used              @typescript-eslint/no-unused-vars
+  22:23  warning  'setDescription' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\eforms\edit\[id]\page.tsx
+   8:10  warning  'Textarea' is defined but never used     @typescript-eslint/no-unused-vars
+   9:10  warning  'Card' is defined but never used         @typescript-eslint/no-unused-vars
+   9:16  warning  'CardContent' is defined but never used  @typescript-eslint/no-unused-vars
+   9:29  warning  'CardHeader' is defined but never used   @typescript-eslint/no-unused-vars
+   9:41  warning  'CardTitle' is defined but never used    @typescript-eslint/no-unused-vars
+  10:10  warning  'Label' is defined but never used        @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\eforms\eforms-client.tsx
+   6:73  warning  'Clock' is defined but never used         @typescript-eslint/no-unused-vars
+   6:80  warning  'CalendarDays' is defined but never used  @typescript-eslint/no-unused-vars
+  26:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  92:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\invoices\cancel-invoice-button.tsx
+  24:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  24:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\layout.tsx
+  5:10  warning  'PageTransition' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\page.tsx
+    6:10   warning  'EntityCard' is defined but never used                 @typescript-eslint/no-unused-vars
+    8:22   warning  'ArrowRight' is defined but never used                 @typescript-eslint/no-unused-vars
+    8:71   warning  'BarChart3' is defined but never used                  @typescript-eslint/no-unused-vars
+    9:10   warning  'Button' is defined but never used                     @typescript-eslint/no-unused-vars
+   50:17   warning  'trendingEntities' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  157:103  warning  Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  161:105  warning  Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  168:57   warning  Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  183:51   warning  Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\pos\actions.ts
+  71:9  warning  'totalInBase' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\settings\page.tsx
+  21:10  warning  'Separator' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\users\audit-logs\page.tsx
+  2:29  warning  'CardHeader' is defined but never used  @typescript-eslint/no-unused-vars
+  2:41  warning  'CardTitle' is defined but never used   @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\users\page.tsx
+  60:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\vault\_components\upload-button.tsx
+  31:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  52:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  52:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\vault\page.tsx
+  24:11  warning  'locale' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\workflows\create\page.tsx
+  17:10  warning  'AIWorkflowGenerator' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\workflows\logs\page.tsx
+  2:29  warning  'CardHeader' is defined but never used  @typescript-eslint/no-unused-vars
+  2:41  warning  'CardTitle' is defined but never used   @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\app\workflows\workflows-client.tsx
+  70:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\directory\page.tsx
+  24:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\page.tsx
+   10:37  warning  'ArrowRight' is defined but never used    @typescript-eslint/no-unused-vars
+  123:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\portal\page.tsx
+   5:10  warning  'Separator' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+  51:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\antigravity\thebestofmonroe.com\src\app\[locale]\receipt\[token]\page.tsx
+   3:52  warning  'CardFooter' is defined but never used                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+   6:10  warning  'Button' is defined but never used                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+   7:10  warning  'ShoppingBag' is defined but never used                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+  23:18  warning  'locale' is assigned a value but never used                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+  61:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\antigravity\thebestofmonroe.com\src\app\api\webhooks\__tests__\stripe.test.ts
+  3:8  warning  'Stripe' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\app\api\webhooks\evaluator\route.ts
+   84:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  181:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  307:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  321:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\app\api\webhooks\stripe\route.ts
+  38:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\admin\data-pipeline-client.tsx
+  16:3   warning  'Zap' is defined but never used           @typescript-eslint/no-unused-vars
+  18:3   warning  'ChevronRight' is defined but never used  @typescript-eslint/no-unused-vars
+  24:3   warning  'ArrowUpDown' is defined but never used   @typescript-eslint/no-unused-vars
+  26:3   warning  'Hash' is defined but never used          @typescript-eslint/no-unused-vars
+  28:3   warning  'TrendingUp' is defined but never used    @typescript-eslint/no-unused-vars
+  30:3   warning  'ShieldCheck' is defined but never used   @typescript-eslint/no-unused-vars
+  33:3   warning  'ExternalLink' is defined but never used  @typescript-eslint/no-unused-vars
+  51:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\admin\tenant-management.tsx
+   3:10  warning  'useState' is defined but never used                  @typescript-eslint/no-unused-vars
+  19:10  warning  'Badge' is defined but never used                     @typescript-eslint/no-unused-vars
+  22:36  warning  'updateTenantBetaFeatures' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\architect\architect-client.tsx
+   12:10   warning  'useTranslations' is defined but never used  @typescript-eslint/no-unused-vars
+   22:22   warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+   23:25   warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+   24:27   warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+   34:58   warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+   39:61   warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+   44:63   warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  379:141  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  389:116  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  574:45   warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\automations\ai-generator.tsx
+  24:9  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\automations\automations-client.tsx
+  87:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  88:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\community\live-header.tsx
+   5:41  warning  'ShoppingCart' is defined but never used  @typescript-eslint/no-unused-vars
+   9:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\community\recalls-client.tsx
+  8:45  warning  'AlertCircle' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\dashboard\community-feed.tsx
+   3:10  warning  'MapPin' is defined but never used           @typescript-eslint/no-unused-vars
+   6:11  warning  'CommunityUpdate' is defined but never used  @typescript-eslint/no-unused-vars
+  15:55  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\directory\directory-table.tsx
+  228:17  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+C:\antigravity\thebestofmonroe.com\src\components\directory\directory-table.tsx:228:17
+  226 |   ], [locale])
+  227 |
+> 228 |   const table = useReactTable({
+      |                 ^^^^^^^^^^^^^ TanStack Table's `useReactTable()` API returns functions that cannot be memoized safely
+  229 |     data,
+  230 |     columns,
+  231 |     getCoreRowModel: getCoreRowModel(),  react-hooks/incompatible-library
+
+C:\antigravity\thebestofmonroe.com\src\components\eforms\eforms-data-table.tsx
+  13:10   warning  'Button' is defined but never used        @typescript-eslint/no-unused-vars
+  14:38   warning  'Plus' is defined but never used          @typescript-eslint/no-unused-vars
+  19:75   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:101  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:115  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\forms\builder\ai-generator.tsx
+  40:87  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  92:14  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\forms\builder\field-palette.tsx
+  36:9  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\forms\builder\sortable-field.tsx
+  11:10  warning  'Badge' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\forms\builder\template-selector.tsx
+  5:10  warning  'Button' is defined but never used    @typescript-eslint/no-unused-vars
+  7:10  warning  'FileText' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\forms\builder\utils.ts
+   5:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\aviation-panel.tsx
+   3:45  warning  'Info' is defined but never used          @typescript-eslint/no-unused-vars
+   5:10  warning  'motion' is defined but never used        @typescript-eslint/no-unused-vars
+   8:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:50  warning  'idx' is defined but never used           @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\civic-grid.tsx
+   3:10  warning  'Newspaper' is defined but never used     @typescript-eslint/no-unused-vars
+   3:21  warning  'CalendarDays' is defined but never used  @typescript-eslint/no-unused-vars
+   3:35  warning  'ArrowRight' is defined but never used    @typescript-eslint/no-unused-vars
+   3:56  warning  'Briefcase' is defined but never used     @typescript-eslint/no-unused-vars
+   3:67  warning  'Activity' is defined but never used      @typescript-eslint/no-unused-vars
+   3:77  warning  'Info' is defined but never used          @typescript-eslint/no-unused-vars
+  10:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\daily-spotlight.tsx
+   9:11  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  29:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\deals-carousel.tsx
+  9:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\entity-card.tsx
+   3:10  warning  'Card' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+   3:16  warning  'CardContent' is defined but never used                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+   5:24  warning  'Activity' is defined but never used                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   5:48  warning  'ShieldCheck' is defined but never used                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+  10:11  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  26:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  26:13  warning  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                jsx-a11y/alt-text
+  56:17  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  56:51  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\flash-deal-aggregator.tsx
+   8:11  warning  'FlashDeal' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+  16:61  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  33:28  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\flash-deal-aggregator.tsx:33:28
+  31 |       description: 'Buy one get one free on all accessories this weekend only.',
+  32 |       merchant: 'Monroe Crossings Mall',
+> 33 |       expires_at: new Date(Date.now() + 86400000).toISOString()
+     |                            ^^^^^^^^^^ Cannot call impure function
+  34 |     },
+  35 |     {
+  36 |         id: 'mock-deal-2',  react-hooks/purity
+  40:30  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\flash-deal-aggregator.tsx:40:30
+  38 |         description: '$2 off all self-pour taps from 4pm-6pm every weekday.',
+  39 |         merchant: 'The Courthouse Self-Pour',
+> 40 |         expires_at: new Date(Date.now() + 3600000).toISOString()
+     |                              ^^^^^^^^^^ Cannot call impure function
+  41 |     }
+  42 |   ];
+  43 |                          react-hooks/purity
+  56:34  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  87:20  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+  87:39  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\grocery-arbitrage.tsx
+    5:26  warning  'ArrowDown' is defined but never used                            @typescript-eslint/no-unused-vars
+    5:58  warning  'Info' is defined but never used                                 @typescript-eslint/no-unused-vars
+   27:35  warning  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   39:38  warning  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   59:13  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   59:69  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+   59:86  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   64:62  warning  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  111:54  warning  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\intelligence-feed.tsx
+   2:22   warning  'Info' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   7:12   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-explicit-any
+  30:178  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\intelligence-feed.tsx:30:178
+  28 |     feed = [
+  29 |       { id: 'mock-1', type: 'permit', title: 'New Commercial Construction', description: 'Permit issued for 100 W Jefferson St renovations', event_time: new Date().toISOString() },
+> 30 |       { id: 'mock-2', type: 'weather', title: 'Clear Skies Expected', description: 'Optimal conditions for outdoor dining this evening in downtown Monroe', event_time: new Date(Date.now() - 3600000).toISOString() },
+     |                                                                                                                                                                                  ^^^^^^^^^^ Cannot call impure function
+  31 |       { id: 'mock-3', type: 'traffic', title: 'Scheduled Road Closure', description: 'Main St closed starting tomorrow at 6am for upcoming community festival prep', event_time: new Date(Date.now() - 7200000).toISOString() },
+  32 |       { id: 'mock-4', type: 'alert', title: 'Utility Maintenance', description: 'Water service interruption expected near Stewart St between 2pm-4pm', event_time: new Date(Date.now() - 86400000).toISOString() }
+  33 |     ]  react-hooks/purity
+  31:187  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\intelligence-feed.tsx:31:187
+  29 |       { id: 'mock-1', type: 'permit', title: 'New Commercial Construction', description: 'Permit issued for 100 W Jefferson St renovations', event_time: new Date().toISOString() },
+  30 |       { id: 'mock-2', type: 'weather', title: 'Clear Skies Expected', description: 'Optimal conditions for outdoor dining this evening in downtown Monroe', event_time: new Date(Date.now() - 3600000).toISOString() },
+> 31 |       { id: 'mock-3', type: 'traffic', title: 'Scheduled Road Closure', description: 'Main St closed starting tomorrow at 6am for upcoming community festival prep', event_time: new Date(Date.now() - 7200000).toISOString() },
+     |                                                                                                                                                                                           ^^^^^^^^^^ Cannot call impure function
+  32 |       { id: 'mock-4', type: 'alert', title: 'Utility Maintenance', description: 'Water service interruption expected near Stewart St between 2pm-4pm', event_time: new Date(Date.now() - 86400000).toISOString() }
+  33 |     ]
+  34 |   }  react-hooks/purity
+  32:173  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\intelligence-feed.tsx:32:173
+  30 |       { id: 'mock-2', type: 'weather', title: 'Clear Skies Expected', description: 'Optimal conditions for outdoor dining this evening in downtown Monroe', event_time: new Date(Date.now() - 3600000).toISOString() },
+  31 |       { id: 'mock-3', type: 'traffic', title: 'Scheduled Road Closure', description: 'Main St closed starting tomorrow at 6am for upcoming community festival prep', event_time: new Date(Date.now() - 7200000).toISOString() },
+> 32 |       { id: 'mock-4', type: 'alert', title: 'Utility Maintenance', description: 'Water service interruption expected near Stewart St between 2pm-4pm', event_time: new Date(Date.now() - 86400000).toISOString() }
+     |                                                                                                                                                                             ^^^^^^^^^^ Cannot call impure function
+  33 |     ]
+  34 |   }
+  35 |                                                                                                                                                                                                     react-hooks/purity
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\market-leaders.tsx
+  4:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\side-hustle-registry.tsx
+  17:20   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  18:18   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  79:17   warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  79:35   warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  79:150  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  98:17   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\source-drawer.tsx
+  21:13  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+  27:19  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\source-drawer.tsx:27:19
+  25 | export function SourceDrawer({ source, confidence, lastVerified, rawData, trigger }: SourceDrawerProps) {
+  26 |   const [mounted, setMounted] = useState(false);
+> 27 |   useEffect(() => setMounted(true), []);
+     |                   ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  28 |
+  29 |   const confidenceColor = confidence > 0.8 ? 'text-emerald-500' : confidence > 0.5 ? 'text-amber-500' : 'text-red-500';
+  30 |  react-hooks/set-state-in-effect
+  51:13  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react/no-unescaped-entities
+  51:62  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react/no-unescaped-entities
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\stats-bar.tsx
+  4:34  warning  'Heart' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\universal-search.tsx
+    5:39   warning  'Calendar' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+    5:70   warning  'X' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+    6:47   warning  'DialogTitle' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+    8:10   warning  'motion' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+    8:18   warning  'AnimatePresence' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   14:54   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+   14:67   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+   30:7    error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\antigravity\thebestofmonroe.com\src\components\hub\universal-search.tsx:30:7
+  28 |   useEffect(() => {
+  29 |     if (query.length < 2) {
+> 30 |       setResults({ entities: [], feed: [] });
+     |       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  31 |       return;
+  32 |     }
+  33 |  react-hooks/set-state-in-effect
+  100:85   warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+  100:90   warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+  100:93   warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+  100:100  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+  100:106  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+  100:114  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+  153:39   warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+  153:47   warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react/no-unescaped-entities
+
+C:\antigravity\thebestofmonroe.com\src\components\inventory\barcode-print-dialog.tsx
+  13:19  warning  'Check' is defined but never used      @typescript-eslint/no-unused-vars
+  13:26  warning  'Copy' is defined but never used       @typescript-eslint/no-unused-vars
+  14:8   warning  'JsBarcode' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\pos\cart-sidebar.tsx
+  16:69  warning  'UserPlus' is defined but never used            @typescript-eslint/no-unused-vars
+  75:18  warning  'setQrData' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\public\BusinessCard.tsx
+   3:16  warning  'CardContent' is defined but never used   @typescript-eslint/no-unused-vars
+   3:29  warning  'CardFooter' is defined but never used    @typescript-eslint/no-unused-vars
+   3:41  warning  'CardHeader' is defined but never used    @typescript-eslint/no-unused-vars
+   4:10  warning  'Badge' is defined but never used         @typescript-eslint/no-unused-vars
+  16:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\public\DirectorySearch.tsx
+    6:18  warning  'Filter' is defined but never used                                                                                  @typescript-eslint/no-unused-vars
+    6:35  warning  'ChevronDown' is defined but never used                                                                             @typescript-eslint/no-unused-vars
+   20:43  warning  'locale' is defined but never used                                                                                  @typescript-eslint/no-unused-vars
+   49:6   warning  React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array         react-hooks/exhaustive-deps
+  101:6   warning  React Hook useEffect has a missing dependency: 'fetchBusinesses'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  120:57  warning  Unexpected any. Specify a different type                                                                            @typescript-eslint/no-explicit-any
+  166:76  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                     react/no-unescaped-entities
+
+C:\antigravity\thebestofmonroe.com\src\components\sidebar.tsx
+  27:175  warning  'Ticket' is defined but never used        @typescript-eslint/no-unused-vars
+  44:9    warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:50   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\ui\form.tsx
+  102:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  111:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  113:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  115:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  119:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\components\wallet\price-intel-client.tsx
+   10:3   warning  'MapPin' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   22:3   warning  'DollarSign' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+   24:3   warning  'ChevronRight' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   25:3   warning  'Filter' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   27:3   warning  'Star' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+  168:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  176:11  warning  Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       jsx-a11y/alt-text
+  212:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  250:3   warning  'prices' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  307:37  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  333:32  warning  'items' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+  385:37  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  435:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  477:3   warning  'prices' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  477:39  warning  'bestPriceStore' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  544:36  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  558:36  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  586:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  620:3   warning  'prices' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  620:11  warning  'stores' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  692:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  716:3   warning  'prices' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  750:21  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\antigravity\thebestofmonroe.com\src\components\wallet\price-intel-client.tsx:750:21
+  748 |   }, [items, search, selectedCategory, sortBy, priceLookup]);
+  749 |
+> 750 |   useEffect(() => { setPage(0); }, [search, selectedCategory, sortBy]);
+      |                     ^^^^^^^ Avoid calling setState() directly within an effect
+  751 |   const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
+  752 |   const paginatedItems = filteredItems.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  753 |  react-hooks/set-state-in-effect
+  811:30  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  885:3   warning  'locale' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  997:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+
+C:\antigravity\thebestofmonroe.com\src\components\workflows\builder\NodePalette.tsx
+  4:23  warning  'Play' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\components\workflows\builder\ai-generator.tsx
+  16:15  warning  'Node' is defined but never used   @typescript-eslint/no-unused-vars
+  16:26  warning  'Edge' is defined but never used   @typescript-eslint/no-unused-vars
+  42:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\hooks\use-nfc-reader.ts
+  24:7   warning  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  30:32  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  53:21  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\admin.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\analytics.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\automations.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\crm.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\crud.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\currency.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\eforms.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\guest-checkout.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\inventory-bulk.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\inventory.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\invoices.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\keyrings.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\links.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\pin-auth.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\storage.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\stripe.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\team.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\vault.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\__tests__\whatsapp.test.ts
+  1:32  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\analytics.ts
+  3:15  warning  'ActionResult' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\automations.ts
+  61:13  warning  'data' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\blueprints.ts
+  6:10  warning  'z' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\crud.ts
+  3:15  warning  'ActionResult' is defined but never used  @typescript-eslint/no-unused-vars
+  5:13  warning  'Sentry' is defined but never used        @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\guest-checkout.ts
+  3:15  warning  'ActionResult' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\inventory-intelligence.ts
+  85:19  warning  'lowStockProducts' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  85:37  warning  'error' is assigned a value but never used             @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\invoices.ts
+   3:15  warning  'ActionResult' is defined but never used       @typescript-eslint/no-unused-vars
+  91:11  warning  'subtotal' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\keyrings.ts
+  3:15  warning  'ActionResult' is defined but never used  @typescript-eslint/no-unused-vars
+  5:13  warning  'Sentry' is defined but never used        @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\links.ts
+  3:15  warning  'ActionResult' is defined but never used  @typescript-eslint/no-unused-vars
+  5:13  warning  'Sentry' is defined but never used        @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\storage.ts
+  7:10  warning  'createClient' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\stripe.ts
+  3:15  warning  'ActionResult' is defined but never used  @typescript-eslint/no-unused-vars
+  5:13  warning  'Sentry' is defined but never used        @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\actions\vault.ts
+  34:80  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\ai\gemini-client.ts
+  95:16  warning  'innerErr' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\ai\generate-automation.ts
+  57:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\ai\generate-blueprint.ts
+   47:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   57:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  115:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  182:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\ai\generate-eform.ts
+   98:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\ai\generate-workflow.ts
+  97:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\ai\permit-summarizer.ts
+  6:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\community\ingestion.ts
+    5:21   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   32:13   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   35:36   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:29   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   68:156  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   98:14   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  109:54   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\queries\dashboard.ts
+  126:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  133:77  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  134:85  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  151:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  153:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  173:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  174:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  175:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  176:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  180:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  189:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  190:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  191:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  192:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  193:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\queries\public-hub.ts
+  22:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\antigravity\thebestofmonroe.com\src\lib\services\ai.ts
+  40:11  warning  'prompt' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\antigravity\thebestofmonroe.com\src\lib\services\reports.ts
+   24:35  warning  'summaryError' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  104:23  warning  'reportRecord' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 313 problems (8 errors, 305 warnings)
+

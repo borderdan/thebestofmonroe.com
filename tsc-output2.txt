@@ -1,0 +1,36 @@
+﻿src/app/[locale]/app/settings/billing/billing-form.tsx(41,7): error TS2353: Object literal may only specify known properties, and 'csd_password' does not exist in type 'AsyncDefaultValues<{ rfc?: string | undefined; regimen_fiscal?: string | undefined; uso_cfdi?: string | undefined; }> | { rfc?: string | undefined; regimen_fiscal?: string | undefined; uso_cfdi?: string | undefined; }'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(51,30): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(name: string, value: string | Blob): void', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | Blob'.
+      Type 'undefined' is not assignable to type 'string | Blob'.
+  Overload 2 of 3, '(name: string, value: string): void', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+  Overload 3 of 3, '(name: string, blobValue: Blob, filename?: string | undefined): void', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Blob'.
+      Type 'undefined' is not assignable to type 'Blob'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(52,41): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(name: string, value: string | Blob): void', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | Blob'.
+      Type 'undefined' is not assignable to type 'string | Blob'.
+  Overload 2 of 3, '(name: string, value: string): void', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+  Overload 3 of 3, '(name: string, blobValue: Blob, filename?: string | undefined): void', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Blob'.
+      Type 'undefined' is not assignable to type 'Blob'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(53,46): error TS2339: Property 'csd_password' does not exist on type '{ rfc?: string | undefined; regimen_fiscal?: string | undefined; uso_cfdi?: string | undefined; }'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(54,52): error TS2339: Property 'facturama_api_user' does not exist on type '{ rfc?: string | undefined; regimen_fiscal?: string | undefined; uso_cfdi?: string | undefined; }'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(55,56): error TS2339: Property 'facturama_api_password' does not exist on type '{ rfc?: string | undefined; regimen_fiscal?: string | undefined; uso_cfdi?: string | undefined; }'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(61,23): error TS2345: Argument of type '"csd_password"' is not assignable to parameter of type '"rfc" | "regimen_fiscal" | "uso_cfdi"'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(62,23): error TS2345: Argument of type '"facturama_api_password"' is not assignable to parameter of type '"rfc" | "regimen_fiscal" | "uso_cfdi"'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(113,15): error TS2322: Type '"csd_password"' is not assignable to type '"rfc" | "regimen_fiscal" | "uso_cfdi"'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(133,17): error TS2322: Type '"facturama_api_user"' is not assignable to type '"rfc" | "regimen_fiscal" | "uso_cfdi"'.
+src/app/[locale]/app/settings/billing/billing-form.tsx(151,17): error TS2322: Type '"facturama_api_password"' is not assignable to type '"rfc" | "regimen_fiscal" | "uso_cfdi"'.
+src/lib/actions/invoices.ts(137,46): error TS2554: Expected 1 arguments, but got 2.
+src/lib/actions/invoices.ts(141,26): error TS2339: Property 'Id' does not exist on type 'void'.
+src/lib/actions/invoices.ts(142,78): error TS2339: Property 'Id' does not exist on type 'void'.
+src/lib/actions/invoices.ts(142,145): error TS2339: Property 'Id' does not exist on type 'void'.
+src/lib/actions/invoices.ts(143,78): error TS2339: Property 'Id' does not exist on type 'void'.
+src/lib/actions/invoices.ts(143,145): error TS2339: Property 'Id' does not exist on type 'void'.
+src/lib/actions/invoices.ts(191,30): error TS2554: Expected 1 arguments, but got 4.
