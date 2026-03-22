@@ -1,0 +1,68 @@
+
+> thebestofmonroe_temp@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by an unknown process, using available port 3002 instead.
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3002
+- Network:       http://192.168.0.2:3002
+- Experiments (use with caution):
+  · clientTraceMetadata
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 3.2s
+>>> LOADING src/lib/supabase/middleware.ts
+○ Compiling /[locale]/test-price-intel ...
+⨯ ./src/app/[locale]/test-price-intel/page.tsx:1:10
+Ecmascript file had an error
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { useState } [36mfrom[39m [32m'react'[39m[33m;[39m
+ [90m   |[39m          [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [36mimport[39m [33mPriceIntelClient[39m [36mfrom[39m [32m'../../components/wallet/price-intel-client'[39m[33m;[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [36mconst[39m mockPrices [33m=[39m [[0m
+
+You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+
+./src/app/[locale]/test-price-intel/page.tsx:2:1
+Module not found: Can't resolve '../../components/wallet/price-intel-client'
+[0m [90m 1 |[39m [36mimport[39m { useState } [36mfrom[39m [32m'react'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m [33mPriceIntelClient[39Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31
+thread 'tokio-runtime-worker' (3937) panicked at turbopack/crates/turbo-persistence/src/static_sorted_file.rs:411:46:
+range start index 1396311565 out of range for slice of length 660470
+
+thread 'tokio-runtime-worker' (4193) panicked at turbopack/crates/turbo-persistence/src/static_sorted_file.rs:411:46:
+range start index 1396311565 out of range for slice of length 660470
+
+thread 'tokio-runtime-worker' (3937) panicked at turbopack/crates/turbo-persistence/src/static_sorted_file.rs:411:46:
+range start index 1396311565 out of range for slice of length 660470
+Persisting failed: Failed to compact database
+
+Caused by:
+    0: Failed to deserialize used key hashes AMQF from 00000029.meta
+    1: incompatible version
+⨯ Error: ENOENT: no such file or directory, open '/app/.next/dev/server/app/_not-found/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/app/.next/dev/server/app/_not-found/page/build-manifest.json'
+}
+
+thread 'tokio-runtime-worker' (4192) panicked at /build/turbopack/crates/turbo-tasks-backend/src/backend/mod.rs:963:22:
+Failed to lookup task type: Looking up task type for TaskId 43526 from database failed
+
+Caused by:
+    0: Unable to open static sorted file referenced from 00000046.meta
+    1: Unable to open static sorted file 00000043.sst
+    2: No such file or directory (os error 2)
+○ Compiling /_error ...
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)

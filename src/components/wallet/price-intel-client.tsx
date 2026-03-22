@@ -44,6 +44,7 @@ interface GroceryPrice {
   image_url?: string;
   source?: string;
   discount_pct?: number;
+  valid_until?: string;
 }
 
 interface BasketItem {
@@ -196,6 +197,16 @@ function ProductCard({
         <div className="min-w-0">
           <h3 className="text-xs font-semibold text-gray-800 dark:text-white/80 leading-tight line-clamp-2">{item.name}</h3>
           {brand && <p className="text-[9px] text-gray-500 dark:text-white/30 mt-0.5 truncate">{brand}</p>}
+          {Object.values(itemPrices).find(p => p.deal_description)?.deal_description && (
+            <p className="text-[9px] text-amber-500 dark:text-amber-400/70 mt-0.5 line-clamp-1">
+              {Object.values(itemPrices).find(p => p.deal_description)?.deal_description}
+            </p>
+          )}
+          {Object.values(itemPrices).find(p => p.valid_until)?.valid_until && (
+            <p className="text-[8px] text-gray-400 dark:text-white/20">
+              Expires {new Date(Object.values(itemPrices).find(p => p.valid_until)!.valid_until!).toLocaleDateString()}
+            </p>
+          )}
         </div>
 
         {/* Best price highlight */}
@@ -207,11 +218,18 @@ function ProductCard({
                 <span className="text-[9px] font-mono text-white/25 line-through">${maxPrice.toFixed(2)}</span>
               )}
             </div>
+            <span className="block text-[10px] text-gray-500 dark:text-white/30 font-mono mt-0.5">per {item.unit}</span>
             <div className="flex items-center gap-1 mt-0.5">
               {storeLogos[bestStore] && (
                 <img src={storeLogos[bestStore]} alt="" className="h-3.5 w-3.5 rounded-sm object-contain bg-white/10" />
               )}
               <span className={`text-[9px] font-bold ${bestInfo.color}`}>{bestStore}</span>
+              <span className="text-[9px] text-gray-500 dark:text-white/30 ml-1">at {storesWithPrice.length} stores</span>
+              <div className="flex -space-x-1 ml-1">
+                {storesWithPrice.map(store => storeLogos[store] ? (
+                  <img key={store} src={storeLogos[store]} alt={store} title={store} className="h-3.5 w-3.5 rounded-full ring-1 ring-white/10 object-contain bg-white" />
+                ) : null)}
+              </div>
             </div>
           </div>
           <button
@@ -227,14 +245,25 @@ function ProductCard({
         </div>
 
         {/* Available at stores */}
-        <div className="flex gap-1 pt-1 border-t border-white/[0.04]">
+        <div className="flex flex-col gap-1.5 pt-2 border-t border-white/[0.04]">
           {storesWithPrice.map(store => {
             const info = storeInfo[store] || storeInfo['Walmart'];
+            const price = itemPrices[store].price;
             const isBest = store === bestStore;
+            const progress = savings > 0 ? ((price - minPrice) / savings) * 100 : 0;
             return (
-              <div key={store} className="flex items-center gap-1" title={`${store}: $${itemPrices[store].price.toFixed(2)}`}>
-                <span className={`text-[8px] font-mono ${isBest ? info.color : 'text-white/25'}`}>
-                  ${itemPrices[store].price.toFixed(2)}
+              <div key={store} className="flex items-center gap-2" title={`${store}: $${price.toFixed(2)}`}>
+                <span className={`text-[9px] w-16 truncate ${isBest ? info.color : 'text-gray-500 dark:text-white/40'}`}>
+                  {store.length > 16 ? store.slice(0, 15) + '…' : store}
+                </span>
+                <div className="flex-1 h-1.5 rounded-full bg-gray-100 dark:bg-white/[0.06] relative">
+                  <div
+                    className={`absolute top-0.5 -mt-[1px] h-2 w-2 rounded-full ${isBest ? 'bg-emerald-400 z-10' : 'bg-gray-300 dark:bg-white/30'}`}
+                    style={{ left: `calc(${progress}% - ${progress > 50 ? '8px' : '0px'})` }}
+                  />
+                </div>
+                <span className={`text-[9px] font-mono ${isBest ? 'text-emerald-400 font-bold' : 'text-gray-500 dark:text-white/40'}`}>
+                  ${price.toFixed(2)}
                 </span>
               </div>
             );
