@@ -7,6 +7,7 @@ import {
   Check,
   ShoppingCart,
   TrendingDown,
+  TrendingUp,
   MapPin,
   Store,
   Plus,
@@ -141,12 +142,14 @@ function ProductCard({
   bestPriceStore,
   onAdd,
   inBasket,
+  trend,
 }: {
   item: { name: string; category: string; unit: string };
   priceLookup: Record<string, Record<string, GroceryPrice>>;
   bestPriceStore: Record<string, string>;
   onAdd: (name: string, unit: string) => void;
   inBasket: boolean;
+  trend?: PriceTrend;
 }) {
   const itemPrices = priceLookup[item.name] || {};
   const allPrices = Object.values(itemPrices).map(p => p.price);
@@ -213,6 +216,12 @@ function ProductCard({
               )}
               <span className={`text-[9px] font-bold ${bestInfo.color}`}>{bestStore}</span>
             </div>
+            {trend && trend.direction !== 'stable' && (
+              <div className={`flex items-center gap-0.5 mt-1 text-[9px] font-bold uppercase tracking-wider ${trend.direction === 'down' ? 'text-emerald-400' : 'text-red-400'}`}>
+                {trend.direction === 'down' ? <TrendingDown className="h-3 w-3" /> : <TrendingUp className="h-3 w-3" />}
+                ${trend.change.toFixed(2)} vs last week
+              </div>
+            )}
           </div>
           <button
             onClick={() => onAdd(item.name, item.unit)}
@@ -247,13 +256,14 @@ function ProductCard({
 
 /* ── VIEW: Deals Feed ────────────────────────────────────────────── */
 function DealsView({
-  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket
+  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket, priceTrends
 }: {
   prices: GroceryPrice[]; stores: string[];
   priceLookup: Record<string, Record<string, GroceryPrice>>;
   items: { name: string; category: string; unit: string }[];
   bestPriceStore: Record<string, string>;
   basket: BasketItem[]; addToBasket: (n: string, u: string) => void; removeFromBasket: (n: string) => void;
+  priceTrends: Record<string, PriceTrend>;
 }) {
   const [storeFilter, setStoreFilter] = useState<string | null>(null);
 
@@ -282,8 +292,37 @@ function DealsView({
     return list.slice(0, 60);
   }, [items, priceLookup, storeFilter]);
 
+  const biggestDrops = useMemo(() => {
+    return Object.entries(priceTrends)
+      .filter(([_, trend]) => trend.direction === 'down')
+      .map(([name, trend]) => ({ name, drop: trend.change }))
+      .sort((a, b) => b.drop - a.drop)
+      .slice(0, 5);
+  }, [priceTrends]);
+
   return (
     <div className="space-y-4">
+      {/* Biggest Price Drops */}
+      {biggestDrops.length > 0 && (
+        <div className="space-y-2">
+          <h2 className="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+            <TrendingDown className="h-4 w-4" />
+            Biggest Price Drops This Week
+          </h2>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+            {biggestDrops.map(({ name, drop }) => (
+              <div key={name} className="flex flex-col min-w-[140px] p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                <span className="text-[10px] font-bold text-white/80 line-clamp-1">{name}</span>
+                <span className="text-xs font-black font-mono text-emerald-400 mt-1 flex items-center gap-1">
+                  <TrendingDown className="h-3 w-3" />
+                  ${drop.toFixed(2)} less
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Store filter pills */}
       <div className="flex gap-2 overflow-x-auto no-scrollbar">
         <button
@@ -321,6 +360,7 @@ function DealsView({
             bestPriceStore={bestPriceStore}
             onAdd={(name, unit) => basket.some(b => b.item_name === name) ? removeFromBasket(name) : addToBasket(name, unit)}
             inBasket={basket.some(b => b.item_name === item.name)}
+            trend={priceTrends[item.name]}
           />
         ))}
       </div>
@@ -879,17 +919,52 @@ function CompareView({
 /* ══════════════════════════════════════════════════════════════════ *
  *  MAIN COMPONENT
  * ══════════════════════════════════════════════════════════════════ */
+export type PriceTrend = { direction: 'up' | 'down' | 'stable'; change: number };
+
 export default function PriceIntelClient({
   prices,
   stores,
   locale,
+  historicalPrices = [],
 }: {
   prices: GroceryPrice[];
   stores: string[];
   locale: string;
+  historicalPrices?: { item_name: string; store_name: string; price: number; scraped_at: string }[];
 }) {
   const [view, setView] = useState<ViewMode>('deals');
   const { priceLookup, items, categories, bestPriceStore } = usePriceData(prices);
+
+  const priceTrends = useMemo(() => {
+    const trends: Record<string, PriceTrend> = {};
+    const historicalBest: Record<string, number> = {};
+
+    // Find the lowest historical price for each item
+    for (const hp of historicalPrices) {
+      if (!historicalBest[hp.item_name] || hp.price < historicalBest[hp.item_name]) {
+        historicalBest[hp.item_name] = hp.price;
+      }
+    }
+
+    // Compare with current lowest price
+    for (const item of items) {
+      const histBest = historicalBest[item.name];
+      const currentBestStore = bestPriceStore[item.name];
+      const currentBest = priceLookup[item.name]?.[currentBestStore]?.price;
+
+      if (histBest !== undefined && currentBest !== undefined) {
+        const diff = histBest - currentBest;
+        if (diff > 0.05) {
+          trends[item.name] = { direction: 'down', change: diff };
+        } else if (diff < -0.05) {
+          trends[item.name] = { direction: 'up', change: Math.abs(diff) };
+        } else {
+          trends[item.name] = { direction: 'stable', change: 0 };
+        }
+      }
+    }
+    return trends;
+  }, [historicalPrices, items, bestPriceStore, priceLookup]);
 
   // Basket with localStorage persistence
   const [basket, setBasket] = useState<BasketItem[]>(() => {
@@ -1223,7 +1298,7 @@ export default function PriceIntelClient({
       {/* Active View */}
       {view === 'deals' && (
         <DealsView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
-          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
+          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} priceTrends={priceTrends} />
       )}
       {view === 'store' && (
         <StoreView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
