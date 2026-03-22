@@ -34,6 +34,21 @@ export default async function PriceIntelPage({
   const stores = [...new Set(prices.map((p: any) => p.store_name))].sort();
   const mostRecent = rawPrices?.[0]?.scraped_at;
 
+  // Calculate dates for historical prices (7-14 days ago)
+  const now = new Date();
+  const oneWeekAgo = new Date(now);
+  oneWeekAgo.setDate(now.getDate() - 7);
+  const twoWeeksAgo = new Date(now);
+  twoWeeksAgo.setDate(now.getDate() - 14);
+
+  // Fetch historical prices
+  const { data: historicalPrices } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .from('grocery_prices' as any)
+    .select('item_name, store_name, price, scraped_at')
+    .gte('scraped_at', twoWeeksAgo.toISOString())
+    .lte('scraped_at', oneWeekAgo.toISOString());
+
   return (
     <PublicLayout locale={locale}>
       <PublicHeader locale={locale} />
@@ -66,6 +81,7 @@ export default async function PriceIntelPage({
           prices={prices}
           stores={stores as string[]}
           locale={locale}
+          historicalPrices={historicalPrices || undefined}
         />
 
         {/* Data source attribution */}
