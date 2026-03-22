@@ -1,0 +1,184 @@
+diff --git a/src/components/wallet/price-intel-client.tsx b/src/components/wallet/price-intel-client.tsx
+index 1a2e8ae..a790300 100644
+--- a/src/components/wallet/price-intel-client.tsx
++++ b/src/components/wallet/price-intel-client.tsx
+@@ -131,7 +131,21 @@ function usePriceData(prices: GroceryPrice[]) {
+     return map;
+   }, [priceLookup]);
+
+-  return { priceLookup, items, categories, bestPriceStore };
++  const maxDiscountPct = useMemo(() => {
++    const map: Record<string, number> = {};
++    for (const [item, storePrices] of Object.entries(priceLookup)) {
++      let maxDiscount = 0;
++      for (const data of Object.values(storePrices)) {
++        if (data.discount_pct && data.discount_pct > maxDiscount) {
++          maxDiscount = data.discount_pct;
++        }
++      }
++      map[item] = maxDiscount;
++    }
++    return map;
++  }, [priceLookup]);
++
++  return { priceLookup, items, categories, bestPriceStore, maxDiscountPct };
+ }
+
+ /* ── Reusable: Product Card (for deals/category grid) ────────────── */
+@@ -141,12 +155,14 @@ function ProductCard({
+   bestPriceStore,
+   onAdd,
+   inBasket,
++  discountPct,
+ }: {
+   item: { name: string; category: string; unit: string };
+   priceLookup: Record<string, Record<string, GroceryPrice>>;
+   bestPriceStore: Record<string, string>;
+   onAdd: (name: string, unit: string) => void;
+   inBasket: boolean;
++  discountPct?: number;
+ }) {
+   const itemPrices = priceLookup[item.name] || {};
+   const allPrices = Object.values(itemPrices).map(p => p.price);
+@@ -189,6 +205,13 @@ function ProductCard({
+             </Badge>
+           </div>
+         )}
++        {discountPct && discountPct > 0 ? (
++          <div className="absolute bottom-2 left-2">
++            <Badge className="bg-red-500 text-white font-black text-[10px] h-5 px-2 border-none">
++              -{Math.round(discountPct)}%
++            </Badge>
++          </div>
++        ) : null}
+       </div>
+
+       {/* Content */}
+@@ -247,13 +270,14 @@ function ProductCard({
+
+ /* ── VIEW: Deals Feed ────────────────────────────────────────────── */
+ function DealsView({
+-  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket
++  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket, maxDiscountPct
+ }: {
+   prices: GroceryPrice[]; stores: string[];
+   priceLookup: Record<string, Record<string, GroceryPrice>>;
+   items: { name: string; category: string; unit: string }[];
+   bestPriceStore: Record<string, string>;
+   basket: BasketItem[]; addToBasket: (n: string, u: string) => void; removeFromBasket: (n: string) => void;
++  maxDiscountPct: Record<string, number>;
+ }) {
+   const [storeFilter, setStoreFilter] = useState<string | null>(null);
+
+@@ -276,11 +300,14 @@ function DealsView({
+     // Sort: deals first, then by savings
+     list.sort((a, b) => {
+       if (a.isDeal !== b.isDeal) return a.isDeal ? -1 : 1;
++      const discountA = maxDiscountPct[a.name] || 0;
++      const discountB = maxDiscountPct[b.name] || 0;
++      if (discountA !== discountB) return discountB - discountA;
+       return b.savings - a.savings;
+     });
+
+     return list.slice(0, 60);
+-  }, [items, priceLookup, storeFilter]);
++  }, [items, priceLookup, storeFilter, maxDiscountPct]);
+
+   return (
+     <div className="space-y-4">
+@@ -321,6 +348,7 @@ function DealsView({
+             bestPriceStore={bestPriceStore}
+             onAdd={(name, unit) => basket.some(b => b.item_name === name) ? removeFromBasket(name) : addToBasket(name, unit)}
+             inBasket={basket.some(b => b.item_name === item.name)}
++            discountPct={maxDiscountPct[item.name]}
+           />
+         ))}
+       </div>
+@@ -453,9 +481,13 @@ function StoreView({
+               <span className={`text-base font-black font-mono ${p.isCheapest ? 'text-emerald-400' : 'text-white/70'}`}>
+                 ${p.price.toFixed(2)}
+               </span>
+-              {p.discount_pct && p.discount_pct > 0 && (
+-                <p className="text-[8px] font-bold text-amber-400">-{p.discount_pct}%</p>
+-              )}
++              {p.discount_pct && p.discount_pct > 0 ? (
++                <div className="mt-1 flex justify-end">
++                  <Badge className="text-[10px] h-5 bg-red-500/20 text-red-400 border-none font-bold px-1.5">
++                    -{p.discount_pct}%
++                  </Badge>
++                </div>
++              ) : null}
+             </div>
+             <button
+               onClick={() => basket.some(b => b.item_name === p.item_name) ? removeFromBasket(p.item_name) : addToBasket(p.item_name, p.unit)}
+@@ -617,13 +649,14 @@ function HeadToHeadView({
+
+ /* ── VIEW: Category Browser ──────────────────────────────────────── */
+ function CategoryView({
+-  prices, stores, priceLookup, items, categories, bestPriceStore, basket, addToBasket, removeFromBasket
++  prices, stores, priceLookup, items, categories, bestPriceStore, basket, addToBasket, removeFromBasket, maxDiscountPct
+ }: {
+   prices: GroceryPrice[]; stores: string[]; categories: string[];
+   priceLookup: Record<string, Record<string, GroceryPrice>>;
+   items: { name: string; category: string; unit: string }[];
+   bestPriceStore: Record<string, string>;
+   basket: BasketItem[]; addToBasket: (n: string, u: string) => void; removeFromBasket: (n: string) => void;
++  maxDiscountPct: Record<string, number>;
+ }) {
+   const [selectedCat, setSelectedCat] = useState<string | null>(null);
+
+@@ -672,6 +705,7 @@ function CategoryView({
+               bestPriceStore={bestPriceStore}
+               onAdd={(name, unit) => basket.some(b => b.item_name === name) ? removeFromBasket(name) : addToBasket(name, unit)}
+               inBasket={basket.some(b => b.item_name === item.name)}
++              discountPct={maxDiscountPct[item.name]}
+             />
+           ))}
+         </div>
+@@ -833,6 +867,7 @@ function CompareView({
+                         <span className={`text-sm font-mono font-bold ${isBest ? 'text-emerald-400' : 'text-white/60'}`}>${priceData.price.toFixed(2)}</span>
+                         {isBest && <span className="text-[7px] font-bold text-emerald-400 uppercase tracking-widest mt-0.5">Best</span>}
+                         {priceData.is_deal && <Badge className="text-[7px] h-3.5 mt-0.5 bg-amber-500/20 text-amber-400 border-none px-1">Sale</Badge>}
++                        {priceData.discount_pct && priceData.discount_pct > 0 ? <Badge className="text-[7px] h-3.5 mt-0.5 bg-red-500/20 text-red-400 border-none px-1">-{Math.round(priceData.discount_pct)}%</Badge> : null}
+                       </div>
+                     ) : <span className="text-[10px] text-white/15 font-mono">—</span>}
+                   </div>
+@@ -889,7 +924,7 @@ export default function PriceIntelClient({
+   locale: string;
+ }) {
+   const [view, setView] = useState<ViewMode>('deals');
+-  const { priceLookup, items, categories, bestPriceStore } = usePriceData(prices);
++  const { priceLookup, items, categories, bestPriceStore, maxDiscountPct } = usePriceData(prices);
+
+   // Basket with localStorage persistence
+   const [basket, setBasket] = useState<BasketItem[]>(() => {
+@@ -1134,7 +1169,7 @@ export default function PriceIntelClient({
+       {/* Active View */}
+       {view === 'deals' && (
+         <DealsView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
+-          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
++          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} maxDiscountPct={maxDiscountPct} />
+       )}
+       {view === 'store' && (
+         <StoreView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
+@@ -1146,7 +1181,7 @@ export default function PriceIntelClient({
+       )}
+       {view === 'categories' && (
+         <CategoryView prices={prices} stores={stores} priceLookup={priceLookup} items={items} categories={categories}
+-          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
++          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} maxDiscountPct={maxDiscountPct} />
+       )}
+       {view === 'compare' && (
+         <CompareView prices={prices} stores={stores} priceLookup={priceLookup} items={items} categories={categories}
+diff --git a/src/lib/actions/__tests__/setup.ts b/src/lib/actions/__tests__/setup.ts
+index e6029f6..9b15d60 100644
+--- a/src/lib/actions/__tests__/setup.ts
++++ b/src/lib/actions/__tests__/setup.ts
+@@ -7,6 +7,7 @@ process.env.STRIPE_SECRET_KEY = 'sk_test_123'
+ process.env.STRIPE_WEBHOOK_SECRET = 'whsec_123'
+
+ vi.mock('@/lib/supabase/helpers', () => ({
++  requireModuleAccess: vi.fn().mockResolvedValue(true),
+   getSessionWithProfile: vi.fn().mockResolvedValue({
+     supabase: {
+       from: vi.fn().mockReturnThis(),
