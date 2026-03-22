@@ -41,7 +41,7 @@ describe('POS Actions', () => {
 
     vi.mocked(getSessionWithProfile).mockResolvedValue(mockAuthContext)
     vi.mocked(requireRole).mockResolvedValue(mockAuthContext)
-    vi.mocked(requireModuleAccess).mockResolvedValue(true)
+    vi.mocked(requireModuleAccess).mockResolvedValue(undefined as void)
 
     const result = await processTransaction({ 
       items: [{ id: 'item-1', name: 'Test Item', price: 100, quantity: 2 }], 
