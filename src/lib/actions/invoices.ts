@@ -1,9 +1,7 @@
-// @ts-nocheck
 'use server'
 
-import { type ActionResult, getSessionWithProfile, requireModuleAccess } from '@/lib/supabase/helpers';
+import type { getSessionWithProfile, requireModuleAccess } from '@/lib/supabase/helpers';
 
-import * as Sentry from '@sentry/nextjs';
 
 import { waitUntil } from '@vercel/functions'
 import { createClient } from '@supabase/supabase-js'
@@ -89,7 +87,7 @@ async function processInvoiceBackground(
       throw new Error('El negocio no tiene configurada su facturación.')
     }
 
-    const subtotal = transactionData.total / 1.16;
+
     const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
     
     const cfdiPayload = {

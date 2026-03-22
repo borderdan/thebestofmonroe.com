@@ -95,9 +95,9 @@ Return a result with title, description, and the array of fields.`
   if (!result.success || !result.data) return { success: false, error: result.error }
 
   // Transform array of fields into RJSF json_schema and ui_schema
-  const properties: Record<string, any> = {}
+  const properties: Record<string, unknown> = {}
   const required: string[] = []
-  const ui_schema: Record<string, any> = {}
+  const ui_schema: Record<string, unknown> = {}
 
   result.data.fields.forEach((f) => {
     properties[f.name] = {

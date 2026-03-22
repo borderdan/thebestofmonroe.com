@@ -92,7 +92,8 @@ export async function generateStructuredJSON<T>(
         const parsed = JSON.parse(fixedText) as T
         console.log('Successfully parsed JSON after stripping trailing commas')
         return { success: true, data: parsed }
-      } catch (innerErr) {
+      } catch {
+
         return {
           success: false,
           error: `Failed to parse generated JSON: ${(parseErr as Error).message}`,

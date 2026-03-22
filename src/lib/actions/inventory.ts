@@ -1,9 +1,7 @@
 'use server'
 
-import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 import { menuItemSchema } from '@/lib/schemas/inventory'
 import type { MenuItemData } from '@/lib/types/entity-data'
 import { requirePermission } from '@/lib/security/permissions'

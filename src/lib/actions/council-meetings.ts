@@ -1,7 +1,6 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import * as Sentry from '@sentry/nextjs';
 
 export type MeetingSummary = {
   agenda_items: string[];

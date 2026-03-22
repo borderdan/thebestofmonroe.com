@@ -1,8 +1,6 @@
 'use server';
 
-import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers';
 
-import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache';
 
@@ -31,7 +29,7 @@ export async function updateSubmissionStatus(id: string, newStatus: 'new' | 'rea
   }
 }
 
-export async function createSubmission(formId: string, payload: Record<string, any>): Promise<ActionResult> {
+export async function createSubmission(formId: string, payload: Record<string, unknown>): Promise<ActionResult> {
   try {
     await requireModuleAccess('vault');
     const { supabase, profile } = await getSessionWithProfile();

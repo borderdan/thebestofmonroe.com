@@ -1,8 +1,6 @@
 'use server'
 
-import { type ActionResult } from '@/lib/supabase/helpers';
 
-import * as Sentry from '@sentry/nextjs';
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'

@@ -1,9 +1,6 @@
 'use server'
 
-import * as Sentry from '@sentry/nextjs';
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile, type ActionResult } from '@/lib/supabase/helpers'
-import { z } from 'zod'
 import type { BlueprintProposal } from '@/components/architect/architect-client'
 
 export interface Blueprint {

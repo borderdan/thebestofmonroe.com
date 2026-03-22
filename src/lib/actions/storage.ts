@@ -1,10 +1,8 @@
 'use server'
 
-import { type ActionResult, getSessionWithProfile } from '@/lib/supabase/helpers';
+import type { ActionResult, getSessionWithProfile } from '@/lib/supabase/helpers';
 
-import * as Sentry from '@sentry/nextjs';
 
-import { createClient } from '@/lib/supabase/server'
 import { v4 as uuidv4 } from 'uuid'
 
 

@@ -44,7 +44,7 @@ export interface DeploymentLog {
   type: 'eform' | 'workflow' | 'automation' | 'n8n' | 'info' | 'error' | 'success'
   message: string
   status: 'pending' | 'success' | 'error'
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export type BlueprintStepType = 'data_table' | 'eform' | 'workflow' | 'automation'
@@ -54,7 +54,7 @@ export interface BlueprintStep {
   type: BlueprintStepType
   title: string
   description?: string
-  config: Record<string, any>
+  config: Record<string, unknown>
 }
 
 export interface BlueprintResult {
@@ -112,7 +112,7 @@ export async function deployBlueprintEForm(form: BlueprintStep): Promise<{ succe
     const title = form.title || config.title || 'New E-Form'
     
     // Transform simplified fields to BuilderField schema
-    const builderFields = fields.map((f: any) => ({
+    const builderFields = fields.map((f: unknown) => ({
       id: f.id || `field-${Math.random().toString(36).slice(2, 9)}`,
       type: f.type || 'text',
       label: f.label || 'New Field',
@@ -179,7 +179,7 @@ export async function deployBlueprintWorkflow(flow: BlueprintStep, projectName: 
     const name = flow.title || config.name || 'Visual Workflow'
 
     // Use generic placeholders for auto-layout positions if not provided by AI
-    const nodesWithPositions = nodes.map((n: any, i: number) => ({
+    const nodesWithPositions = nodes.map((n: unknown, i: number) => ({
       ...n,
       position: n.position || { x: i * 250, y: 100 }
     }))

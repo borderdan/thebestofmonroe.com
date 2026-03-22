@@ -54,7 +54,7 @@ interface AutomationResult {
   trigger_type: string
   n8n_workflow: {
     name: string
-    nodes: any[]
+    nodes: unknown[]
     connections: Array<{ from: string; to: string }>
   }
 }
