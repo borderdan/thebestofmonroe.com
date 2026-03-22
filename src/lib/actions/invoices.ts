@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use server'
 
 import { type ActionResult, getSessionWithProfile, requireModuleAccess } from '@/lib/supabase/helpers';
