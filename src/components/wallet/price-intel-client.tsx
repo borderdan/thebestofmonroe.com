@@ -759,7 +759,7 @@ function CompareView({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-500 dark:text-white/30" />
           <input type="text" placeholder="Search items or brands..." value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder:text-gray-500 dark:placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-emerald-500/50" />
+            className="w-full pl-9 pr-4 py-2 text-xs rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder:text-gray-500 dark:text-white/30 focus:outline-none focus:ring-1 focus:ring-emerald-500/50" />
         </div>
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
           <button onClick={() => setSelectedCategory(null)}
@@ -1080,7 +1080,7 @@ export default function PriceIntelClient({
           const count = prices.filter(p => p.store_name === store).length;
           const deals = prices.filter(p => p.store_name === store && p.is_deal).length;
           return (
-            <div key={store} className={`p-2.5 rounded-xl border ${info.border} ${info.bg} shadow-sm backdrop-blur-sm`}>
+            <div key={store} className={`p-2.5 rounded-xl border ${info.border} ${info.bg} backdrop-blur-sm shadow-sm`}>
               <div className="flex items-center gap-1.5 mb-1">
                 {storeLogos[store] ? (
                   <img src={storeLogos[store]} alt={store} className="h-5 w-5 rounded-md object-contain bg-white/10" loading="lazy"
@@ -1156,9 +1156,9 @@ export default function PriceIntelClient({
                   <div key={item.item_name} className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/[0.06] border border-white/[0.08]">
                     <span className="text-[10px] font-medium text-white/70">{item.item_name}</span>
                     <div className="flex items-center gap-0.5 ml-1">
-                      <button onClick={() => updateQty(item.item_name, -1)} className="p-0.5 hover:text-gray-800 dark:hover:text-white/80 text-gray-500 dark:text-white/30 cursor-pointer"><Minus className="h-2.5 w-2.5" /></button>
+                      <button onClick={() => updateQty(item.item_name, -1)} className="p-0.5 hover:text-gray-800 dark:text-white/80 text-gray-500 dark:text-white/30 cursor-pointer"><Minus className="h-2.5 w-2.5" /></button>
                       <span className="text-[10px] font-mono font-bold text-white/60 min-w-[14px] text-center">{item.qty}</span>
-                      <button onClick={() => updateQty(item.item_name, 1)} className="p-0.5 hover:text-gray-800 dark:hover:text-white/80 text-gray-500 dark:text-white/30 cursor-pointer"><Plus className="h-2.5 w-2.5" /></button>
+                      <button onClick={() => updateQty(item.item_name, 1)} className="p-0.5 hover:text-gray-800 dark:text-white/80 text-gray-500 dark:text-white/30 cursor-pointer"><Plus className="h-2.5 w-2.5" /></button>
                     </div>
                     <button onClick={() => removeFromBasket(item.item_name)} className="p-0.5 hover:text-red-400 text-white/20 ml-1 cursor-pointer"><Trash2 className="h-2.5 w-2.5" /></button>
                   </div>

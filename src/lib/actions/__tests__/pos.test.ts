@@ -41,7 +41,8 @@ describe('POS Actions', () => {
 
     vi.mocked(getSessionWithProfile).mockResolvedValue(mockAuthContext)
     vi.mocked(requireRole).mockResolvedValue(mockAuthContext)
-    vi.mocked(requireModuleAccess).mockResolvedValue(undefined as void)
+    // @ts-expect-error Mocked function returns void in type definitions but true in actual mock setup
+    vi.mocked(requireModuleAccess).mockResolvedValue(true)
 
     const result = await processTransaction({ 
       items: [{ id: 'item-1', name: 'Test Item', price: 100, quantity: 2 }], 
