@@ -147,6 +147,7 @@ function ProductCard({
   bestPriceStore: Record<string, string>;
   onAdd: (name: string, unit: string) => void;
   inBasket: boolean;
+  trend?: { direction: 'up' | 'down' | 'stable'; change: number };
 }) {
   const itemPrices = priceLookup[item.name] || {};
   const allPrices = Object.values(itemPrices).map(p => p.price);
@@ -213,6 +214,18 @@ function ProductCard({
               )}
               <span className={`text-[9px] font-bold ${bestInfo.color}`}>{bestStore}</span>
             </div>
+            {trend && trend.direction !== 'stable' && (
+              <div className="flex items-center gap-0.5 mt-1">
+                {trend.direction === 'down' ? (
+                  <TrendingDown className="h-3 w-3 text-emerald-400" />
+                ) : (
+                  <TrendingDown className="h-3 w-3 text-red-400 rotate-180" />
+                )}
+                <span className={`text-[8px] font-medium ${trend.direction === 'down' ? 'text-emerald-400' : 'text-red-400'}`}>
+                  ${trend.change.toFixed(2)} vs last week
+                </span>
+              </div>
+            )}
           </div>
           <button
             onClick={() => onAdd(item.name, item.unit)}
@@ -247,13 +260,14 @@ function ProductCard({
 
 /* ── VIEW: Deals Feed ────────────────────────────────────────────── */
 function DealsView({
-  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket
+  prices, stores, priceLookup, items, bestPriceStore, basket, addToBasket, removeFromBasket, priceTrends
 }: {
   prices: GroceryPrice[]; stores: string[];
   priceLookup: Record<string, Record<string, GroceryPrice>>;
   items: { name: string; category: string; unit: string }[];
   bestPriceStore: Record<string, string>;
   basket: BasketItem[]; addToBasket: (n: string, u: string) => void; removeFromBasket: (n: string) => void;
+  priceTrends: Record<string, { direction: 'up' | 'down' | 'stable'; change: number }>;
 }) {
   const [storeFilter, setStoreFilter] = useState<string | null>(null);
 
@@ -282,8 +296,55 @@ function DealsView({
     return list.slice(0, 60);
   }, [items, priceLookup, storeFilter]);
 
+  const topDrops = useMemo(() => {
+    const drops = Object.entries(priceTrends)
+      .filter(([, trend]) => trend.direction === 'down')
+      .map(([name, trend]) => ({ name, drop: trend.change }))
+      .sort((a, b) => b.drop - a.drop)
+      .slice(0, 5);
+    return drops;
+  }, [priceTrends]);
+
   return (
     <div className="space-y-4">
+      {/* Top Price Drops */}
+      {topDrops.length > 0 && (
+        <div className="space-y-2">
+          <h3 className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 uppercase tracking-wider">
+            <TrendingDown className="h-3.5 w-3.5" /> Biggest Price Drops This Week
+          </h3>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+            {topDrops.map(drop => {
+              const itemData = items.find(i => i.name === drop.name);
+              const bestStore = bestPriceStore[drop.name];
+              const minPrice = priceLookup[drop.name]?.[bestStore]?.price;
+
+              return (
+                <div key={drop.name} className="flex-shrink-0 w-48 p-2 rounded-xl border border-emerald-500/20 bg-emerald-500/5 flex items-center gap-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-semibold text-gray-800 dark:text-white/80 truncate">{drop.name}</p>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="text-[10px] font-mono font-bold text-emerald-400">-{drop.drop.toFixed(2)}</span>
+                      {minPrice && <span className="text-[9px] font-mono text-white/40">${minPrice.toFixed(2)}</span>}
+                    </div>
+                  </div>
+                  {itemData && (
+                    <button
+                      onClick={() => basket.some(b => b.item_name === drop.name) ? removeFromBasket(drop.name) : addToBasket(drop.name, itemData.unit)}
+                      className={`h-6 w-6 flex-shrink-0 rounded-md flex items-center justify-center transition-all cursor-pointer ${
+                        basket.some(b => b.item_name === drop.name) ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/[0.06] text-white/40 hover:text-white/80'
+                      }`}
+                    >
+                      {basket.some(b => b.item_name === drop.name) ? <Check className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Store filter pills */}
       <div className="flex gap-2 overflow-x-auto no-scrollbar">
         <button
@@ -321,6 +382,7 @@ function DealsView({
             bestPriceStore={bestPriceStore}
             onAdd={(name, unit) => basket.some(b => b.item_name === name) ? removeFromBasket(name) : addToBasket(name, unit)}
             inBasket={basket.some(b => b.item_name === item.name)}
+            trend={priceTrends[item.name]}
           />
         ))}
       </div>
@@ -617,13 +679,14 @@ function HeadToHeadView({
 
 /* ── VIEW: Category Browser ──────────────────────────────────────── */
 function CategoryView({
-  prices, stores, priceLookup, items, categories, bestPriceStore, basket, addToBasket, removeFromBasket
+  prices, stores, priceLookup, items, categories, bestPriceStore, basket, addToBasket, removeFromBasket, priceTrends
 }: {
   prices: GroceryPrice[]; stores: string[]; categories: string[];
   priceLookup: Record<string, Record<string, GroceryPrice>>;
   items: { name: string; category: string; unit: string }[];
   bestPriceStore: Record<string, string>;
   basket: BasketItem[]; addToBasket: (n: string, u: string) => void; removeFromBasket: (n: string) => void;
+  priceTrends: Record<string, { direction: 'up' | 'down' | 'stable'; change: number }>;
 }) {
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
 
@@ -672,6 +735,7 @@ function CategoryView({
               bestPriceStore={bestPriceStore}
               onAdd={(name, unit) => basket.some(b => b.item_name === name) ? removeFromBasket(name) : addToBasket(name, unit)}
               inBasket={basket.some(b => b.item_name === item.name)}
+              trend={priceTrends[item.name]}
             />
           ))}
         </div>
@@ -883,13 +947,47 @@ export default function PriceIntelClient({
   prices,
   stores,
   locale,
+  historicalPrices = [],
 }: {
   prices: GroceryPrice[];
   stores: string[];
   locale: string;
+  historicalPrices?: { item_name: string; store_name: string; price: number; scraped_at: string }[];
 }) {
   const [view, setView] = useState<ViewMode>('deals');
   const { priceLookup, items, categories, bestPriceStore } = usePriceData(prices);
+
+  // Compute price trends comparing current best vs historical best
+  const priceTrends = useMemo(() => {
+    // 1. Group historical prices by item to find historical best (lowest)
+    const historicalBest: Record<string, number> = {};
+    for (const h of historicalPrices) {
+      if (!historicalBest[h.item_name] || h.price < historicalBest[h.item_name]) {
+        historicalBest[h.item_name] = h.price;
+      }
+    }
+
+    // 2. Compute trends
+    const trends: Record<string, { direction: 'up' | 'down' | 'stable'; change: number }> = {};
+    for (const item of items) {
+      const histBest = historicalBest[item.name];
+      if (histBest === undefined) continue;
+
+      const currentPrices = Object.values(priceLookup[item.name] || {}).map(p => p.price);
+      if (currentPrices.length === 0) continue;
+      const currentBest = Math.min(...currentPrices);
+
+      const diff = currentBest - histBest;
+      if (diff > 0.05) {
+        trends[item.name] = { direction: 'up', change: diff };
+      } else if (diff < -0.05) {
+        trends[item.name] = { direction: 'down', change: Math.abs(diff) };
+      } else {
+        trends[item.name] = { direction: 'stable', change: 0 };
+      }
+    }
+    return trends;
+  }, [historicalPrices, items, priceLookup]);
 
   // Basket with localStorage persistence
   const [basket, setBasket] = useState<BasketItem[]>(() => {
@@ -1223,7 +1321,7 @@ export default function PriceIntelClient({
       {/* Active View */}
       {view === 'deals' && (
         <DealsView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
-          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
+          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} priceTrends={priceTrends} />
       )}
       {view === 'store' && (
         <StoreView prices={prices} stores={stores} priceLookup={priceLookup} items={items}
@@ -1235,7 +1333,7 @@ export default function PriceIntelClient({
       )}
       {view === 'categories' && (
         <CategoryView prices={prices} stores={stores} priceLookup={priceLookup} items={items} categories={categories}
-          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} />
+          bestPriceStore={bestPriceStore} basket={basket} addToBasket={addToBasket} removeFromBasket={removeFromBasket} priceTrends={priceTrends} />
       )}
       {view === 'compare' && (
         <CompareView prices={prices} stores={stores} priceLookup={priceLookup} items={items} categories={categories}
