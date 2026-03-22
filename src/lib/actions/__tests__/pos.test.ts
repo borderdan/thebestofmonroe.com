@@ -41,6 +41,7 @@ describe('POS Actions', () => {
 
     vi.mocked(getSessionWithProfile).mockResolvedValue(mockAuthContext)
     vi.mocked(requireRole).mockResolvedValue(mockAuthContext)
+    // @ts-expect-error Mock overload compatibility
     vi.mocked(requireModuleAccess).mockResolvedValue(true)
 
     const result = await processTransaction({ 
