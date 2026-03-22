@@ -44,6 +44,7 @@ interface GroceryPrice {
   image_url?: string;
   source?: string;
   discount_pct?: number;
+  valid_until?: string;
 }
 
 interface BasketItem {
@@ -157,6 +158,8 @@ function ProductCard({
   const imageUrl = Object.values(itemPrices).find(p => p.image_url)?.image_url;
   const brand = Object.values(itemPrices).find(p => p.brand)?.brand;
   const isDeal = Object.values(itemPrices).some(p => p.is_deal);
+  const dealDesc = Object.values(itemPrices).find(p => p.deal_description)?.deal_description;
+  const validUntil = Object.values(itemPrices).find(p => p.valid_until)?.valid_until;
   const bestInfo = storeInfo[bestStore] || storeInfo['Walmart'];
   const storesWithPrice = Object.keys(itemPrices);
 
@@ -196,6 +199,8 @@ function ProductCard({
         <div className="min-w-0">
           <h3 className="text-xs font-semibold text-white/80 leading-tight line-clamp-2">{item.name}</h3>
           {brand && <p className="text-[9px] text-white/30 mt-0.5 truncate">{brand}</p>}
+          {dealDesc && <p className="text-[9px] text-amber-500 dark:text-amber-400/70 mt-0.5 line-clamp-1">{dealDesc}</p>}
+          {validUntil && <p className="text-[8px] text-gray-400 dark:text-white/20">Expires {validUntil}</p>}
         </div>
 
         {/* Best price highlight */}
@@ -207,12 +212,31 @@ function ProductCard({
                 <span className="text-[9px] font-mono text-white/25 line-through">${maxPrice.toFixed(2)}</span>
               )}
             </div>
+            <span className="text-[10px] text-gray-500 dark:text-white/30 font-mono block">per {item.unit}</span>
             <div className="flex items-center gap-1 mt-0.5">
               {storeLogos[bestStore] && (
                 <img src={storeLogos[bestStore]} alt="" className="h-3.5 w-3.5 rounded-sm object-contain bg-white/10" />
               )}
               <span className={`text-[9px] font-bold ${bestInfo.color}`}>{bestStore}</span>
             </div>
+            {storesWithPrice.length > 0 && (
+              <div className="flex items-center gap-1 mt-1">
+                <div className="flex -space-x-1">
+                  {storesWithPrice.map((store) => (
+                    <div key={store} className="h-3 w-3 rounded-full overflow-hidden bg-white/10 ring-1 ring-white/20">
+                      {storeLogos[store] ? (
+                        <img src={storeLogos[store]} alt="" className="h-full w-full object-cover" />
+                      ) : (
+                        <Store className="h-full w-full p-0.5 text-white/50" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <span className="text-[9px] text-gray-500 dark:text-white/30">
+                  at {storesWithPrice.length} store{storesWithPrice.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+            )}
           </div>
           <button
             onClick={() => onAdd(item.name, item.unit)}
@@ -227,14 +251,26 @@ function ProductCard({
         </div>
 
         {/* Available at stores */}
-        <div className="flex gap-1 pt-1 border-t border-white/[0.04]">
+        <div className="pt-2 border-t border-white/[0.04] space-y-1">
           {storesWithPrice.map(store => {
-            const info = storeInfo[store] || storeInfo['Walmart'];
+            const price = itemPrices[store].price;
             const isBest = store === bestStore;
+            const proportion = savings > 0 ? (price - minPrice) / savings : 0;
             return (
-              <div key={store} className="flex items-center gap-1" title={`${store}: $${itemPrices[store].price.toFixed(2)}`}>
-                <span className={`text-[8px] font-mono ${isBest ? info.color : 'text-white/25'}`}>
-                  ${itemPrices[store].price.toFixed(2)}
+              <div key={store} className="flex items-center gap-2" title={`${store}: $${price.toFixed(2)}`}>
+                <span className="text-[9px] text-gray-400 dark:text-white/40 truncate w-[16ch] flex-shrink-0">
+                  {store}
+                </span>
+                <div className="flex-1 relative h-1.5 rounded-full bg-gray-100 dark:bg-white/[0.06]">
+                  <div
+                    className={`absolute top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full border-2 border-white dark:border-[#0a0a0a] ${
+                      isBest ? 'bg-emerald-400' : 'bg-gray-300 dark:bg-white/40'
+                    }`}
+                    style={{ left: `calc(${proportion * 100}% - 5px)` }}
+                  />
+                </div>
+                <span className={`text-[9px] font-mono w-[3ch] text-right ${isBest ? 'text-emerald-400 font-bold' : 'text-gray-500 dark:text-white/30'}`}>
+                  ${price.toFixed(2)}
                 </span>
               </div>
             );
