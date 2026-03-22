@@ -1,8 +1,7 @@
 'use server';
 
-import { type ActionResult, getSessionWithProfile, requireModuleAccess } from '@/lib/supabase/helpers';
+import type { getSessionWithProfile, requireModuleAccess } from '@/lib/supabase/helpers';
 
-import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache';
 import { linkDataSchema, ProfileLinkData } from '@/lib/schemas/links';

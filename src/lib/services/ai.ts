@@ -37,13 +37,7 @@ export async function generateCustomerInsights(customerId: string) {
     const pointsEarned = customer.loyalty_transactions?.filter((t: any) => t.type === 'earn').length || 0
     const loyaltyVelocity = transactionCount > 0 ? pointsEarned / transactionCount : 0
 
-    const prompt = `Analyze this customer for a business:
-    Name: ${customer.first_name} ${customer.last_name}
-    Total Transactions: ${transactionCount}
-    Total Spent: $${totalSpent.toFixed(2)}
-    Avg Ticket: $${avgTicket.toFixed(2)}
-    Loyalty Points: ${customer.loyalty_points}
-    Notes: ${customer.crm_notes?.map((n: { content: string }) => n.content).join('; ')}`
+    // Prompt content removed to avoid unused variable warning
 
     // Mock AI Analysis (since we don't have a direct OpenAI key in this environment yet)
     // In production, use: const response = await openai.chat.completions.create(...)

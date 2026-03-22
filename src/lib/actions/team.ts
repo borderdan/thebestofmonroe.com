@@ -1,10 +1,8 @@
 'use server'
 
-import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache'
 import { requireRole } from '@/lib/auth/rbac'
-import { getSessionWithProfile, type ActionResult } from '@/lib/supabase/helpers'
 import { updateRoleSchema, inviteUserSchema } from '@/lib/schemas/team'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { logActivity } from '@/lib/activity'

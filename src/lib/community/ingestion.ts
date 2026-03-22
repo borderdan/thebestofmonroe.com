@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/lib/database.types';
 import * as crypto from 'crypto';
 
-let supabaseClient: any = null;
+let supabaseClient: unknown = null;
 
 function getSupabase() {
   if (supabaseClient) return supabaseClient;
@@ -29,10 +29,10 @@ export type CommunityUpdateInput = {
   location_name?: string;
   event_time: string;
   expires_at?: string;
-  raw_data: any;
+  raw_data: unknown;
 };
 
-export function generateHash(data: any): string {
+export function generateHash(data: unknown): string {
     const str = JSON.stringify(data);
     return crypto.createHash('sha256').update(str).digest('hex');
 }
@@ -52,7 +52,7 @@ export async function upsertCommunityUpdate(input: CommunityUpdateInput) {
     .from('community_feed')
     .upsert({
       ...data,
-      geometry: geometry as any,
+      geometry: geometry as unknown,
       payload_hash,
       updated_at: new Date().toISOString()
     }, { 
@@ -65,7 +65,7 @@ export async function upsertCommunityUpdate(input: CommunityUpdateInput) {
   }
 }
 
-export async function logIngestion(source: string, status: 'success' | 'failure' | 'partial', message?: string, itemsProcessed: number = 0, errorDetails?: any) {
+export async function logIngestion(source: string, status: 'success' | 'failure' | 'partial', message?: string, itemsProcessed: number = 0, errorDetails?: unknown) {
     const supabase = getSupabase();
     await supabase.from('ingestion_logs').insert({
         source_name: source,
@@ -95,7 +95,7 @@ export type PoiInput = {
   address?: string;
   latitude: number;
   longitude: number;
-  metadata?: any;
+  metadata?: unknown;
 };
 
 export async function upsertPoi(input: PoiInput) {
@@ -106,7 +106,7 @@ export async function upsertPoi(input: PoiInput) {
     .from('pois')
     .upsert({
       ...data,
-      geometry: `POINT(${longitude} ${latitude})` as any,
+      geometry: `POINT(${longitude} ${latitude})` as unknown,
     }, {
       onConflict: 'name, category' 
     });

@@ -1,6 +1,5 @@
 'use server'
 
-import * as Sentry from '@sentry/nextjs';
 
 import { createClient } from '@/lib/supabase/server'
 import { compare, hash } from 'bcryptjs'

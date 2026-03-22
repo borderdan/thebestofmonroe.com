@@ -19,7 +19,7 @@ export async function getPublicHubData() {
 
     // Grocery Prices — fetch enough to show diverse items across stores
     supabase
-      .from('grocery_prices' as any)
+      .from('grocery_prices' as unknown)
       .select('*')
       .order('scraped_at', { ascending: false })
       .limit(200),

@@ -1,8 +1,6 @@
 'use server'
 
-import { type ActionResult } from '@/lib/supabase/helpers';
 
-import * as Sentry from '@sentry/nextjs';
 
 import { getSupabaseAdmin } from '@/lib/supabase/admin'
 import { MercadoPagoConfig, Preference } from 'mercadopago'

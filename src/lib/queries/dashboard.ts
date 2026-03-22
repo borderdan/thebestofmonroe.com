@@ -123,15 +123,15 @@ export async function getDashboardData(businessId: string) {
 
     // Grocery Prices (The Wallet)
     supabase
-      .from('grocery_prices' as any)
+      .from('grocery_prices' as unknown)
       .select('*')
       .order('scraped_at', { ascending: false })
       .limit(5)
   ])
 
   // Calculate KPIs
-  const todayRevenue = (todayTx.data || []).reduce((sum, t) => sum + ((t as any).total || 0), 0)
-  const yesterdayRevenue = (yesterdayTx.data || []).reduce((sum, t) => sum + ((t as any).total || 0), 0)
+  const todayRevenue = (todayTx.data || []).reduce((sum, t) => sum + ((t as unknown).total || 0), 0)
+  const yesterdayRevenue = (yesterdayTx.data || []).reduce((sum, t) => sum + ((t as unknown).total || 0), 0)
   const todayCount = (todayTx.data || []).length
   const revenueDelta = yesterdayRevenue > 0
     ? ((todayRevenue - yesterdayRevenue) / yesterdayRevenue) * 100
@@ -148,9 +148,9 @@ export async function getDashboardData(businessId: string) {
     revenueByDay[key] = 0
   }
   for (const tx of weekTx.data || []) {
-    const day = (tx as any).created_at?.split('T')[0]
+    const day = (tx as unknown).created_at?.split('T')[0]
     if (day && day in revenueByDay) {
-      revenueByDay[day] += (tx as any).total || 0
+      revenueByDay[day] += (tx as unknown).total || 0
     }
   }
   const chartData = Object.entries(revenueByDay).map(([date, revenue]) => ({
@@ -170,14 +170,14 @@ export async function getDashboardData(businessId: string) {
     },
     chartData,
     heatmapData: (hourlySales.data || []).map(d => ({
-      day_of_week: Number((d as any).day_of_week),
-      hour_of_day: Number((d as any).hour_of_day),
-      transaction_count: Number((d as any).transaction_count),
-      total_revenue: Number((d as any).total_revenue)
+      day_of_week: Number((d as unknown).day_of_week),
+      hour_of_day: Number((d as unknown).hour_of_day),
+      transaction_count: Number((d as unknown).transaction_count),
+      total_revenue: Number((d as unknown).total_revenue)
     })),
     categoryData: (categoryRevenue.data || []).map(d => ({
       category: d.category,
-      revenue: Number((d as any).total_revenue)
+      revenue: Number((d as unknown).total_revenue)
     })),
     inventoryHealth: inventoryHealthRes.data || { low_stock_count: 0, critical_restock_count: 0, avg_sales_velocity: 0 },
     notifications: notificationsRes.data || [],
@@ -186,11 +186,11 @@ export async function getDashboardData(businessId: string) {
     totalBusinesses: totalBusinessesRes.count || 0,
     recentTransactions: (recentTx.data || []).map(tx => ({
       id: tx.id,
-      total: (tx as any).total,
-      status: (tx as any).status,
-      created_at: (tx as any).created_at,
-      currency: (tx as any).currency || 'MXN',
-      payment_method: (tx as any).payment_method || 'cash',
+      total: (tx as unknown).total,
+      status: (tx as unknown).status,
+      created_at: (tx as unknown).created_at,
+      currency: (tx as unknown).currency || 'MXN',
+      payment_method: (tx as unknown).payment_method || 'cash',
     })),
   }
 }

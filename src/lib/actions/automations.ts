@@ -1,9 +1,7 @@
 'use server'
 
-import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 import { z } from 'zod'
 
 const automationConfigSchema = z.object({
@@ -24,7 +22,7 @@ export async function getAutomationConfigs(): Promise<ActionResult<AutomationCon
   try {
     await requireModuleAccess('automations')
     const { supabase, profile } = await getSessionWithProfile()
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('automation_configs')
       .select('*')
       .eq('business_id', profile.business_id)
@@ -58,7 +56,7 @@ export async function saveAutomationConfig(values: unknown): Promise<ActionResul
       }
     }
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('automation_configs')
       .upsert({
         ...(configId ? { id: configId } : {}),

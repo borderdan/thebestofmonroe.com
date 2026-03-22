@@ -1,8 +1,6 @@
 'use server'
 
-import * as Sentry from '@sentry/nextjs'
 import { revalidatePath } from 'next/cache'
-import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 
 // ============================================================
 // Types

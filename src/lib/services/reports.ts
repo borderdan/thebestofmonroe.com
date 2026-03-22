@@ -21,7 +21,7 @@ export async function generateInventoryReport(businessId: string) {
     const supabase = await createClient()
 
     // 1. Aggregate Data from inventory_health_summary and products
-    const { data: summary, error: summaryError } = await supabase
+    const { data: summary } = await supabase
       .from('inventory_health_summary')
       .select('*')
       .eq('business_id', businessId)
@@ -101,7 +101,7 @@ export async function generateInventoryReport(businessId: string) {
         }
 
         // 5. Log in generated_reports
-        const { data: reportRecord, error: logError } = await supabase
+        const { error: logError } = await supabase
           .from('generated_reports')
           .insert({
             business_id: businessId,

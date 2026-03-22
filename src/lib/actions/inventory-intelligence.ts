@@ -2,7 +2,6 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { logActivity } from '@/lib/activity'
-import * as Sentry from '@sentry/nextjs'
 
 export async function checkStockAndTriggerAutomation(productId: string) {
   try {
@@ -82,7 +81,7 @@ export async function scanBusinessInventory(businessId: string) {
     const supabase = await createClient()
     
     // Find products below threshold for this business
-    const { data: lowStockProducts, error } = await supabase
+    const { } = await supabase
       .from('products')
       .select('id')
       .eq('business_id', businessId)

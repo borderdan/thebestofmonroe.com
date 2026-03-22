@@ -1,10 +1,8 @@
 'use server'
 
-import * as Sentry from '@sentry/nextjs';
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { getSessionWithProfile, requireModuleAccess, type ActionResult } from '@/lib/supabase/helpers'
 
 const cartItemSchema = z.object({
   id: z.string(),
